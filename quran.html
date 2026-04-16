@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبيل - القرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== VARIABLES & THEME ==================== */
+        :root {
+            --primary-beige: #fdfbf7; --primary-beige-dark: #f0e8d5;
+            --primary-green: #1a4a38; --primary-gold: #d4af37;
+            --text-dark: #1f2937; --text-muted: #6b7280;
+            --glass-bg: rgba(253, 251, 247, 0.96); --glass-border: rgba(212, 175, 55, 0.3);
+            --quran-font-size: 2rem; --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] {
+            --primary-beige: #0f172a; --primary-beige-dark: #1e293b;
+            --primary-green: #064e3b; --primary-gold: #fbbf24;
+            --text-dark: #f8fafc; --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.96);
+        }
+
+        /* ==================== GLOBAL STYLES ==================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--primary-beige); color: var(--text-dark); min-height: 100vh; transition: 0.3s; position: relative; }
+        
+        /* BACKGROUND IMAGE */
+        .site-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000'); background-size: cover; background-position: center; z-index: -2; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px); z-index: -1; }
+        [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.88); }
+
+        .container { width: 100%; max-width: 1200px; padding: 0 1.5rem; margin: 0 auto; }
+        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow); padding: 2rem; transition: 0.3s; }
+        .hidden { display: none !important; }
+
+        /* ==================== HEADER ==================== */
+        header { padding: 1.2rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 2rem; font-weight: 800; color: var(--primary-green); text-decoration: none; font-family: 'Amiri'; }
+        [data-theme="dark"] .logo { color: var(--primary-gold); }
+        .desktop-nav ul { display: flex; gap: 1.8rem; list-style: none; }
+        .desktop-nav a { font-weight: 600; text-decoration: none; color: var(--text-dark); transition: 0.2s; font-size: 1rem; }
+        .desktop-nav a:hover { color: var(--primary-gold); }
+
+        /* ==================== TABS ==================== */
+        .tabs-container { display: flex; justify-content: center; gap: 0.8rem; margin: 2.5rem auto; max-width: 550px; background: var(--glass-bg); padding: 0.6rem; border-radius: 60px; border: 1px solid var(--glass-border); }
+        .tab-btn { flex: 1; padding: 0.9rem; border-radius: 50px; border: none; cursor: pointer; font-weight: 800; background: transparent; color: var(--text-muted); transition: 0.3s; font-size: 1.05rem; }
+        .tab-btn.active { background: var(--primary-green); color: white; box-shadow: 0 5px 15px rgba(26, 74, 56, 0.2); }
+        [data-theme="dark"] .tab-btn.active { background: var(--primary-gold); color: var(--primary-green); }
+
+        /* ==================== GRID SYSTEMS ==================== */
+        .search-input { width: 100%; max-width: 650px; display: block; margin: 0 auto 3rem; padding: 1.2rem 2rem; border-radius: 60px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-dark); font-size: 1.1rem; outline: none; box-shadow: var(--shadow); }
+        .surahs-grid, .reciters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+        
+        .surah-card, .reciter-card { 
+            text-align: center; padding: 2rem 1.5rem; cursor: pointer; border: 1px solid var(--glass-border); 
+            border-radius: 20px; background: var(--glass-bg); transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .surah-card:hover, .reciter-card:hover { transform: translateY(-8px); border-color: var(--primary-gold); box-shadow: 0 15px 35px rgba(212, 175, 55, 0.15); }
+        
+        .btn-select-reciter { 
+            text-decoration: none; background: var(--primary-gold); color: #1a4a38; padding: 0.7rem 1.5rem; 
+            border-radius: 50px; font-weight: 800; display: inline-block; margin-top: 15px; width: 100%; transition: 0.2s;
+        }
+        .btn-select-reciter:hover { background: var(--primary-green); color: white; }
+
+        /* ==================== PLAYER AREA ==================== */
+        .custom-player { background: var(--primary-beige-dark); padding: 3rem 2rem; border-radius: 30px; text-align: center; margin-bottom: 3rem; border: 1px solid var(--glass-border); box-shadow: var(--shadow); }
+        [data-theme="dark"] .custom-player { background: rgba(0,0,0,0.2); }
+        .play-btn-large { width: 85px; height: 85px; border-radius: 50%; border: none; background: var(--primary-gold); color: white; font-size: 2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3); }
+        .play-btn-large:hover { transform: scale(1.1); background: var(--primary-green); }
+        
+        .progress-container { width: 100%; height: 10px; background: rgba(0,0,0,0.1); border-radius: 10px; cursor: pointer; margin-top: 2rem; position: relative; direction: ltr; }
+        .progress-bar { position: absolute; left: 0; top: 0; height: 100%; background: var(--primary-gold); border-radius: 10px; width: 0%; pointer-events: none; }
+        .time-display { display: flex; justify-content: space-between; direction: ltr; font-weight: 800; font-size: 0.95rem; margin-top: 10px; color: var(--text-muted); }
+
+        .listen-surahs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; margin-top: 2rem; }
+        .listen-surah-btn { padding: 1rem; cursor: pointer; border: 1px solid var(--glass-border); border-radius: 12px; background: var(--glass-bg); color: var(--text-dark); font-family: 'Amiri'; font-size: 1.2rem; font-weight: 700; transition: 0.2s; }
+        .listen-surah-btn:hover, .listen-surah-btn.active { background: var(--primary-gold); color: #1a4a38; transform: scale(1.03); }
+
+        /* ==================== READING AREA ==================== */
+        .verses-container { font-family: 'Amiri', serif; font-size: var(--quran-font-size); text-align: justify; text-align-last: center; line-height: 2.8; padding: 2rem; }
+        .verse-num { color: var(--primary-gold); font-weight: 700; margin: 0 0.5rem; font-size: 0.8em; }
+
+        @media (max-width: 768px) {
+            .desktop-nav { display: none; }
+            .surahs-grid, .reciters-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .tabs-container { margin: 1.5rem auto; }
+            .tab-btn { font-size: 0.9rem; padding: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-bg"></div>
+    <div class="bg-overlay"></div>
+
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">سبيل</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="masbaha.html">المسبحة</a></li>
+                    <li><a href="odea.html">الأدعية</a></li>
+                    <li><a href="quran.html" style="color: var(--primary-gold);">القرآن</a></li>
+                    <li><a href="hadith.html">أحاديث نبوية</a></li>
+                    <li><a href="sira.html">السيرة النبوية</a></li>
+                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
+                    <li><a href="prophets.html">قصص الأنبياء</a></li>
+                    <li><a href="azkar.html">الأذكار</a></li>
+                </ul>
+            </nav>
+            <button id="themeToggle" style="background:none; border:none; font-size:1.6rem; cursor:pointer;">🌙</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tabs-container">
+            <button class="tab-btn" data-target="readTab">📖 قراءة</button>
+            <button class="tab-btn active" data-target="indexTab">📜 الفهرس</button>
+            <button class="tab-btn" data-target="listenTab">🎧 استماع</button>
+        </div>
+
+        <div id="indexTab" class="tab-content">
+            <div id="favoritesSection" class="hidden" style="margin-bottom: 3rem;">
+    <h2 style="margin-bottom: 1.5rem; color: var(--primary-gold); font-weight: 800;">⭐ قراءك المفضلون</h2>
+    <div class="reciters-grid" id="favoritesGrid"></div>
+    <hr style="margin-top: 2rem; border: 0; border-top: 1px solid var(--glass-border);">
+</div>
+            <div id="listView">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن سورة... (مثال: الكهف)">
+                <div class="surahs-grid" id="surahsGrid"></div>
+            </div>
+            <div id="detailsView" class="glass-card hidden" style="text-align:center; max-width: 700px; margin: 0 auto;">
+                <h2 id="detName" style="font-family:'Amiri'; font-size:3.5rem; color: var(--primary-green); margin-bottom: 1.5rem;"></h2>
+                <button onclick="showReadingMode()" style="padding:1.2rem 3rem; border-radius:60px; background:var(--primary-green); color:white; border:none; cursor:pointer; font-weight:800; font-size: 1.2rem;">📖 ابدأ القراءة الآن</button>
+                <button onclick="backToIndex()" style="display:block; margin: 2rem auto 0; background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:700;">← العودة للفهرس</button>
+            </div>
+        </div>
+
+        <div id="readTab" class="tab-content hidden glass-card" style="max-width: 1000px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-gold); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+                 <h2 id="readingTitle" style="font-family:'Amiri'; font-size: 2.5rem; color: var(--primary-green);"></h2>
+                 <div>
+                    <button onclick="changeFontSize(0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">+</button>
+                    <button onclick="changeFontSize(-0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">-</button>
+                 </div>
+            </div>
+            <div id="versesContainer" class="verses-container"></div>
+        </div>
+
+        <div id="listenTab" class="tab-content hidden glass-card">
+            <div id="listenRecitersView">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-weight: 800;">اختر القارئ
+
+                </h2>
+                <input type="text" id="searchReciterInput" class="search-input" placeholder="ابحث عن قارئ... (مثال: العفاسي)">
+                <div class="reciters-grid" id="recitersGrid"></div>
+            </div>
+
+            <div id="listenPlayerView" class="hidden">
+                <button onclick="window.location.hash=''" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); margin-bottom:1.5rem; font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
+                <div class="custom-player">
+                    <h2 id="audioSurahTitle" style="font-family:'Amiri'; font-size:3rem; color: var(--primary-green);"></h2>
+                    <p id="currentReciterNameLabel" style="color:var(--primary-gold); font-weight:800; font-size: 1.3rem; margin-top: 0.5rem;"></p>
+                    
+                    <button class="play-btn-large" id="btnPlayPause">▶</button>
+                    
+                    <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+                    <div class="time-display"><span id="currentTime">00:00</span><span id="durationTime">00:00</span></div>
+                    <audio id="audioPlayer"></audio>
+                </div>
+                
+                <h3 style="margin: 3rem 0 1.5rem; text-align: center; font-size: 1.8rem; font-family: 'Amiri';">اختر السورة للاستماع</h3>
+                <div class="listen-surahs-grid" id="listenSurahsGrid"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ==================== SURAHS DATASET (114 Surahs) ====================
+        const surahsData = [
+            { id: 1, name: "الفاتحة", type: "مكية", verses: 7 }, { id: 2, name: "البقرة", type: "مدنية", verses: 286 },
+            { id: 3, name: "آل عمران", type: "مدنية", verses: 200 }, { id: 4, name: "النساء", type: "مدنية", verses: 176 },
+            { id: 5, name: "المائدة", type: "مدنية", verses: 120 }, { id: 6, name: "الأنعام", type: "مكية", verses: 165 },
+            { id: 7, name: "الأعراف", type: "مكية", verses: 206 }, { id: 8, name: "الأنفال", type: "مدنية", verses: 75 },
+            { id: 9, name: "التوبة", type: "مدنية", verses: 129 }, { id: 10, name: "يونس", type: "مكية", verses: 109 },
+            { id: 11, name: "هود", type: "مكية", verses: 123 }, { id: 12, name: "يوسف", type: "مكية", verses: 111 },
+            { id: 13, name: "الرعد", type: "مدنية", verses: 43 }, { id: 14, name: "إبراهيم", type: "مكية", verses: 52 },
+            { id: 15, name: "الحجر", type: "مكية", verses: 99 }, { id: 16, name: "النحل", type: "مكية", verses: 128 },
+            { id: 17, name: "الإسراء", type: "مكية", verses: 111 }, { id: 18, name: "الكهف", type: "مكية", verses: 110 },
+            { id: 19, name: "مريم", type: "مكية", verses: 98 }, { id: 20, name: "طه", type: "مكية", verses: 135 },
+            { id: 21, name: "الأنبياء", type: "مكية", verses: 112 }, { id: 22, name: "الحج", type: "مدنية", verses: 78 },
+            { id: 23, name: "المؤمنون", type: "مكية", verses: 118 }, { id: 24, name: "النور", type: "مدنية", verses: 64 },
+            { id: 25, name: "الفرقان", type: "مكية", verses: 77 }, { id: 26, name: "الشعراء", type: "مكية", verses: 227 },
+            { id: 27, name: "النمل", type: "مكية", verses: 93 }, { id: 28, name: "القصص", type: "مكية", verses: 88 },
+            { id: 29, name: "العنكبوت", type: "مكية", verses: 69 }, { id: 30, name: "الروم", type: "مكية", verses: 60 },
+            { id: 31, name: "لقمان", type: "مكية", verses: 34 }, { id: 32, name: "السجدة", type: "مكية", verses: 30 },
+            { id: 33, name: "الأحزاب", type: "مدنية", verses: 73 }, { id: 34, name: "سبأ", type: "مكية", verses: 54 },
+            { id: 35, name: "فاطر", type: "مكية", verses: 45 }, { id: 36, name: "يس", type: "مكية", verses: 83 },
+            { id: 37, name: "الصافات", type: "مكية", verses: 182 }, { id: 38, name: "ص", type: "مكية", verses: 88 },
+            { id: 39, name: "الزمر", type: "مكية", verses: 75 }, { id: 40, name: "غافر", type: "مكية", verses: 85 },
+            { id: 41, name: "فصلت", type: "مكية", verses: 54 }, { id: 42, name: "الشورى", type: "مكية", verses: 53 },
+            { id: 43, name: "الزخرف", type: "مكية", verses: 89 }, { id: 44, name: "الدخان", type: "مكية", verses: 59 },
+            { id: 45, name: "الجاثية", type: "مكية", verses: 37 }, { id: 46, name: "الأحقاف", type: "مكية", verses: 35 },
+            { id: 47, name: "محمد", type: "مدنية", verses: 38 }, { id: 48, name: "الفتح", type: "مدنية", verses: 29 },
+            { id: 49, name: "الحجرات", type: "مدنية", verses: 18 }, { id: 50, name: "ق", type: "مكية", verses: 45 },
+            { id: 51, name: "الذاريات", type: "مكية", verses: 60 }, { id: 52, name: "الطور", type: "مكية", verses: 49 },
+            { id: 53, name: "النجم", type: "مكية", verses: 62 }, { id: 54, name: "القمر", type: "مكية", verses: 55 },
+            { id: 55, name: "الرحمن", type: "مدنية", verses: 78 }, { id: 56, name: "الواقعة", type: "مكية", verses: 96 },
+            { id: 57, name: "الحديد", type: "مدنية", verses: 29 }, { id: 58, name: "المجادلة", type: "مدنية", verses: 22 },
+            { id: 59, name: "الحشر", type: "مدنية", verses: 24 }, { id: 60, name: "الممتحنة", type: "مدنية", verses: 13 },
+            { id: 61, name: "الصف", type: "مدنية", verses: 14 }, { id: 62, name: "الجمعة", type: "مدنية", verses: 11 },
+            { id: 63, name: "المنافقون", type: "مدنية", verses: 11 }, { id: 64, name: "التغابن", type: "مدنية", verses: 18 },
+            { id: 65, name: "الطلاق", type: "مدنية", verses: 12 }, { id: 66, name: "التحريم", type: "مدنية", verses: 12 },
+            { id: 67, name: "الملك", type: "مكية", verses: 30 }, { id: 68, name: "القلم", type: "مكية", verses: 52 },
+            { id: 69, name: "الحاقة", type: "مكية", verses: 52 }, { id: 70, name: "المعارج", type: "مكية", verses: 44 },
+            { id: 71, name: "نوح", type: "مكية", verses: 28 }, { id: 72, name: "الجن", type: "مكية", verses: 28 },
+            { id: 73, name: "المزمل", type: "مكية", verses: 20 }, { id: 74, name: "المدثر", type: "مكية", verses: 56 },
+            { id: 75, name: "القيامة", type: "مكية", verses: 40 }, { id: 76, name: "الإنسان", type: "مكية", verses: 31 },
+            { id: 77, name: "المرسلات", type: "مكية", verses: 50 }, { id: 78, name: "النبأ", type: "مكية", verses: 40 },
+            { id: 79, name: "النازعات", type: "مكية", verses: 46 }, { id: 80, name: "عبس", type: "مكية", verses: 42 },
+            { id: 81, name: "التكوير", type: "مكية", verses: 29 }, { id: 82, name: "الانفطار", type: "مكية", verses: 19 },
+            { id: 83, name: "المطففين", type: "مكية", verses: 36 }, { id: 84, name: "الانشقاق", type: "مكية", verses: 25 },
+            { id: 85, name: "البروج", type: "مكية", verses: 22 }, { id: 86, name: "الطارق", type: "مكية", verses: 17 },
+            { id: 87, name: "الأعلى", type: "مكية", verses: 19 }, { id: 88, name: "الغاشية", type: "مكية", verses: 26 },
+            { id: 89, name: "الفجر", type: "مكية", verses: 30 }, { id: 90, name: "البلد", type: "مكية", verses: 20 },
+            { id: 91, name: "الشمس", type: "مكية", verses: 15 }, { id: 92, name: "الليل", type: "مكية", verses: 21 },
+            { id: 93, name: "الضحى", type: "مكية", verses: 11 }, { id: 94, name: "الشرح", type: "مكية", verses: 8 },
+            { id: 95, name: "التين", type: "مكية", verses: 8 }, { id: 96, name: "العلق", type: "مكية", verses: 19 },
+            { id: 97, name: "القدر", type: "مكية", verses: 5 }, { id: 98, name: "البينة", type: "مدنية", verses: 8 },
+            { id: 99, name: "الزلزلة", type: "مدنية", verses: 8 }, { id: 100, name: "العاديات", type: "مكية", verses: 11 },
+            { id: 101, name: "القارعة", type: "مكية", verses: 11 }, { id: 102, name: "التكاثر", type: "مكية", verses: 8 },
+            { id: 103, name: "العصر", type: "مكية", verses: 3 }, { id: 104, name: "الهمزة", type: "مكية", verses: 9 },
+            { id: 105, name: "الفيل", type: "مكية", verses: 5 }, { id: 106, name: "قريش", type: "مكية", verses: 4 },
+            { id: 107, name: "الماعون", type: "مكية", verses: 7 }, { id: 108, name: "الكوثر", type: "مكية", verses: 3 },
+            { id: 109, name: "الكافرون", type: "مكية", verses: 6 }, { id: 110, name: "النصر", type: "مدنية", verses: 3 },
+            { id: 111, name: "المسد", type: "مكية", verses: 5 }, { id: 112, name: "الإخلاص", type: "مكية", verses: 4 },
+            { id: 113, name: "الفلق", type: "مكية", verses: 5 }, { id: 114, name: "الناس", type: "مكية", verses: 6 }
+        ];
+
+        // ==================== RECITERS DATASET (80+ Comprehensive List) ====================
+        const recitersData = [
+            { id: 1, name: "إبراهيم الأخضر", url: "https://server6.mp3quran.net/akdr/" },
+            { id: 2, name: "إبراهيم الدوسري", url: "https://server10.mp3quran.net/ibrahim_dosri/Rewayat-Warsh-A-n-Nafi/" },
+            { id: 3, name: "أبو بكر الشاطري", url: "https://server11.mp3quran.net/shatri/" },
+            { id: 4, name: "أحمد الحذيفي", url: "https://server8.mp3quran.net/ahmad_huth/" },
+            { id: 5, name: "أحمد الحواشي", url: "https://server11.mp3quran.net/hawashi/" },
+            { id: 6, name: "أحمد السويلم", url: "https://server14.mp3quran.net/swlim/Rewayat-Hafs-A-n-Assem/" },
+            { id: 7, name: "أحمد الطرابلسي", url: "https://server10.mp3quran.net/trabulsi/" },
+            { id: 8, name: "أحمد بن علي العجمي", url: "https://server10.mp3quran.net/ajm/" },
+            { id: 9, name: "أحمد نعينع", url: "https://server11.mp3quran.net/ahmad_nu/" },
+            { id: 10, name: "أكرم العلاقمي", url: "https://server9.mp3quran.net/akrm/" },
+            { id: 11, name: "إدريس أبكر", url: "https://server6.mp3quran.net/abkr/" },
+            { id: 12, name: "إسلام صبحي", url: "https://server14.mp3quran.net/islam/Rewayat-Hafs-A-n-Assem/" },
+            { id: 13, name: "العيون الكوشي", url: "https://server11.mp3quran.net/koshi/" },
+            { id: 14, name: "الدوكالي محمد العالم", url: "https://server7.mp3quran.net/dokali/" },
+            { id: 15, name: "الزين محمد أحمد", url: "https://server9.mp3quran.net/alzain/" },
+            { id: 16, name: "بندر بليله", url: "https://server6.mp3quran.net/balilah/" },
+            { id: 17, name: "توفيق الصايغ", url: "https://server6.mp3quran.net/twfeeq/" },
+            { id: 18, name: "خالد القحطاني", url: "https://server10.mp3quran.net/qht/" },
+            { id: 19, name: "خالد الجليل", url: "https://server10.mp3quran.net/jleel/" },
+            { id: 20, name: "خالد المهنا", url: "https://server11.mp3quran.net/mohna/" },
+            { id: 21, name: "خليفة الطنيجي", url: "https://server12.mp3quran.net/tnjy/" },
+            { id: 22, name: "رعد الكردي", url: "https://server6.mp3quran.net/kurdi/" },
+            { id: 23, name: "زكي داغستاني", url: "https://server9.mp3quran.net/zaki/" },
+            { id: 24, name: "سعد الغامدي", url: "https://server7.mp3quran.net/s_gmd/" },
+            { id: 25, name: "سعود الشريم", url: "https://server7.mp3quran.net/shur/" },
+            { id: 26, name: "سهل ياسين", url: "https://server6.mp3quran.net/shl/" },
+            { id: 27, name: "سيد رمضان", url: "https://server12.mp3quran.net/sayed/" },
+            { id: 28, name: "شعبان الصياد", url: "https://server11.mp3quran.net/shaban/" },
+            { id: 29, name: "شيرزاد عبد الرحمن طاهر", url: "https://server12.mp3quran.net/taher/" },
+            { id: 30, name: "صابر عبد الحكم", url: "https://server12.mp3quran.net/hkm/" },
+            { id: 31, name: "صالح آل طالب", url: "https://server9.mp3quran.net/tlb/" },
+            { id: 32, name: "صلاح البدير", url: "https://server6.mp3quran.net/s_bud/" },
+            { id: 33, name: "صلاح الهاشم", url: "https://server12.mp3quran.net/salah_hashim_m/" },
+            { id: 34, name: "صلاح بو خاطر", url: "https://server8.mp3quran.net/bu_khtr/" },
+            { id: 35, name: "طارق عبد الغني دعوب", url: "https://server10.mp3quran.net/tareq/" },
+            { id: 36, name: "عادل الكلباني", url: "https://server8.mp3quran.net/a_klb/" },
+            { id: 37, name: "عادل ريان", url: "https://server8.mp3quran.net/ryan/" },
+            { id: 38, name: "عبد الباري الثبيتي", url: "https://server6.mp3quran.net/thubti/" },
+            { id: 39, name: "عبد البارئ محمد", url: "https://server12.mp3quran.net/bari/" },
+            { id: 40, name: "عبد الباسط عبد الصمد", url: "https://server7.mp3quran.net/basit/" },
+            { id: 41, name: "عبد الباسط (مجود)", url: "https://server7.mp3quran.net/basit/Almusshaf-Al-Mojawwad/" },
+            { id: 42, name: "عبد الرحمن السديس", url: "https://server11.mp3quran.net/sds/" },
+            { id: 43, name: "عبد الرحمن العوسي", url: "https://server6.mp3quran.net/aloosi/" },
+            { id: 44, name: "عبد الرشيد صوفي", url: "https://server16.mp3quran.net/soufi/Rewayat-Hafs-A-n-Assem/" },
+            { id: 45, name: "عبد العزيز الأحمد", url: "https://server11.mp3quran.net/a_ahmed/" },
+            { id: 46, name: "عبد العزيز الزهراني", url: "https://server9.mp3quran.net/zahrani/" },
+            { id: 47, name: "عبد الله البريمي", url: "https://server8.mp3quran.net/brmi/" },
+            { id: 48, name: "عبد الله الجهني", url: "https://server13.mp3quran.net/jhn/" },
+            { id: 49, name: "عبد الله المطرود", url: "https://server8.mp3quran.net/mtrod/" },
+            { id: 50, name: "عبد الله بصفر", url: "https://server6.mp3quran.net/bsfr/" },
+            { id: 51, name: "عبد الله خياط", url: "https://server12.mp3quran.net/kyat/" },
+            { id: 52, name: "عبدالرحمن بن عبدالرزاق البدر", url: "https://server16.mp3quran.net/A-AlBadr/Rewayat-Hafs-A-n-Assem/" },
+            { id: 53, name: "عبد المحسن القاسم", url: "https://server8.mp3quran.net/qasm/" },
+            { id: 54, name: "عبد الودود حنيف", url: "https://server8.mp3quran.net/wdod/" },
+            { id: 55, name: "عبدالولي الأركاني", url: "https://server6.mp3quran.net/arkani/" },
+            { id: 56, name: "علي الحذيفي", url: "https://server9.mp3quran.net/hthfi/" },
+            { id: 57, name: "علي جابر", url: "https://server11.mp3quran.net/a_jbr/" },
+            { id: 58, name: "علي حجاج السويسي", url: "https://server9.mp3quran.net/hajjaj/" },
+            { id: 59, name: "عماد زهير حافظ", url: "https://server6.mp3quran.net/hafz/" },
+            { id: 60, name: "عمر القزابري", url: "https://server9.mp3quran.net/omar_warsh/" },
+            { id: 61, name: "فارس عباد", url: "https://server8.mp3quran.net/frs_a/" },
+            { id: 62, name: "ماجد الزامل", url: "https://server9.mp3quran.net/zaml/" },
+            { id: 63, name: "ماهر المعيقلي", url: "https://server12.mp3quran.net/maher/" },
+            { id: 64, name: "محمد أيوب", url: "https://server8.mp3quran.net/ayyub/" },
+            { id: 65, name: "محمد البراك", url: "https://server13.mp3quran.net/braak/" },
+            { id: 66, name: "محمد الطبلاوي", url: "https://server12.mp3quran.net/tblawi/" },
+            { id: 67, name: "محمد المحيسني", url: "https://server11.mp3quran.net/mhsny/" },
+            { id: 68, name: "محمد جبريل", url: "https://server8.mp3quran.net/jbrl/" },
+            { id: 69, name: "محمد رفعت", url: "https://server14.mp3quran.net/refat/" },
+            { id: 70, name: "محمد صالح عالم شاه", url: "https://server12.mp3quran.net/shah/" },
+            { id: 71, name: "محمد صديق المنشاوي", url: "https://server10.mp3quran.net/minsh/" },
+            { id: 72, name: "محمد صديق المنشاوي (مجود)", url: "https://server10.mp3quran.net/minsh/Almusshaf-Al-Mojawwad/" },
+            { id: 73, name: "محمد عبد الكريم", url: "https://server12.mp3quran.net/m_krm/" },
+            { id: 74, name: "محمد عبد الحكيم", url: "https://server9.mp3quran.net/abdullah/" },
+            { id: 75, name: "محمد الفقيه", url: "https://server16.mp3quran.net/M_Alfaqih/Rewayat-Hafs-A-n-Assem/" },
+            { id: 76, name: "محمود خليل الحصري", url: "https://server13.mp3quran.net/husr/" },
+            { id: 77, name: "محمود علي البنا", url: "https://server8.mp3quran.net/bna/" },
+            { id: 78, name: "مشاري راشد العفاسي", url: "https://server8.mp3quran.net/afs/" },
+            { id: 79, name: "مصطفى إسماعيل", url: "https://server8.mp3quran.net/mustafa/" },
+            { id: 80, name: "مصطفى اللاهوني", url: "https://server6.mp3quran.net/lahoni/" },
+            { id: 81, name: "ناصر القطامي", url: "https://server6.mp3quran.net/qtm/" },
+            { id: 82, name: "نبيل الرفاعي", url: "https://server9.mp3quran.net/nabil/" },
+            { id: 83, name: "نعمة الحسان", url: "https://server8.mp3quran.net/namh/" },
+            { id: 84, name: "هاني الرفاعي", url: "https://server8.mp3quran.net/hani/" },
+            { id: 85, name: "وليد النائحي", url: "https://server9.mp3quran.net/waleed/" },
+            { id: 86, name: "ياسر الدوسري", url: "https://server11.mp3quran.net/yasser/" },
+            { id: 87, name: "ياسر سلامة", url: "https://server12.mp3quran.net/salamah/Rewayat-Hafs-A-n-Assem/" },
+            { id: 88, name: "ياسين الجزائري", url: "https://server11.mp3quran.net/qari/" },
+            { id: 89, name: "أحمد النفيس", url: "https://server16.mp3quran.net/nufais/Rewayat-Hafs-A-n-Assem/" },
+            { id: 90, name: "الوليد الشمسان", url: "https://server14.mp3quran.net/shamsan/Rewayat-Hafs-A-n-Assem/" },
+            { id: 91, name: "بدر التركي", url: "https://server10.mp3quran.net/bader/Rewayat-Hafs-A-n-Assem/" },
+            { id: 92, name: "هزاع البلوشي", url: "https://server11.mp3quran.net/hazza/" },
+            { id: 93, name: "صالح القريشي", url: "https://server16.mp3quran.net/s_alquraishi/Rewayat-Hafs-A-n-Assem/" },
+            { id: 94, name: "عبد العزيز التركي", url: "https://server16.mp3quran.net/a_turki/Rewayat-Hafs-A-n-Assem/" },
+            { id: 95, name: "مصطفى رعد العزاوي", url: "https://server8.mp3quran.net/ra3ad/" },
+            { id: 96, name: "موسى بلال", url: "https://server11.mp3quran.net/bilal/" },
+            { id: 97, name: "منصور السالمي", url: "https://server14.mp3quran.net/mansor/" },
+            { id: 98, name: "هارون بقائي", url: "https://server16.mp3quran.net/h_baqai/Rewayat-Hafs-A-n-Assem/" },
+            { id: 99, name: "هيثم الدخين", url: "https://server16.mp3quran.net/h_dukhain/Rewayat-Hafs-A-n-Assem/" },
+            { id: 100, name: "وديع اليمني", url: "https://server6.mp3quran.net/wdee3/" },
+
+        ];
+
+        // ==================== 1. الحالة والمراجع (State & DOM) ====================
+        const state = { 
+            activeTab: 'indexTab', 
+            currentReciter: null, 
+            currentListenSurah: null, 
+            fontSize: 1.8 
+        };
+
+        const DOM = {
+            tabBtns: document.querySelectorAll('.tab-btn'), 
+            tabContents: document.querySelectorAll('.tab-content'),
+            surahsGrid: document.getElementById('surahsGrid'), 
+            recitersGrid: document.getElementById('recitersGrid'),
+            favoritesGrid: document.getElementById('favoritesGrid'), // مضافة للمفضلة
+            favoritesSection: document.getElementById('favoritesSection'), // مضافة للمفضلة
+            listenRecitersView: document.getElementById('listenRecitersView'), 
+            listenPlayerView: document.getElementById('listenPlayerView'),
+            audioPlayer: document.getElementById('audioPlayer'), 
+            btnPlayPause: document.getElementById('btnPlayPause'),
+            progressBar: document.getElementById('progressBar'), 
+            currentTime: document.getElementById('currentTime'), 
+            durationTime: document.getElementById('durationTime'),
+            versesContainer: document.getElementById('versesContainer')
+        };
+
+        // ==================== 2. نظام المفضلة (LocalStorage) ====================
+        let favoriteReciters = JSON.parse(localStorage.getItem('sabeel_favs')) || [];
+
+        function updateFavoritesUI() {
+            if (!DOM.favoritesSection) return;
+            if (favoriteReciters.length === 0) {
+                DOM.favoritesSection.classList.add('hidden');
+                return;
+            }
+            DOM.favoritesSection.classList.remove('hidden');
+            const favoredReciters = recitersData.filter(r => favoriteReciters.includes(r.id));
+            DOM.favoritesGrid.innerHTML = favoredReciters.map(r => renderReciterCard(r)).join('');
+        }
+
+        function toggleFavorite(id, event) {
+            event.stopPropagation();
+            if (favoriteReciters.includes(id)) {
+                favoriteReciters = favoriteReciters.filter(favId => favId !== id);
+            } else {
+                favoriteReciters.push(id);
+            }
+            localStorage.setItem('sabeel_favs', JSON.stringify(favoriteReciters));
+            updateFavoritesUI();
+            renderReciters(document.getElementById('searchReciterInput').value);
+        }
+
+        // ==================== 3. وظائف التشغيل (Initialization) ====================
+        function init() {
+            renderSurahCards(); 
+            renderReciters(); 
+            setupEvents();
+            handleRouting();
+            updateFavoritesUI();
+            
+            window.addEventListener('hashchange', handleRouting);
+            
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        function handleRouting() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/reciter/')) {
+                const rId = parseInt(hash.replace('#/reciter/', ''));
+                if (!isNaN(rId)) { switchTab('listenTab'); selectReciter(rId, false); }
+            } else {
+                if (state.activeTab === 'listenTab') {
+                    DOM.listenPlayerView.classList.add('hidden');
+                    DOM.listenRecitersView.classList.remove('hidden');
+                    stopAudio();
+                }
+            }
+        }
+
+        function setupEvents() {
+            DOM.tabBtns.forEach(btn => btn.onclick = () => switchTab(btn.dataset.target));
+            document.getElementById('searchInput').oninput = (e) => renderSurahCards(e.target.value);
+            document.getElementById('searchReciterInput').oninput = (e) => renderReciters(e.target.value);
+            DOM.btnPlayPause.onclick = toggleAudio;
+            DOM.audioPlayer.ontimeupdate = updateProgress;
+            document.getElementById('progressContainer').onclick = setAudioProgress;
+            document.getElementById('themeToggle').onclick = () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('sabeel_theme', next);
+            };
+        }
+
+        // ==================== 4. وظائف العرض (Rendering) ====================
+        function switchTab(id) {
+            state.activeTab = id;
+            DOM.tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+            DOM.tabContents.forEach(c => c.classList.toggle('hidden', c.id !== id));
+        }
+
+        function renderSurahCards(f='') {
+            DOM.surahsGrid.innerHTML = surahsData.filter(s => s.name.includes(f)).map(s => `
+                <div class="surah-card" onclick="openSurahDetails(${s.id})">
+                    <div style="font-weight:900; font-size:1.2rem; color:var(--primary-gold); margin-bottom:10px;">${s.id}</div>
+                    <div style="font-family:'Amiri'; font-size:1.8rem; font-weight:700;">${s.name}</div>
+                    <div style="color:var(--text-muted); font-size:0.9rem;">آياتها: ${s.verses}</div>
+                </div>`).join('');
+        }
+
+        function renderReciterCard(r) {
+            const isFav = favoriteReciters.includes(r.id);
+            const heartIcon = isFav ? '❤️' : '🤍';
+            return `
+                <div class="reciter-card">
+                    <div onclick="toggleFavorite(${r.id}, event)" style="position:absolute; top:15px; left:15px; font-size:1.5rem; cursor:pointer; z-index:10;">
+                        ${heartIcon}
+                    </div>
+                    <div style="font-size:3rem; margin-bottom:10px;">👤</div>
+                    <div style="font-weight:800; font-size:1.2rem; min-height:3rem;">${r.name}</div>
+                    <a href="#/reciter/${r.id}" class="btn-select-reciter" onclick="event.preventDefault(); selectReciter(${r.id});">استماع وتصفح</a>
+                </div>`;
+        }
+
+        function renderReciters(f='') {
+            const filtered = recitersData.filter(r => r.name.includes(f));
+            DOM.recitersGrid.innerHTML = filtered.map(r => renderReciterCard(r)).join('');
+        }
+
+        // ==================== 5. وظائف القراءة والاستماع ====================
+        function openSurahDetails(id) {
+            state.currentReadSurah = surahsData.find(x => x.id === id);
+            document.getElementById('detName').textContent = "سورة " + state.currentReadSurah.name;
+            document.getElementById('listView').classList.add('hidden');
+            document.getElementById('detailsView').classList.remove('hidden');
+        }
+
+        function backToIndex() {
+            document.getElementById('listView').classList.remove('hidden');
+            document.getElementById('detailsView').classList.add('hidden');
+        }
+
+        async function showReadingMode() {
+            switchTab('readTab');
+            const s = state.currentReadSurah;
+            document.getElementById('readingTitle').textContent = "سورة " + s.name;
+            DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}`);
+                const data = await res.json();
+                DOM.versesContainer.innerHTML = data.data.ayahs.map(a => 
+                    a.text + ` <span class="verse-num">(${toArabicNumber(a.numberInSurah)})</span>`
+                ).join(' ');
+            } catch(e) { DOM.versesContainer.textContent = "خطأ في الاتصال بالسيرفر."; }
+        }
+
+        function selectReciter(id, updateHash = true) {
+            state.currentReciter = recitersData.find(r => r.id === id);
+            if(!state.currentReciter) return;
+            document.getElementById('currentReciterNameLabel').textContent = "بصوت القارئ: " + state.currentReciter.name;
+            DOM.listenRecitersView.classList.add('hidden');
+            DOM.listenPlayerView.classList.remove('hidden');
+            renderListenSurahs();
+            if (updateHash) window.location.hash = `/reciter/${id}`;
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function renderListenSurahs() {
+            document.getElementById('listenSurahsGrid').innerHTML = surahsData.map(s => `
+                <button class="listen-surah-btn ${state.currentListenSurah?.id === s.id ? 'active' : ''}" onclick="playAudio(${s.id})">
+                    ${s.name}
+                </button>`).join('');
+        }
+
+        function playAudio(id) {
+            state.currentListenSurah = surahsData.find(s => s.id === id);
+            document.getElementById('audioSurahTitle').textContent = "سورة " + state.currentListenSurah.name;
+            document.querySelectorAll('.listen-surah-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === state.currentListenSurah.name));
+            DOM.audioPlayer.src = `${state.currentReciter.url}${String(id).padStart(3, '0')}.mp3`;
+            DOM.audioPlayer.play();
+            DOM.btnPlayPause.textContent = '⏸';
+        }
+
+        function toggleAudio() {
+            if(!DOM.audioPlayer.src) return;
+            if(DOM.audioPlayer.paused) { DOM.audioPlayer.play(); DOM.btnPlayPause.textContent = '⏸'; }
+            else { DOM.audioPlayer.pause(); DOM.btnPlayPause.textContent = '▶'; }
+        }
+
+        function stopAudio() { 
+            DOM.audioPlayer.pause(); 
+            DOM.audioPlayer.currentTime = 0; 
+            DOM.btnPlayPause.textContent = '▶'; 
+            DOM.progressBar.style.width = '0%'; 
+        }
+        
+        function updateProgress() {
+            if(!DOM.audioPlayer.duration) return;
+            const p = (DOM.audioPlayer.currentTime / DOM.audioPlayer.duration) * 100;
+            DOM.progressBar.style.width = p + '%';
+            DOM.currentTime.textContent = formatTime(DOM.audioPlayer.currentTime);
+            DOM.durationTime.textContent = formatTime(DOM.audioPlayer.duration);
+        }
+
+        function setAudioProgress(e) {
+            const rect = document.getElementById('progressContainer').getBoundingClientRect();
+            const p = (e.clientX - rect.left) / rect.width;
+            DOM.audioPlayer.currentTime = p * DOM.audioPlayer.duration;
+        }
+
+        function changeFontSize(v) { 
+            state.fontSize += v; 
+            DOM.versesContainer.style.fontSize = state.fontSize + 'rem'; 
+        }
+        
+        function formatTime(s) { 
+            const m = Math.floor(s/60); 
+            const sec = Math.floor(s%60); 
+            return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; 
+        }
+        
+        function toArabicNumber(n) { 
+            const a=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩']; 
+            return String(n).split('').map(c=>a[c]||c).join(''); 
+        }
+
+        // تشغيل كل شيء
+        init();
+    </script>
+</body>
+</html>

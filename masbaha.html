@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبيل - المسبحة الإلكترونية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== VARIABLES (Matched with Homepage) ==================== */
+        :root {
+            --primary-white: #ffffff;
+            --primary-soft-green: #e9f5ec;
+            --primary-deep-green: #1a4a38;
+            --primary-gold: #d4af37;
+            --text-dark: #1f2937;
+            --text-light: #f3f4f6;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary-white: #0f172a;
+            --primary-soft-green: #1e293b;
+            --primary-deep-green: #064e3b;
+            --primary-gold: #fbbf24;
+            --text-dark: #f8fafc;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { font-family: inherit; }
+
+        /* ==================== BACKGROUND ==================== */
+        .site-bg {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(243,244,246,0.9) 100%);
+            z-index: -1;
+            transition: var(--transition-smooth);
+        }
+
+        [data-theme="dark"] .bg-overlay {
+            background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(2,6,23,0.95) 100%);
+        }
+
+        /* ==================== UTILITIES ==================== */
+        .container {
+            width: 100%;
+            padding: 0 1rem;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+            font-size: 1rem;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .btn-outline:hover, .btn-outline.active {
+            background-color: var(--primary-gold);
+            color: #fff;
+        }
+        
+        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
+
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.9rem; }
+
+        /* ==================== HEADER ==================== */
+        header {
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        [data-theme="dark"] .logo { color: var(--primary-gold); }
+
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+
+        .theme-toggle, .hamburger {
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 68px; right: 0; width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            z-index: 99;
+        }
+        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
+        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
+        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
+
+        .desktop-nav { display: none; }
+
+        /* ==================== TASBIH LAYOUT ==================== */
+        .tasbih-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem 1rem;
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header { text-align: center; margin-bottom: 1rem; }
+        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
+        [data-theme="dark"] .page-title { color: var(--primary-gold); }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+
+        /* Main Tasbih Card */
+        .tasbih-main-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .current-dhikr {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-deep-green);
+            margin-bottom: 1.5rem;
+            min-height: 2.5rem;
+        }
+        [data-theme="dark"] .current-dhikr { color: var(--primary-gold); }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1.5rem;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .progress-track {
+            height: 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .progress-track { background: rgba(255,255,255,0.05); }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-deep-green));
+            width: 0%;
+            transition: width 0.4s ease-out;
+            border-radius: 5px;
+        }
+        [data-theme="dark"] .progress-fill { background: linear-gradient(90deg, #d97706, var(--primary-gold)); }
+
+        /* Big Button */
+        .tasbih-btn {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-deep-green), #10b981);
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            border: none;
+            box-shadow: 0 10px 30px rgba(26, 74, 56, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: transform 0.1s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        
+        [data-theme="dark"] .tasbih-btn {
+            background: linear-gradient(135deg, var(--primary-gold), #b45309);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            color: var(--primary-deep-green);
+        }
+
+        .tasbih-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 15px rgba(26, 74, 56, 0.4);
+        }
+
+        /* Secondary Controls */
+        .tasbih-controls {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            width: 100%;
+        }
+        .control-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+        }
+        .control-btn:hover { background: rgba(0,0,0,0.05); color: #ef4444; }
+        [data-theme="dark"] .control-btn:hover { background: rgba(255,255,255,0.1); color: #fca5a5; }
+
+        /* Completion Toast */
+        .completion-msg {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            height: 0;
+        }
+        .completion-msg.show { opacity: 1; height: auto; margin-bottom: 1rem; }
+
+        /* Settings Sections */
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .section-heading {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-deep-green);
+            margin-bottom: 1rem;
+        }
+        [data-theme="dark"] .section-heading { color: var(--primary-gold); }
+
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.03);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        [data-theme="dark"] .stat-card { background: rgba(255,255,255,0.02); }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary-gold); margin-top: 0.5rem; direction: ltr;}
+        .stat-label { font-size: 1rem; font-weight: 600; color: var(--text-muted); }
+
+        /* ==================== DESKTOP ENHANCEMENTS ==================== */
+        @media (min-width: 769px) {
+            .hamburger { display: none; }
+            .desktop-nav { display: block; }
+            .desktop-nav ul { display: flex; gap: 1.2rem; }
+            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
+            .desktop-nav a:hover { color: var(--primary-gold); }
+            
+            .tasbih-wrapper { max-width: 1000px; padding: 3rem 1rem; }
+            
+            .desktop-grid {
+                display: grid;
+                grid-template-columns: 1fr 1.5fr;
+                gap: 2rem;
+                align-items: start;
+            }
+            .stats-grid { grid-template-columns: 1fr; } /* Stack stats on left side */
+        }
+
+        @media (min-width: 1024px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-bg"></div>
+    <div class="bg-overlay"></div>
+
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">سبيل</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="masbaha.html">المسبحة</a></li>
+                    <li><a href="odea.html">الأدعية</a></li>
+                    <li><a href="quran.html">القرآن</a></li>
+                    <li><a href="hadith.html">أحاديث نبوية</a></li>
+                    <li><a href="sira.html">السيرة النبوية</a></li>
+                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
+                    <li><a href="prophets.html">قصص الأنبياء</a></li>
+                    <li><a href="azkar.html">الأذكار</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="masbaha.html">المسبحة</a></li>
+            <li><a href="odea.html">الأدعية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">أحاديث نبوية</a></li>
+            <li><a href="sira.html">السيرة النبوية</a></li>
+            <li><a href="sahaba.html">عظماء الصحابة</a></li>
+            <li><a href="prophets.html">قصص الأنبياء</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+        </ul>
+    </nav>
+
+    <main class="tasbih-wrapper container">
+        
+        <div class="page-header">
+            <h1 class="page-title">المسبحة</h1>
+            <p class="page-subtitle">سبّح واذكر الله، واجعل لسانك رطبًا بذكره</p>
+        </div>
+
+        <div class="desktop-grid">
+            
+            <div class="glass-card tasbih-main-card">
+                <div class="current-dhikr" id="currentDhikrDisplay">سبحان الله</div>
+                
+                <div class="progress-container">
+                    <div class="progress-text">
+                        <span id="counterDisplay">0</span>
+                        <span>/ <span id="goalDisplay">33</span></span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div id="completionMsg" class="completion-msg">بارك الله فيك، أتممت الورد ✨</div>
+
+                <button class="tasbih-btn" id="mainTasbihBtn" aria-label="زر التسبيح">سبّح</button>
+
+                <div class="tasbih-controls">
+                    <button class="control-btn" id="resetBtn">إعادة ↺</button>
+                    <button class="control-btn" id="decrementBtn">-1</button>
+                </div>
+            </div>
+
+            <div class="settings-grid">
+                
+                <div class="glass-card">
+                    <h3 class="section-heading">الهدف</h3>
+                    <div class="chips-container" id="goalContainer">
+                        <button class="btn btn-outline btn-small active" data-goal="33">33</button>
+                        <button class="btn btn-outline btn-small" data-goal="100">100</button>
+                        <button class="btn btn-outline btn-small" data-goal="500">500</button>
+                        <button class="btn btn-outline btn-small" data-goal="1000">1000</button>
+                        <button class="btn btn-outline btn-small" id="customGoalBtn">تخصيص</button>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 class="section-heading">اختر الذكر</h3>
+                    <div class="chips-container" id="dhikrContainer">
+                        <button class="btn btn-outline btn-small active">سبحان الله</button>
+                        <button class="btn btn-outline btn-small">الحمد لله</button>
+                        <button class="btn btn-outline btn-small">الله أكبر</button>
+                        <button class="btn btn-outline btn-small">لا إله إلا الله</button>
+                        <button class="btn btn-outline btn-small">اللهم صل وسلم وبارك على سيدنا محمد وعلى آله وصحبه</button>
+                        <button class="btn btn-outline btn-small">لا إله إلا أنت سبحانك إني كنت من الظالمين</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">تسبيحات اليوم</div>
+                        <div class="stat-value" id="todayStats">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">المجموع الكلي</div>
+                        <div class="stat-value" id="totalStats">0</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // ==================== STATE VARIABLES ====================
+        let state = {
+            count: 0,
+            goal: 33,
+            dhikr: 'سبحان الله'
+        };
+
+        let stats = {
+            today: 0,
+            total: 0,
+            lastDate: ''
+        };
+
+        // ==================== DOM ELEMENTS ====================
+        const DOM = {
+            mainBtn: document.getElementById('mainTasbihBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            decrementBtn: document.getElementById('decrementBtn'),
+            counterDisplay: document.getElementById('counterDisplay'),
+            goalDisplay: document.getElementById('goalDisplay'),
+            dhikrDisplay: document.getElementById('currentDhikrDisplay'),
+            progressFill: document.getElementById('progressFill'),
+            completionMsg: document.getElementById('completionMsg'),
+            todayStats: document.getElementById('todayStats'),
+            totalStats: document.getElementById('totalStats'),
+            goalBtns: document.querySelectorAll('#goalContainer .btn:not(#customGoalBtn)'),
+            customGoalBtn: document.getElementById('customGoalBtn'),
+            dhikrBtns: document.querySelectorAll('#dhikrContainer .btn'),
+            themeToggle: document.getElementById('themeToggle'),
+            hamburgerBtn: document.getElementById('hamburgerBtn'),
+            mobileNav: document.getElementById('mobileNav')
+        };
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleMobileMenu();
+            loadState();
+            checkNewDay();
+            updateUI();
+            setupEventListeners();
+        });
+
+        // ==================== THEME & MENU ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            DOM.themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('sabeel_theme', next);
+                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        function handleMobileMenu() {
+            DOM.hamburgerBtn.addEventListener('click', () => {
+                DOM.mobileNav.classList.toggle('active');
+                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
+        // ==================== LOGIC & ACTIONS ====================
+        function setupEventListeners() {
+            DOM.mainBtn.addEventListener('click', incrementCounter);
+            DOM.resetBtn.addEventListener('click', resetCounter);
+            DOM.decrementBtn.addEventListener('click', decrementCounter);
+
+            // Goals
+            DOM.goalBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const g = parseInt(e.target.getAttribute('data-goal'));
+                    setGoal(g, e.target);
+                });
+            });
+
+            DOM.customGoalBtn.addEventListener('click', () => {
+                const custom = prompt("أدخل الهدف المخصص (أرقام فقط):");
+                if (custom && !isNaN(custom) && parseInt(custom) > 0) {
+                    setGoal(parseInt(custom), DOM.customGoalBtn);
+                    DOM.customGoalBtn.textContent = `تخصيص (${custom})`;
+                }
+            });
+
+            // Dhikr Selection
+            DOM.dhikrBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    changeDhikr(e.target.textContent, e.target);
+                });
+            });
+        }
+
+        function incrementCounter() {
+            state.count++;
+            stats.today++;
+            stats.total++;
+            
+            // Haptic Feedback (if supported by mobile browser)
+            if (navigator.vibrate) navigator.vibrate(40);
+
+            saveState();
+            updateUI();
+            checkCompletion();
+        }
+
+        function decrementCounter() {
+            if (state.count > 0) {
+                state.count--;
+                if(stats.today > 0) stats.today--;
+                if(stats.total > 0) stats.total--;
+                saveState();
+                updateUI();
+                DOM.completionMsg.classList.remove('show');
+            }
+        }
+
+        function resetCounter() {
+            state.count = 0;
+            saveState();
+            updateUI();
+            DOM.completionMsg.classList.remove('show');
+        }
+
+        function setGoal(newGoal, activeBtn) {
+            state.goal = newGoal;
+            
+            // Update active styling
+            DOM.goalBtns.forEach(b => b.classList.remove('active'));
+            DOM.customGoalBtn.classList.remove('active');
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if(activeBtn !== DOM.customGoalBtn) {
+                DOM.customGoalBtn.textContent = "تخصيص";
+            }
+
+            saveState();
+            updateUI();
+            DOM.completionMsg.classList.remove('show');
+        }
+
+        function changeDhikr(newDhikr, activeBtn) {
+            state.dhikr = newDhikr;
+            state.count = 0; // Reset count on dhikr change
+            
+            DOM.dhikrBtns.forEach(b => b.classList.remove('active'));
+            if(activeBtn) activeBtn.classList.add('active');
+
+            saveState();
+            updateUI();
+            DOM.completionMsg.classList.remove('show');
+        }
+
+        function updateProgress() {
+            let percentage = (state.count / state.goal) * 100;
+            if (percentage > 100) percentage = 100;
+            DOM.progressFill.style.width = `${percentage}%`;
+        }
+
+        function checkCompletion() {
+            if (state.count === state.goal) {
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Success vibration
+                DOM.completionMsg.classList.add('show');
+            } else {
+                DOM.completionMsg.classList.remove('show');
+            }
+        }
+
+        // ==================== STORAGE & DATES ====================
+        function getTodayString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        }
+
+        function checkNewDay() {
+            const today = getTodayString();
+            if (stats.lastDate !== today) {
+                stats.today = 0; // Reset daily stats
+                stats.lastDate = today;
+                saveState();
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('sabeel_tasbih_state', JSON.stringify(state));
+            localStorage.setItem('sabeel_tasbih_stats', JSON.stringify(stats));
+        }
+
+        function loadState() {
+            const savedState = localStorage.getItem('sabeel_tasbih_state');
+            const savedStats = localStorage.getItem('sabeel_tasbih_stats');
+
+            if (savedState) state = JSON.parse(savedState);
+            if (savedStats) stats = JSON.parse(savedStats);
+
+            // Restore active UI for Dhikr
+            DOM.dhikrBtns.forEach(btn => {
+                if(btn.textContent === state.dhikr) {
+                    DOM.dhikrBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+
+            // Restore active UI for Goal
+            let goalMatched = false;
+            DOM.goalBtns.forEach(btn => {
+                if(parseInt(btn.getAttribute('data-goal')) === state.goal) {
+                    DOM.goalBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    goalMatched = true;
+                }
+            });
+            if(!goalMatched) {
+                DOM.goalBtns.forEach(b => b.classList.remove('active'));
+                DOM.customGoalBtn.classList.add('active');
+                DOM.customGoalBtn.textContent = `تخصيص (${state.goal})`;
+            }
+        }
+
+        function updateUI() {
+            DOM.counterDisplay.textContent = state.count;
+            DOM.goalDisplay.textContent = state.goal;
+            DOM.dhikrDisplay.textContent = state.dhikr;
+            DOM.todayStats.textContent = stats.today.toLocaleString('en-US'); // Using en-US to keep numbers formatting standard but RTL direction handles layout
+            DOM.totalStats.textContent = stats.total.toLocaleString('en-US');
+            
+            updateProgress();
+            if(state.count >= state.goal && state.count !== 0) {
+                 DOM.completionMsg.classList.add('show');
+            }
+        }
+
+    </script>
+</body>
+</html>

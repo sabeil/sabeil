@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبيل - السيرة النبوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== VARIABLES ==================== */
+        :root {
+            --primary-white: #ffffff;
+            --primary-soft-green: #e9f5ec;
+            --primary-deep-green: #1a4a38;
+            --primary-gold: #d4af37;
+            --text-dark: #1f2937;
+            --text-light: #f3f4f6;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary-white: #0f172a;
+            --primary-soft-green: #1e293b;
+            --primary-deep-green: #064e3b;
+            --primary-gold: #fbbf24;
+            --text-dark: #f8fafc;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.7; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: var(--transition-smooth); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; }
+
+        /* ==================== BACKGROUND ==================== */
+        .site-bg {
+            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center; z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth);
+        }
+        [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.85); }
+
+        /* ==================== UTILITIES ==================== */
+        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
+        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); padding: 1.5rem; transition: var(--transition-smooth); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-sm); font-weight: 600; cursor: pointer; border: none; transition: var(--transition-smooth); font-size: 0.95rem; gap: 0.5rem; }
+        .btn-outline { background-color: transparent; border: 1px solid var(--primary-gold); color: var(--primary-gold); }
+        .btn-outline:hover, .btn-outline.active { background-color: var(--primary-gold); color: #fff; }
+        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
+        .hidden { display: none !important; }
+
+        /* ==================== HEADER ==================== */
+        header { padding: 1rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        [data-theme="dark"] .logo { color: var(--primary-gold); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .theme-toggle, .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
+        .mobile-nav { position: fixed; top: 68px; right: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; z-index: 99; }
+        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
+        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
+        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
+        .desktop-nav { display: none; }
+
+        /* ==================== MAIN PAGE ==================== */
+        .page-layout { display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem 1rem; flex: 1; }
+        .page-header { text-align: center; margin-bottom: 0.5rem; }
+        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
+        [data-theme="dark"] .page-title { color: var(--primary-gold); }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+
+        /* ==================== TIMELINE & SEARCH ==================== */
+        .search-container { position: sticky; top: 75px; z-index: 90; margin-bottom: 1rem; padding: 10px 0; }
+        .search-input { width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: var(--text-dark); font-size: 1.05rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: var(--transition-smooth); }
+        [data-theme="dark"] .search-input { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .search-input:focus { border-color: var(--primary-gold); }
+
+        .timeline-scroll { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); }
+        .timeline-scroll::-webkit-scrollbar { display: none; }
+        .timeline-chip { flex-shrink: 0; border-radius: 50px; padding: 0.5rem 1.25rem; position: relative; }
+        
+        /* Timeline styling details */
+        .timeline-scroll::before, .timeline-scroll::after { content: ''; position: absolute; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; order: 1; }
+        .main-events { order: 2; }
+
+        .section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        [data-theme="dark"] .section-title { color: var(--primary-gold); }
+
+        /* ==================== EVENT CARDS ==================== */
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+        
+        .event-card { display: flex; flex-direction: column; animation: fadeIn 0.4s ease; height: 100%; border-right: 4px solid var(--primary-gold); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .event-card.daily-highlight { border: 2px solid var(--primary-gold); border-right: 6px solid var(--primary-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 74, 56, 0.05) 100%); }
+        .daily-badge { display: inline-block; background: var(--primary-gold); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; align-self: flex-start; }
+        [data-theme="dark"] .daily-badge { color: var(--primary-deep-green); }
+
+        .event-header { margin-bottom: 0.75rem; }
+        .event-title { font-weight: 800; color: var(--primary-deep-green); font-size: 1.25rem; margin-bottom: 0.25rem; }
+        [data-theme="dark"] .event-title { color: var(--primary-gold); }
+        
+        .event-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; }
+        .event-meta span { background: rgba(0,0,0,0.05); padding: 0.2rem 0.6rem; border-radius: 4px; }
+        [data-theme="dark"] .event-meta span { background: rgba(255,255,255,0.05); }
+
+        .event-desc-short { color: var(--text-dark); line-height: 1.8; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .event-actions { margin-top: auto; display: flex; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 1rem; }
+        .btn-read-more { background: var(--primary-soft-green); color: var(--primary-deep-green); font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: var(--transition-smooth); }
+        .btn-read-more:hover { background: var(--primary-gold); color: white; }
+        [data-theme="dark"] .btn-read-more { background: rgba(212, 175, 55, 0.2); color: var(--primary-gold); }
+        [data-theme="dark"] .btn-read-more:hover { background: var(--primary-gold); color: var(--primary-deep-green); }
+
+        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 1.1rem; background: var(--glass-bg); border-radius: var(--border-radius-md); }
+
+        /* ==================== MODAL (Read More) ==================== */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); padding: 1rem; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-lg); width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 2rem; position: relative; transform: translateY(20px); transition: var(--transition-smooth); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        [data-theme="dark"] .modal-content { background: var(--primary-white); /* using the dark variable mapping */ }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .modal-close { position: absolute; top: 1.5rem; left: 1.5rem; background: rgba(0,0,0,0.05); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
+        [data-theme="dark"] .modal-close { background: rgba(255,255,255,0.1); color: var(--text-light); }
+        .modal-close:hover { background: #ef4444; color: white; }
+
+        .modal-title { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; padding-left: 2rem; }
+        [data-theme="dark"] .modal-title { color: var(--primary-gold); }
+        
+        .modal-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; }
+        .modal-meta span { background: var(--primary-soft-green); color: var(--primary-deep-green); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
+        [data-theme="dark"] .modal-meta span { background: rgba(212, 175, 55, 0.15); color: var(--primary-gold); }
+
+        .modal-body { font-size: 1.1rem; line-height: 1.9; color: var(--text-dark); margin-bottom: 2rem; text-align: justify; }
+
+        .modal-section-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .lessons-list { list-style: none; padding: 0; margin-bottom: 2rem; }
+        .lessons-list li { position: relative; padding-right: 1.5rem; margin-bottom: 0.75rem; color: var(--text-dark); font-weight: 500; }
+        .lessons-list li::before { content: '✨'; position: absolute; right: 0; top: 2px; font-size: 0.9rem; }
+
+        .modal-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
+        .modal-tag { background: rgba(0,0,0,0.05); color: var(--text-muted); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; }
+        [data-theme="dark"] .modal-tag { background: rgba(255,255,255,0.05); }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (min-width: 769px) {
+            .hamburger { display: none; }
+            .desktop-nav { display: block; }
+            .desktop-nav ul { display: flex; gap: 1.2rem; }
+            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
+            .desktop-nav a:hover { color: var(--primary-gold); }
+            
+            .timeline-scroll { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .search-container { top: 80px; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { max-width: 1400px; padding: 0 2rem; }
+            .content-grid { grid-template-columns: 320px 1fr; }
+            .sidebar { order: 1; position: sticky; top: 150px; }
+            .main-events { order: 2; }
+            .page-header { position: relative; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-bg"></div>
+    <div class="bg-overlay"></div>
+
+   <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">سبيل</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="masbaha.html">المسبحة</a></li>
+                    <li><a href="odea.html">الأدعية</a></li>
+                    <li><a href="quran.html">القرآن</a></li>
+                    <li><a href="hadith.html">أحاديث نبوية</a></li>
+                    <li><a href="sira.html">السيرة النبوية</a></li>
+                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
+                    <li><a href="prophets.html">قصص الأنبياء</a></li>
+                    <li><a href="azkar.html">الأذكار</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="masbaha.html">المسبحة</a></li>
+            <li><a href="odea.html">الأدعية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">أحاديث نبوية</a></li>
+            <li><a href="sira.html">السيرة النبوية</a></li>
+            <li><a href="sahaba.html">عظماء الصحابة</a></li>
+            <li><a href="prophets.html">قصص الأنبياء</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+        </ul>
+    </nav>
+
+    <main class="page-layout container">
+        
+        <div class="page-header">
+            <h1 class="page-title">السيرة النبوية</h1>
+            <p class="page-subtitle">رحلة مباركة في حياة النبي ﷺ نتأمل فيها المواقف والعبر</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث في السيرة... (مثال: الهجرة، بدر، خديجة)">
+        </div>
+
+        <div class="timeline-scroll" id="timelineContainer"></div>
+
+        <div class="content-grid">
+            
+            <aside class="sidebar">
+                <div class="glass-card" id="dailyEventContainer">
+                    <h2 class="section-title">✨ حدث اليوم من السيرة</h2>
+                    </div>
+            </aside>
+
+            <section class="main-events">
+                <div class="cards-grid" id="eventsGrid">
+                    </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="eventModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModalBtn" aria-label="إغلاق">✕</button>
+            
+            <h2 class="modal-title" id="modalTitle">عنوان الحدث</h2>
+            <div class="modal-meta" id="modalMeta">
+                </div>
+            
+            <div class="modal-body" id="modalDesc">
+                الوصف الكامل للحدث يكتب هنا.
+            </div>
+
+            <h3 class="modal-section-title hidden" id="modalLessonsTitle">الدروس والعبر</h3>
+            <ul class="lessons-list" id="modalLessons">
+                </ul>
+
+            <div class="modal-tags" id="modalTags">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== MASSIVE SEERAH DATASET ====================
+        const STAGES = [
+            "الكل", "قبل الميلاد", "الميلاد والنشأة", "الشباب", "زواجه من خديجة", 
+            "نزول الوحي", "الدعوة في مكة", "الإسراء والمعراج", "الهجرة", 
+            "المدينة وبناء الدولة", "الغزوات", "صلح الحديبية", "فتح مكة", 
+            "حجة الوداع", "وفاة النبي ﷺ"
+        ];
+
+        const seerahData = [
+            // 1. قبل الميلاد
+            { id: 1, title: "نسب النبي ﷺ", period: "قبل الميلاد", year_hijri: "-", year_gregorian: "قبل 570م", description: "هو محمد بن عبد الله بن عبد المطلب بن هاشم بن عبد مناف بن قصي بن كلاب بن مرة بن كعب بن لؤي بن غالب بن فهر بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان، وينتهي نسبه الشريف إلى إسماعيل بن إبراهيم عليهما السلام. اصطفاه الله من أشرف وأطهر الأنساب ليكون خاتم الأنبياء.", lessons: ["حفظ الله لنسب نبيه وصيانته عبر الأجيال.", "أهمية النسب الطيب في بناء الشخصية، ولكن التقوى هي معيار التفاضل الحقيقي.", "التهيئة الربانية لبيئة النبوة لتكون محل ثقة الناس ومكانتهم."], tags: ["نسب", "أجداد", "إسماعيل"] },
+            { id: 2, title: "حفر زمزم ونذر عبد المطلب", period: "قبل الميلاد", year_hijri: "-", year_gregorian: "قبل 570م", description: "رأى عبد المطلب جد النبي ﷺ رؤيا تأمره بحفر بئر زمزم بعد أن طمرتها قبيلة جرهم. فحفرها ووجد فيها كنوزاً، وواجه معارضة من قريش مما جعله ينذر إن رزقه الله عشرة أبناء ذكور يحمونه أن يذبح أحدهم تقرباً لله. ولما كبر الأبناء وقع الاختيار على عبد الله (والد النبي ﷺ)، ولكن تم فداؤه بمائة من الإبل ليُحفظ لحمل النور المحمدي.", lessons: ["حفظ الله لـ عبد الله ليكون والداً لخير الخلق.", "وفاء العرب بالنذور وتعظيمهم للمقدسات رغم شركهم.", "تعظيم مكانة عبد المطلب في قريش كتمهيد لحماية النبي ﷺ لاحقاً."], tags: ["زمزم", "نذر", "عبد المطلب", "عبد الله"] },
+            { id: 3, title: "زواج عبد الله بآمنة ووفاته", period: "قبل الميلاد", year_hijri: "-", year_gregorian: "569م", description: "اختار عبد المطلب لابنه عبد الله السيدة آمنة بنت وهب، وكانت من أفضل نساء قريش نسباً ومكانة. وبعد زواجهما بوقت قصير، خرج عبد الله في تجارة إلى الشام، وفي طريق عودته مرض وتوفي في يثرب (المدينة المنورة) ودفن هناك، وكانت آمنة حاملاً بالنبي ﷺ، ليولد يتيماً كما قدر الله له.", lessons: ["التهيئة الربانية لرسول الله ﷺ لينشأ يتيماً معتمداً على ربه فقط.", "الابتلاء منذ البداية ليكون النبي ﷺ أسوة لكل يتيم ومستضعف.", "الربط المبكر بين مكة (المنشأ) ويثرب (المدفن والمهاجر لاحقاً)."], tags: ["زواج", "يتيم", "آمنة بنت وهب", "يثرب"] },
+            { id: 4, title: "حادثة الفيل", period: "قبل الميلاد", year_hijri: "-", year_gregorian: "570م", description: "حاول أبرهة الأشرم الحبشي هدم الكعبة بجيش جرار تتقدمه الفيلة، ليصرف حجاج العرب إلى كنيسته في اليمن. فتصدى له عبد المطلب مقولةً: 'للبيت رب يحميه'. فأرسل الله عليهم طيراً أبابيل رمتهم بحجارة من سجيل فهلكوا، وكانت هذه الحادثة إرهاصاً عظيماً لميلاد النبي ﷺ في نفس العام.", lessons: ["عناية الله ببيته الحرام وحمايته من كل معتد.", "تهيئة الجزيرة العربية والعالم لحدث عظيم وهو ميلاد الرسول.", "سقوط القوى المادية أمام القدرة الإلهية."], tags: ["عام الفيل", "أبرهة", "الكعبة"] },
+            
+            // 2. الميلاد والنشأة
+            { id: 5, title: "ميلاد نور الهدى ﷺ", period: "الميلاد والنشأة", year_hijri: "53 ق.هـ", year_gregorian: "570م", description: "ولد النبي ﷺ يوم الاثنين 12 ربيع الأول في مكة المكرمة في عام الفيل. وُلد يتيماً، ففرح به جده عبد المطلب فرحاً شديداً وأسماه 'محمداً' لكي يُحمد في السماء والأرض، وهو اسم لم يكن مألوفاً بكثرة عند العرب. ورافقت ولادته إرهاصات وبركات عظيمة.", lessons: ["بداية إشراق نور الهداية على البشرية.", "اليتيم ليس عائقاً أمام العظمة والاصطفاء الإلهي.", "دلالة اسم 'محمد' على كثرة خصاله المحمودة وشكره الدائم لله."], tags: ["ولادة", "ربيع الأول", "عام الفيل", "محمد"] },
+            { id: 6, title: "الرضاعة في بني سعد", period: "الميلاد والنشأة", year_hijri: "53 ق.هـ", year_gregorian: "570م", description: "كعادة أشراف العرب، أُرسل محمد ﷺ للرضاعة في البادية ليشتد عوده ويتقن اللغة العربية الصافية. أرضعته حليمة السعدية التي رأت بقدومه بركات لم تعهدها في غنمها ورزقها، ومكث عندهم قرابة أربع سنوات.", lessons: ["أهمية البيئة النقية واللغة الفصيحة في نشأة القائد.", "البركة التي تحل على من يقترب من النبي ﷺ ويخدمه.", "تعويد النبي ﷺ على بساطة العيش وخشونة البادية."], tags: ["حليمة السعدية", "رضاعة", "بادية", "بني سعد"] },
+            { id: 7, title: "حادثة شق الصدر", period: "الميلاد والنشأة", year_hijri: "49 ق.هـ", year_gregorian: "574م", description: "بينما كان النبي ﷺ يلعب مع غلمان بني سعد، أتاه جبريل عليه السلام فشق صدره واستخرج قلبه، وأخرج منه علقة دم قائلاً: 'هذا حظ الشيطان منك'، ثم غسله في طست من ذهب بماء زمزم وأعاده. خافت حليمة وأعادته إلى أمه في مكة.", lessons: ["تطهير قلب النبي ﷺ مبكراً ليكون وعاءً طاهراً للوحي.", "الرعاية الربانية المباشرة والعصمة من شرور الشيطان والنفس.", "تهيئة النبي ﷺ جسدياً وروحياً لتحمل أعباء النبوة الشاقة."], tags: ["شق الصدر", "جبريل", "طهارة", "عصمة"] },
+            { id: 8, title: "وفاة أمه وكفالة جده", period: "الميلاد والنشأة", year_hijri: "47 ق.هـ", year_gregorian: "576م", description: "أخذت السيدة آمنة ابنها محمداً ﷺ في زيارة لأخواله بني النجار في يثرب، وفي طريق العودة مرضت وتوفيت في منطقة 'الأبواء'. فرجع به حاضنته أم أيمن إلى مكة. ليكفله جده عبد المطلب الذي كان يحبه حباً شديداً ويُدنيه من مجلسه.", lessons: ["تجرع النبي ﷺ مرارة اليتم الكامل ليصنع منه إنساناً رحيماً بالمستضعفين.", "انقطاع الأسباب الدنيوية ليتعلق قلب النبي ﷺ بربه وحده.", "رعاية عبد المطلب كانت تعويضاً ربانياً وتكريماً لشأن النبي."], tags: ["الأبواء", "آمنة", "عبد المطلب", "أم أيمن"] },
+            { id: 9, title: "وفاة جده وكفالة أبي طالب", period: "الميلاد والنشأة", year_hijri: "45 ق.هـ", year_gregorian: "578م", description: "توفي عبد المطلب والنبي ﷺ في الثامنة من عمره، فأوصى بكفالته لعمه أبي طالب (شقيق والده). فكفله أبو طالب وضمّه لعياله، وكان يقدمه عليهم، وبقي أبو طالب المدافع الأول والدرع الحصين للنبي ﷺ طوال أكثر من 40 عاماً.", lessons: ["تسخير الله لمن يحمي نبيه في كل مرحلة من حياته.", "نشأة النبي ﷺ في أسرة فقيرة كثيرة العيال علمته القناعة والتواضع.", "أهمية صلة الرحم وكفالة الأيتام كما فعل أبو طالب."], tags: ["أبو طالب", "كفالة", "يتيم"] },
+
+            // 3. الشباب
+            { id: 10, title: "رحلة الشام وبحيرا الراهب", period: "الشباب", year_hijri: "41 ق.هـ", year_gregorian: "582م", description: "خرج النبي ﷺ مع عمه أبي طالب في رحلة تجارية إلى الشام وعمره 12 عاماً. في الطريق، التقى بالراهب 'بحيرا' الذي رأى فيه علامات النبوة المذكورة في الإنجيل (كتظليل الغمامة له وخاتم النبوة). فنصح أبا طالب بالعودة به خوفاً عليه من اليهود.", lessons: ["بشارة الكتب السماوية السابقة واعتراف علمائهم ببعثة النبي.", "حفظ الله لنبيه من الأعداء منذ صغره.", "مكانة النبي ﷺ وبركته التي لاحظها حتى من لا يعرفه."], tags: ["بحيرا", "الشام", "علامات النبوة"] },
+            { id: 11, title: "رعي الغنم", period: "الشباب", year_hijri: "-", year_gregorian: "مرحلة الشباب", description: "عمل النبي ﷺ في مقتبل شبابه برعي الغنم لأهل مكة على قراريط (أجر يسير)، ليساعد عمه أبا طالب في نفقاته. وهي مهنة مارسها كل الأنبياء لما فيها من تدريب على القيادة والصبر.", lessons: ["العمل والكسب الحلال والاعتماد على النفس.", "رعي الغنم يربي على الصبر، التواضع، الرحمة، وسياسة الرعية.", "عدم استنكاف النبي ﷺ من العمل البسيط ومساعدة أسرته."], tags: ["رعي الغنم", "عمل", "تربية", "الأنبياء"] },
+            { id: 12, title: "حرب الفجار وحلف الفضول", period: "الشباب", year_hijri: "33 ق.هـ", year_gregorian: "590م", description: "شهد النبي ﷺ في شبابه حرب الفجار (سميت بذلك لانتهاك حرمة الأشهر الحرم) وكان يجمّع النبل لأعمامه. ثم شهد 'حلف الفضول' في دار عبد الله بن جدعان، وهو حلف تعاهدت فيه قريش على نصرة المظلوم وإرجاع حقه، وقد مدحه النبي ﷺ لاحقاً.", lessons: ["المشاركة الإيجابية في المجتمع ورفض الظلم.", "الإسلام يدعم كل المواثيق والتحالفات التي تدعو للحق والعدل.", "عدالة الإسلام لا تتناقض مع القيم الإنسانية النبيلة."], tags: ["حلف الفضول", "حرب الفجار", "عدل", "نصرة المظلوم"] },
+
+            // 4. زواجه من خديجة
+            { id: 13, title: "تجارة خديجة بنت خويلد", period: "زواجه من خديجة", year_hijri: "28 ق.هـ", year_gregorian: "595م", description: "لما عُرف النبي ﷺ بالصدق والأمانة (الصادق الأمين)، اختارته السيدة خديجة بنت خويلد رضي الله عنها، وهي تاجرة ذات شرف ومال، ليخرج بتجارتها إلى الشام مع غلامها ميسرة. وعاد بأرباح مضاعفة، وأخبرها ميسرة بكراماته وأخلاقه.", lessons: ["الأمانة والصدق هما رأس مال الإنسان الحقيقي ومفتاح النجاح.", "أهمية السمعة الطيبة في فتح أبواب الرزق والفرص.", "البركة التي تحل بالعمل القائم على الأمانة."], tags: ["تجارة", "شام", "ميسرة", "أمانة"] },
+            { id: 14, title: "الزواج المبارك من خديجة", period: "زواجه من خديجة", year_hijri: "28 ق.هـ", year_gregorian: "595م", description: "بعد إعجاب خديجة بصدقه وأمانته وبركته، عرضت عليه الزواج، فقبل النبي ﷺ وتزوجها وعمره 25 عاماً وعمرها 40 عاماً. كانت نعم الزوجة، السند، والمستشار. رزقه الله منها كل أولاده باستثناء إبراهيم، ولم يتزوج عليها حتى توفيت.", lessons: ["فضل السيدة خديجة ودورها المحوري كداعم وسكن للنبي.", "اختيار الزوج والزوجة يجب أن يُبنى على الأخلاق والدين والأمانة.", "الوفاء العظيم من النبي ﷺ لخديجة في حياتها وبعد مماتها."], tags: ["خديجة", "زواج", "وفاء", "أولاد النبي"] },
+            { id: 15, title: "بناء الكعبة وحل النزاع", period: "زواجه من خديجة", year_hijri: "5 ق.هـ", year_gregorian: "605م", description: "أرادت قريش تجديد بناء الكعبة، ولما وصلوا لموضع الحجر الأسود اختلفوا وكادوا يقتتلون على شرف وضعه. فاتفقوا على تحكيم أول من يدخل، فكان النبي ﷺ، فقالوا: 'رضينا بالأمين'. فوضع الحجر في ثوب وطلب من رؤساء القبائل رفعه معاً، ثم وضعه بيده الشريفة، فحقن الدماء.", lessons: ["الحكمة والذكاء في حل النزاعات وحقن الدماء.", "مكانة النبي ﷺ وثقة المجتمع به كونه 'الصادق الأمين'.", "مبدأ المشاركة وعدم تهميش الآخرين يحل أصعب الخلافات."], tags: ["الكعبة", "الحجر الأسود", "حكمة", "الصادق الأمين"] },
+
+            // 5. نزول الوحي
+            { id: 16, title: "العزلة والتعبد في غار حراء", period: "نزول الوحي", year_hijri: "14 ق.هـ", year_gregorian: "609م", description: "حُبب إلى النبي ﷺ الخلوة قبل البعثة، فكان يعتزل الناس ويأخذ زاده ويذهب إلى غار حراء في جبل النور، يتفكر في الكون ويتعبد على ملة إبراهيم (الحنيفية) ليالي ذوات العدد، بعيداً عن صخب الجاهلية وعبادة الأصنام.", lessons: ["أهمية الخلوة والتفكر لتنقية القلب وتصفية الذهن.", "النفور الفطري لأصحاب الفطر السليمة من الفساد والشرك.", "تهيئة الله عز وجل قلب النبي لانتقال عظيم."], tags: ["غار حراء", "خلوة", "تفكر", "تعبد"] },
+            { id: 17, title: "اقرأ: بداية نزول الوحي", period: "نزول الوحي", year_hijri: "13 ق.هـ", year_gregorian: "610م", description: "في شهر رمضان وعمره 40 عاماً، نزل عليه جبريل عليه السلام في غار حراء فضمه بقوة وقال له: 'اقرأ'، فرد: 'ما أنا بقارئ'، حتى قال له: {اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ}. عاد النبي ﷺ يرتجف إلى خديجة يقول: 'زملوني زملوني'.", lessons: ["أول أمر في الإسلام هو 'اقرأ' دلالة على أهمية العلم.", "ثقل الوحي والمسؤولية وعظمة الأمانة التي ألقيت على عاتقه.", "دور الزوجة الصالحة (خديجة) في تثبيت قلب زوجها في الأزمات."], tags: ["غار حراء", "جبريل", "اقرأ", "الوحي"] },
+            { id: 18, title: "موقف ورقة بن نوفل", period: "نزول الوحي", year_hijri: "13 ق.هـ", year_gregorian: "610م", description: "أخذت خديجة النبي ﷺ إلى ابن عمها ورقة بن نوفل، وكان حكيماً يقرأ الإنجيل، فلما سمع ما حدث قال: 'هذا الناموس (جبريل) الذي نزل على موسى، ليتني أكون حياً إذ يخرجك قومك'. فعلم النبي ﷺ أنه سيكون نبياً ومحارباً من قومه.", lessons: ["أهمية استشارة أهل العلم والحكمة عند النوازل.", "طبيعة طريق الدعوة إلى الله محفوف بالابتلاء والإخراج والمحاربة.", "معرفة أهل الكتاب الصادقين ببعثة النبي ﷺ ووصفه."], tags: ["ورقة بن نوفل", "خديجة", "عداء القوم"] },
+
+            // 6. الدعوة في مكة
+            { id: 19, title: "الدعوة السرية", period: "الدعوة في مكة", year_hijri: "13 - 10 ق.هـ", year_gregorian: "610 - 613م", description: "بدأ النبي ﷺ دعوته سراً لمن يثق بهم من أقاربه وأصدقائه، فكانت خديجة أول من آمنت من النساء، وعلي بن أبي طالب أول الصبيان، وأبو بكر الصديق أول الرجال، وزيد بن حارثة أول الموالي. استمرت الدعوة السرية 3 سنوات ركزت على ترسيخ العقيدة.", lessons: ["الأخذ بالأسباب والحذر والتدرج في بناء أي مشروع عظيم.", "البدء بالدائرة المقربة والموثوقة (الأهل والأصدقاء).", "أهمية بناء عقيدة قوية ونواة صلبة تتحمل الصدمات اللاحقة."], tags: ["دعوة سرية", "السابقون الأولون", "أبو بكر"] },
+            { id: 20, title: "دار الأرقم بن أبي الأرقم", period: "الدعوة في مكة", year_hijri: "10 ق.هـ", year_gregorian: "613م", description: "اختار النبي ﷺ دار الشاب الأرقم بن أبي الأرقم المخزومي، لتكون مقراً سرياً لاجتماع المسلمين، يتلو عليهم القرآن، ويعلمهم الدين، ويزكي نفوسهم بعيداً عن أعين قريش، وكانت بمثابة أول مدرسة وجامعة في الإسلام.", lessons: ["أهمية وجود حاضنة تربوية وآمنة لتربية الأجيال.", "السرية والتمويه الأمني لحماية الدعوة الناشئة.", "دور الشباب الفعال في نصرة الإسلام (الأرقم كان شاباً صغيراً)."], tags: ["دار الأرقم", "تربية", "تزكية", "شباب"] },
+            { id: 21, title: "الدعوة الجهرية (فاصدع بما تؤمر)", period: "الدعوة في مكة", year_hijri: "10 ق.هـ", year_gregorian: "613م", description: "نزل قوله تعالى {فَاصْدَعْ بِمَا تُؤْمَرُ وَأَعْرِضْ عَنِ الْمُشْرِكِينَ} و {وَأَنذِرْ عَشِيرَتَكَ الْأَقْرَبِينَ}، فصعد النبي ﷺ جبل الصفا ونادى قبائل قريش، فدعاهم لتوحيد الله وترك الأصنام، فكذبه عمه أبو لهب قائلاً 'تباً لك'. ومن هنا بدأ الصدام المفتوح.", lessons: ["الشجاعة في الجهر بالحق متى ما جاء الأمر الإلهي.", "القرابة لا تنفع إن غابت التقوى (أبو لهب في النار).", "تحمل الداعية للسخرية والاستهزاء من أقرب الناس إليه."], tags: ["الجهر بالدعوة", "جبل الصفا", "أبو لهب"] },
+            { id: 22, title: "اضطهاد قريش وتعذيب المستضعفين", period: "الدعوة في مكة", year_hijri: "9 ق.هـ", year_gregorian: "614م", description: "لما رأت قريش انتشار الإسلام، بدأت بتعذيب المستضعفين والعبيد لإجبارهم على ترك دينهم، مثل بلال بن رباح، وعمار بن ياسر، وآل ياسر (أول شهيدة سمية). وكان النبي ﷺ يمر عليهم ويقول: 'صبراً آل ياسر فإن موعدكم الجنة'.", lessons: ["الثبات الأسطوري للصحابة على العقيدة رغم أبشع أنواع العذاب.", "الدين أغلى من الروح والجسد عند المؤمن الصادق.", "بث الأمل في النفوس وقت المحن (موعدكم الجنة)."], tags: ["تعذيب", "آل ياسر", "بلال بن رباح", "ثبات"] },
+            { id: 23, title: "الهجرة الأولى إلى الحبشة", period: "الدعوة في مكة", year_hijri: "8 ق.هـ", year_gregorian: "615م", description: "مع اشتداد العذاب، أشار النبي ﷺ على أصحابه بالهجرة إلى الحبشة (إثيوبيا حالياً) قائلاً: 'فإن بها ملكاً لا يظلم عنده أحد'. فهاجر فوج من المسلمين، ووجدوا الأمان عند النجاشي، وفشلت محاولات عمرو بن العاص لاستردادهم.", lessons: ["مشروعية الهجرة وترك الديار فراراً بالدين.", "عدالة الحاكم تنشر الأمان ولو كان على غير دينك (النجاشي قبل إسلامه).", "براعة المسلمين في الحوار الدبلوماسي (خطبة جعفر بن أبي طالب)."], tags: ["الحبشة", "هجرة", "النجاشي", "جعفر بن أبي طالب"] },
+            { id: 24, title: "إسلام حمزة وعمر بن الخطاب", period: "الدعوة في مكة", year_hijri: "6 ق.هـ", year_gregorian: "616م", description: "في عز ضعف المسلمين، أسلم حمزة بن عبد المطلب 'أسد الله' غضباً لابن أخيه بعد أن شتمه أبو جهل. وبعدها بأيام أسلم عمر بن الخطاب استجابة لدعوة النبي: 'اللهم أعز الإسلام بأحب هذين الرجلين إليك'. فكان إسلامهما عزاً ومنعة للمسلمين.", lessons: ["استجابة دعاء النبي ﷺ.", "تغيير موازين القوى بدخول أصحاب النفوذ والقوة للإسلام.", "الإسلام يغير القلوب القاسية إلى قلوب رحيمة وقوية في الحق (قصة عمر)."], tags: ["حمزة", "عمر بن الخطاب", "عزة الإسلام"] },
+            { id: 25, title: "حصار الشعب (المقاطعة)", period: "الدعوة في مكة", year_hijri: "7 - 4 ق.هـ", year_gregorian: "616 - 619م", description: "كتبت قريش صحيفة تقاطع فيها بني هاشم وبني المطلب مقاطعة اقتصادية واجتماعية تامة لإجبارهم على تسليم النبي ﷺ. حوصروا في شِعب أبي طالب لثلاث سنوات وعانوا الجوع الشديد، حتى نقض الصحيفة مجموعة من عقلاء قريش وأكلتها الأَرَضَة.", lessons: ["أقسى درجات الحرب الاقتصادية والنفسية ضد المصلحين.", "التكافل الاجتماعي بين المسلمين في أوقات الحصار.", "تسخير الله لبعض المنصفين من الأعداء لنصرة المظلومين."], tags: ["مقاطعة", "شعب أبي طالب", "جوع", "صبر"] },
+            { id: 26, title: "عام الحزن", period: "الدعوة في مكة", year_hijri: "3 ق.هـ", year_gregorian: "620م", description: "بعد فك الحصار بفترة قصيرة، توفي أبو طالب، الحامي الخارجي للنبي ﷺ. وبعده بشهر توفيت السيدة خديجة، السكن الداعم والمواسي له. فحزن النبي ﷺ حزناً شديداً وسُمي هذا العام 'عام الحزن'، وتجرأت قريش عليه بالأذى.", lessons: ["أشد الابتلاءات تصيب الأنبياء ثم الأمثل فالأمثل.", "فقدان السند البشري يجعل الاعتماد كلياً على الله تعالى.", "مكانة الزوجة الصالحة والعم المدافع في حياة المصلحين."], tags: ["عام الحزن", "وفاة خديجة", "وفاة أبو طالب", "ابتلاء"] },
+            { id: 27, title: "رحلة الطائف", period: "الدعوة في مكة", year_hijri: "3 ق.هـ", year_gregorian: "620م", description: "خرج النبي ﷺ ماشياً إلى الطائف يبحث عن النصرة والحماية لدعوتة، فقابلوه بأسوأ رد، وسلطوا عليه غلمانهم يرمونه بالحجارة حتى أدموا قدميه الشريفتين. فدعا ربه بالدعاء المشهور 'اللهم إليك أشكو ضعف قوتي'، ورفض إطباق الجبال عليهم رحمة بهم.", lessons: ["الرحمة المهداة: رفض الانتقام وتمني الهداية لنسل الأعداء.", "اللجوء والتضرع لله عند انقطاع السبل وضعف الحيلة.", "البحث المستمر عن بدائل وحلول لنشر الدعوة رغم الرفض."], tags: ["الطائف", "عداء", "رحمة", "دعاء"] },
+
+            // 7. الإسراء والمعراج
+            { id: 28, title: "الإسراء والمعراج", period: "الإسراء والمعراج", year_hijri: "1 ق.هـ", year_gregorian: "621م", description: "بعد المحن المتتالية، أكرم الله نبيه برحلة الإسراء ليلاً من مكة إلى المسجد الأقصى، ثم المعراج إلى السماوات العلى حتى سدرة المنتهى، حيث رأى من آيات ربه الكبرى وفرضت عليه الصلاة 50 ثم خففت إلى 5. وكانت تسلية ربانية وتمحيصاً لإيمان الصحابة.", lessons: ["المنح تأتي دائماً في طيات المحن، والتكريم الإلهي للصابرين.", "مكانة المسجد الأقصى وارتباطه الوثيق بالمسجد الحرام.", "مكانة الصلاة العظيمة حيث فُرضت في السماء مباشرة بدون وحي."], tags: ["الإسراء والمعراج", "المسجد الأقصى", "فرض الصلاة", "البراق"] },
+            { id: 29, title: "عرض الدعوة على القبائل وبيعة العقبة الأولى", period: "الإسراء والمعراج", year_hijri: "1 ق.هـ", year_gregorian: "621م", description: "استمر النبي ﷺ في استثمار مواسم الحج لعرض الإسلام على القبائل. فالتقى بـ 12 رجلاً من الأوس والخزرج (من يثرب) عند العقبة، فأسلموا وبايعوه على التوحيد والأخلاق النبيلة (بيعة النساء). وأرسل معهم مصعب بن عمير ليعلمهم القرآن.", lessons: ["استثمار المواسم والتجمعات لنشر الفكرة.", "أهمية التركيز على الأخلاق والتوحيد في بداية البناء (بنود البيعة).", "دور السفير والداعية الذكي (مصعب بن عمير) في فتح القلوب والمدن."], tags: ["بيعة العقبة", "يثرب", "مصعب بن عمير", "الأنصار"] },
+            { id: 30, title: "بيعة العقبة الثانية", period: "الإسراء والمعراج", year_hijri: "1 ق.هـ", year_gregorian: "622م", description: "في العام التالي، قدم 73 رجلاً وامرأتان من يثرب، واجتمعوا بالنبي ﷺ سراً في العقبة، وبايعوه على حمايته ونصرته إذا هاجر إليهم كما يحمون نساءهم وأبناءهم، فكانت هذه البيعة هي العقد التأسيسي لقيام الدولة الإسلامية في المدينة.", lessons: ["الانتقال من مرحلة الدعوة الفردية إلى مرحلة النصرة السياسية والعسكرية.", "التخطيط السري والمحكم لإنجاح التحالفات الاستراتيجية.", "شجاعة الأنصار واستعدادهم للتضحية بكل شيء نصرة للدين."], tags: ["بيعة العقبة الثانية", "الأنصار", "نصرة", "حماية"] },
+
+            // 8. الهجرة
+            { id: 31, title: "مؤامرة دار الندوة (يمكرون ويمكر الله)", period: "الهجرة", year_hijri: "1 هـ", year_gregorian: "622م", description: "لما علمت قريش ببيعة العقبة وتجهّز المسلمين للهجرة، اجتمعوا بدار الندوة وقرروا قتل النبي ﷺ بضربة رجل واحد من كل قبيلة ليتفرق دمه. فأخبره جبريل، وبات علي بن أبي طالب في فراشه، وخرج النبي ﷺ من بين أيديهم معجزةً لم يروه.", lessons: ["فشل المكر البشري أمام التدبير الإلهي (إن الله يدافع عن الذين آمنوا).", "شجاعة وفدائية علي بن أبي طالب رضي الله عنه.", "أداء الأمانات لأهلها حتى في أصعب الأوقات (أمر علياً برد الودائع للمشركين)."], tags: ["دار الندوة", "علي بن أبي طالب", "مؤامرة", "معجزة"] },
+            { id: 32, title: "في غار ثور (لا تحزن إن الله معنا)", period: "الهجرة", year_hijri: "1 هـ", year_gregorian: "622م", description: "خرج النبي ﷺ وصاحبه أبو بكر الصديق سراً واختبآ في غار ثور ثلاثة أيام لتضليل قريش. ووصل المشركون إلى فم الغار حتى قال أبو بكر: لو نظر أحدهم تحت قدميه لأبصرنا، فقال ﷺ: 'ما ظنك باثنين الله ثالثهما، لا تحزن إن الله معنا'.", lessons: ["كمال التوكل على الله مع الأخذ بكامل الأسباب والتخطيط.", "الصحبة الصالحة والتضحية والمحبة الصادقة (موقف أبي بكر).", "حفظ الله ورعايته لأوليائه في أحلك الظروف."], tags: ["غار ثور", "أبو بكر", "توكل", "هجرة"] },
+            { id: 33, title: "الوصول إلى المدينة (يثرب)", period: "الهجرة", year_hijri: "1 هـ", year_gregorian: "622م", description: "بعد رحلة شاقة استغرقت أياماً، وسقوط سراقة بن مالك خلفهم، وصل النبي ﷺ إلى يثرب التي سُميت 'المدينة المنورة'. استقبله الأنصار بفرحة عارمة وحب كبير، ونزلت ناقته 'القصواء' في أرض لغلامين يتيمين اتخذت مسجداً.", lessons: ["بداية عهد جديد وتأسيس مجتمع إسلامي حر ومستقل.", "الترحيب والفرح بنصرة الحق واستقبال المصلحين.", "الهجرة ليست مجرد هروب، بل انتقال لبناء وتأسيس حضارة."], tags: ["المدينة المنورة", "وصول", "الأنصار", "طلع البدر"] },
+
+            // 9. المدينة وبناء الدولة
+            { id: 34, title: "بناء المسجد النبوي", period: "المدينة وبناء الدولة", year_hijri: "1 هـ", year_gregorian: "622م", description: "أول خطوة قام بها النبي ﷺ في المدينة هي بناء المسجد ليكون مركزاً للعبادة، وإدارة الدولة، والتعليم، وحل النزاعات. وشارك النبي ﷺ بنفسه في البناء مع الصحابة لنقل الحجارة والتراب.", lessons: ["أهمية المسجد كمحور أساسي في حياة ومجتمع المسلمين.", "القائد القدوة يشارك أتباعه العمل الشاق والتعب.", "التربية بالعمل الجماعي لتوحيد صفوف المجتمع الجديد."], tags: ["بناء المسجد", "المدينة", "عمل جماعي"] },
+            { id: 35, title: "المؤاخاة بين المهاجرين والأنصار", period: "المدينة وبناء الدولة", year_hijri: "1 هـ", year_gregorian: "622م", description: "لتجاوز أزمة المهاجرين الذين تركوا أموالهم ومنازلهم، آخى النبي ﷺ بين كل مهاجري وأنصاري أخوةً في الله، فتناصف الأنصار أموالهم وبيوتهم بل وزوجاتهم مع المهاجرين في أروع صورة للتكافل الاجتماعي في التاريخ.", lessons: ["العقيدة أقوى رابطة تجمع بين البشر فوق رابطة الدم والقبيلة.", "الكرم والإيثار العظيم للأنصار، وعفة وتعفف المهاجرين.", "حل الأزمات الاقتصادية والاجتماعية بالتكافل والتضامن."], tags: ["مؤاخاة", "إيثار", "مهاجرين", "أنصار"] },
+            { id: 36, title: "كتابة صحيفة المدينة", period: "المدينة وبناء الدولة", year_hijri: "1 هـ", year_gregorian: "623م", description: "وضع النبي ﷺ وثيقة (دستوراً) ينظم العلاقات بين جميع طوائف المدينة (المهاجرين، الأنصار، واليهود). ضمنت حرية الاعتقاد، والدفاع المشترك عن المدينة ضد أي عدوان خارجي، وجعلت المرجعية لله ورسوله.", lessons: ["إرساء مبادئ المواطنة والتعايش السلمي في مجتمع متعدد.", "أهمية وجود دستور وقانون ينظم حقوق وواجبات كل فرد.", "العبقرية السياسية للنبي ﷺ في بناء تحالفات تحمي الدولة."], tags: ["دستور", "صحيفة المدينة", "تعايش", "يهود"] },
+            { id: 37, title: "مشروعية الأذان", period: "المدينة وبناء الدولة", year_hijri: "1 هـ", year_gregorian: "623م", description: "تشاور النبي ﷺ مع أصحابه في كيفية نداء الناس للصلاة، فرأى عبد الله بن زيد في المنام كلمات الأذان، وأقرها النبي ﷺ، وأمر بلال بن رباح (لنداوة صوته) أن يؤذن بها، فصار شعاراً للإسلام يرفع خمس مرات يومياً.", lessons: ["أهمية الشورى في اتخاذ القرارات التنظيمية.", "اختيار الشخص المناسب للمكان المناسب (صوت بلال).", "رفع شأن المستضعفين (بلال الحبشي) ليكونوا شعاراً للدين."], tags: ["أذان", "بلال بن رباح", "صلاة", "شورى"] },
+
+            // 10. الغزوات
+            { id: 38, title: "غزوة بدر الكبرى (يوم الفرقان)", period: "الغزوات", year_hijri: "2 هـ", year_gregorian: "624م", description: "في 17 رمضان، خرج المسلمون (313 رجلاً) لاعتراض قافلة لقريش تعويضاً لأموالهم المنهوبة. فنجت القافلة وجاء جيش قريش (1000 مقاتل). التقى الجيشان في بدر، ورغم قلة المسلمين، أيدهم الله بالملائكة وحققوا نصراً حاسماً وقُتل سادة قريش كأبي جهل.", lessons: ["النصر من عند الله لا بكثرة العدد ولا العدة بل بقوة الإيمان.", "أهمية الشورى في الحروب (أخذ النبي برأي الحباب بن المنذر).", "الدعاء والتضرع سبب رئيسي لتنزل المدد والملائكة."], tags: ["بدر", "نصر", "ملائكة", "رمضان"] },
+            { id: 39, title: "غزوة بني قينقاع", period: "الغزوات", year_hijri: "2 هـ", year_gregorian: "624م", description: "أول طائفة من اليهود تنقض عهد المدينة، حيث اعتدوا على امرأة مسلمة في السوق وقتلوا مسلماً هب لنجدتها. فحاصرهم النبي ﷺ 15 يوماً حتى استسلموا، ثم أجلاهم من المدينة بناءً على شفاعة عبد الله بن أبي بن سلول.", lessons: ["حماية أعراض المسلمين وكرامتهم خط أحمر.", "الحزم في التعامل مع الخونة وناقضي العهود.", "خطر المنافقين وتدخلهم لحماية أعداء الأمة."], tags: ["بني قينقاع", "نقض العهد", "يهود", "حماية العرض"] },
+            { id: 40, title: "غزوة أحد", period: "الغزوات", year_hijri: "3 هـ", year_gregorian: "625م", description: "خرجت قريش (3000 مقاتل) للانتقام ليوم بدر. انتصر المسلمون أولاً، لكن عصيان الرماة لأوامر النبي ﷺ وتركهم جبل الرماة لجمع الغنائم، سمح لخالد بن الوليد بالالتفاف عليهم. فاستشهد 70 صحابياً منهم حمزة، وشُج وجه النبي ﷺ.", lessons: ["شؤم المعصية ومخالفة أوامر القائد تسبب الهزيمة.", "التعلق بالدنيا والغنائم يفسد العمل ويجلب الانكسار.", "ثبات النبي ﷺ وشجاعته رغم الهزيمة والجراح لحماية جيشه."], tags: ["أحد", "الرماة", "حمزة", "مخالفة الأوامر"] },
+            { id: 41, title: "غزوة الخندق (الأحزاب)", period: "الغزوات", year_hijri: "5 هـ", year_gregorian: "627م", description: "تحزبت قريش والقبائل مع يهود بني النضير (10,000 مقاتل) لاجتثاث الإسلام. أشار سلمان الفارسي بحفر خندق شمال المدينة لحمايتها. طال الحصار واشتد البرد والخوف، ونقض يهود بني قريظة العهد من الداخل. فنصر الله المسلمين بريح شديدة كفأت قدور المشركين واقتلعت خيامهم.", lessons: ["الاستفادة من خبرات وتجارب الأمم الأخرى (خندق الفرس).", "الثبات واليقين في أوقات الأزمات الخانقة وحصار الأعداء.", "نهاية الخيانة العظمى من الداخل (بني قريظة) كانت حاسمة."], tags: ["الخندق", "الأحزاب", "سلمان الفارسي", "ريح"] },
+            { id: 42, title: "غزوة بني قريظة", period: "الغزوات", year_hijri: "5 هـ", year_gregorian: "627م", description: "بعد جلاء الأحزاب مباشرة، أمر النبي ﷺ بمسير الجيش فوراً إلى بني قريظة لمعاقبتهم على خيانتهم العظمى في أشد لحظات الضعف بالخندق. حوصروا 25 ليلة، ثم نزلوا على حكم سعد بن معاذ الذي حكم بقتل مقاتليهم لتطهير المدينة من الغدر.", lessons: ["الخيانة الوطنية وقت الحرب تستوجب أقصى العقوبات.", "سرعة الحسم وعدم التهاون مع من يهدد وجود الأمة.", "رضا النبي ﷺ بحكم العدل الذي وافق حكم الله من فوق سبع سماوات."], tags: ["بني قريظة", "خيانة", "سعد بن معاذ"] },
+
+            // 11. صلح الحديبية
+            { id: 43, title: "صلح الحديبية وبيعة الرضوان", period: "صلح الحديبية", year_hijri: "6 هـ", year_gregorian: "628م", description: "خرج النبي ﷺ مع 1400 صحابي للعمرة مسالمين، فمنعتهم قريش. وبُيع النبي ﷺ تحت الشجرة على الموت (بيعة الرضوان) لإشاعة مقتل عثمان. ثم تم توقيع صلح الحديبية بشروط ظاهرها إجحاف للمسلمين (كالرجوع هذا العام)، لكن الله سماه 'فتحاً مبيناً' حيث أوقف الحرب واعترف بالدولة.", lessons: ["الرؤية الاستراتيجية للقائد في قبول السلام لتهيئة انتشار الدعوة.", "طاعة الصحابة المطلقة للنبي ﷺ رغم عدم فهمهم للحكمة في البداية.", "الصلح كان فرصة ذهبية لنشر الإسلام والتفرغ لكسر شوكة اليهود والفرس والروم."], tags: ["الحديبية", "بيعة الرضوان", "سلام", "فتح مبين"] },
+            { id: 44, title: "مراسلة الملوك والأمراء", period: "صلح الحديبية", year_hijri: "7 هـ", year_gregorian: "628م", description: "بعد أمن جانب قريش بالصلح، بدأ النبي ﷺ بنشر الإسلام عالمياً. فأرسل رسائل يختمها بخاتمه (محمد رسول الله) إلى ملوك الأرض: هرقل عظيم الروم، وكسرى ملك الفرس، والنجاشي، والمقسوقس حاكم مصر، يدعوهم فيها للإسلام.", lessons: ["عالمية رسالة الإسلام وأنها لم تكن محصورة في الجزيرة العربية.", "استثمار فترات السلم والهدوء لنشر الدعوة وبناء العلاقات.", "الثقة والاعتزاز بالدين عند مخاطبة أعظم إمبراطوريات الأرض."], tags: ["رسائل", "ملوك", "عالمية الإسلام"] },
+            { id: 45, title: "غزوة خيبر", period: "صلح الحديبية", year_hijri: "7 هـ", year_gregorian: "628م", description: "تجمعت فلول اليهود المتآمرين في حصون خيبر لضرب المدينة. فسار إليهم النبي ﷺ وحاصرهم، وأعطى الراية لعلي بن أبي طالب الذي فتح الله على يديه حصن القموص. انتهت بانتصار المسلمين وعقد اتفاق زراعي مع اليهود نظير نصف الثمار.", lessons: ["تطهير الجبهة الداخلية والخارجية من بؤر التآمر والتخطيط.", "إعطاء القيادة والراية لمن يحبه الله ورسوله (علي رضي الله عنه).", "التسامح في بقائهم للزراعة يعكس مرونة الإسلام الاقتصادية."], tags: ["خيبر", "علي بن أبي طالب", "حصون", "يهود"] },
+            { id: 46, title: "معركة مؤتة", period: "الغزوات", year_hijri: "8 هـ", year_gregorian: "629م", description: "أول مواجهة عسكرية كبرى بين المسلمين (3,000) والروم (200,000). سببها قتل رسول النبي ﷺ. استشهد القادة الثلاثة (زيد، جعفر، وابن رواحة) الذين عينهم النبي. ثم تولى خالد بن الوليد (سيف الله المسلول) القيادة بعبقرية، وانسحب بالجيش سالماً.", lessons: ["الرد الحازم على إهانة سفراء ورسل المسلمين.", "شجاعة وتضحية القادة العظماء واستبسالهم في المعركة.", "عبقرية خالد بن الوليد في الانسحاب التكتيكي وإنقاذ الجيش من الإبادة."], tags: ["مؤتة", "الروم", "خالد بن الوليد", "شهداء"] },
+
+            // 12. فتح مكة
+            { id: 47, title: "فتح مكة (يوم المرحمة)", period: "فتح مكة", year_hijri: "8 هـ", year_gregorian: "630م", description: "نقضت قريش صلح الحديبية باعتدائها على حلفاء النبي. فجهز جيشاً بـ 10,000 مقاتل ودخل مكة فاتحاً دون قتال يُذكر. حطم 360 صنماً حول الكعبة وقال مقولته الشهيرة لأهل مكة الذين طردوه: 'اذهبوا فأنتم الطلقاء'.", lessons: ["العفو عند المقدرة هو من شيم العظماء وأخلاق الأنبياء.", "نهاية الشرك في الجزيرة العربية وإعلان التوحيد.", "النصر الحقيقي هو فتح القلوب بالرحمة وليس فقط فتح البلدان."], tags: ["فتح مكة", "عفو", "تحطيم الأصنام", "طلقاء"] },
+            { id: 48, title: "غزوة حنين", period: "الغزوات", year_hijri: "8 هـ", year_gregorian: "630م", description: "بعد فتح مكة، تجمعت قبائل هوازن وثقيف لحرب المسلمين. اغتر بعض المسلمين بكثرتهم (12,000) قائلين 'لن نغلب اليوم من قلة'، ففاجأهم العدو بكمين وانهزموا في البداية. ثبت النبي ﷺ ومن معه، ونادى في الناس فعادوا وتحقق النصر الواسع.", lessons: ["الاغترار بالكثرة المادية والعدد يسبب الهزيمة والخذلان.", "النصر يأتي من عند الله وحده، مهما كثرت الأسباب.", "ثبات القائد وشجاعته يغير مجرى المعارك ويجمع الشتات."], tags: ["حنين", "كثرة", "ثبات", "غرور"] },
+
+            // 13. تبوك وحجة الوداع
+            { id: 49, title: "غزوة تبوك (جيش العسرة)", period: "الغزوات", year_hijri: "9 هـ", year_gregorian: "630م", description: "بلغ النبي ﷺ أن الروم تجهز جيشاً ضخماً لغزو المسلمين. فاستنفر الناس في حر شديد ومسافة بعيدة (العسرة). أنفق عثمان بن عفان مالاً عظيماً لتجهيز الجيش (30,000). وصلوا لتبوك فلم يجدوا الروم، فأرهبوهم وثبتوا أقدام المسلمين في الشمال.", lessons: ["اختبار الإيمان الصادق في أوقات الشدة والحر والمشقة.", "الإنفاق والتضحية بالمال في سبيل الله (موقف عثمان وعمر وأبي بكر).", "المبادرة الهجومية لمنع الأعداء من التفكير في مهاجمة الدولة."], tags: ["تبوك", "جيش العسرة", "الروم", "إنفاق"] },
+            { id: 50, title: "حجة الوداع", period: "حجة الوداع", year_hijri: "10 هـ", year_gregorian: "632م", description: "خرج النبي ﷺ للحج ومعه أكثر من 100 ألف مسلم. خطب خطبة الوداع العظيمة التي أرسى فيها حقوق الإنسان، وحرم الدماء والأموال، وأبطل عادات الجاهلية، وأوصى بالنساء خيراً. ونزل فيها: {الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ وَأَتْمَمْتُ عَلَيْكُمْ نِعْمَتِي}.", lessons: ["شمولية وكمال الدين الإسلامي كمنهج حياة دستوري وحقوقي.", "التركيز على حرمة الدماء، والمساواة بين البشر (لا فضل لعربي على أعجمي).", "إيصال الأمانة ووداع الأمة قبل الانتقال للرفيق الأعلى."], tags: ["حجة الوداع", "خطبة الوداع", "حقوق الإنسان", "كمال الدين"] },
+
+            // 14. وفاة النبي ﷺ
+            { id: 51, title: "مرض النبي ﷺ", period: "وفاة النبي ﷺ", year_hijri: "11 هـ", year_gregorian: "632م", description: "بدأ وجع النبي ﷺ أواخر صفر، واشتدت عليه الحمى. استأذن زوجاته أن يُمَرَّض في بيت عائشة. ولما ثقل عليه المرض، أمر أبا بكر أن يصلي بالناس، وخرج مرة يتهادى بين رجلين ليصلي معهم، وكانت آخر نظرة له للمسلمين وهم صفوف في الصلاة فتبسم.", lessons: ["الأنبياء يبتلون ويمرضون كالبشر لترفع درجاتهم.", "إشارة النبي ﷺ بتقديم أبي بكر للخلافة من بعده.", "قرّة عين النبي ﷺ كانت في رؤية أمته متراصة في الصلاة."], tags: ["مرض", "أبو بكر", "الصلاة", "عائشة"] },
+            { id: 52, title: "الرفيق الأعلى (الوفاة)", period: "وفاة النبي ﷺ", year_hijri: "11 هـ", year_gregorian: "632م", description: "في ضحى يوم الإثنين 12 ربيع الأول، وفي حجر عائشة رضي الله عنها، كان النبي ﷺ يضع يده في الماء يمسح وجهه ويقول: 'لا إله إلا الله، إن للموت سكرات'. ثم شخص بصره للسماء قائلاً: 'بل الرفيق الأعلى'، وفاضت روحه الطاهرة.", lessons: ["الموت حق على كل مخلوق مهما علا شأنه.", "انقطاع الوحي عن الأرض بموته ﷺ، وبداية أمانة الأمة في التبليغ.", "الصدمة العظيمة للصحابة وموقف أبي بكر الخالد: 'من كان يعبد محمداً...'."], tags: ["وفاة", "الرفيق الأعلى", "ربيع الأول", "انقطاع الوحي"] }
+        ];
+
+        // ==================== STATE ====================
+        const state = {
+            stage: 'الكل',
+            search: '',
+            dailyEventId: null
+        };
+
+        // ==================== DOM ELEMENTS ====================
+        const DOM = {
+            themeToggle: document.getElementById('themeToggle'),
+            hamburgerBtn: document.getElementById('hamburgerBtn'),
+            mobileNav: document.getElementById('mobileNav'),
+            timelineContainer: document.getElementById('timelineContainer'),
+            eventsGrid: document.getElementById('eventsGrid'),
+            searchInput: document.getElementById('searchInput'),
+            dailyContainer: document.getElementById('dailyEventContainer'),
+            modal: document.getElementById('eventModal'),
+            closeModalBtn: document.getElementById('closeModalBtn'),
+            
+            // Modal inner fields
+            modalTitle: document.getElementById('modalTitle'),
+            modalMeta: document.getElementById('modalMeta'),
+            modalDesc: document.getElementById('modalDesc'),
+            modalLessonsTitle: document.getElementById('modalLessonsTitle'),
+            modalLessons: document.getElementById('modalLessons'),
+            modalTags: document.getElementById('modalTags')
+        };
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleMobileMenu();
+            renderTimeline();
+            setDailyEvent();
+            renderEvents();
+            setupEventListeners();
+        });
+
+        // ==================== THEME & MENU ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            DOM.themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('sabeel_theme', next);
+                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        function handleMobileMenu() {
+            DOM.hamburgerBtn.addEventListener('click', () => {
+                DOM.mobileNav.classList.toggle('active');
+                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
+        // ==================== LOGIC & EVENTS ====================
+        function setupEventListeners() {
+            DOM.searchInput.addEventListener('input', (e) => {
+                state.search = e.target.value.trim().toLowerCase();
+                renderEvents();
+            });
+
+            DOM.timelineContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('timeline-chip')) {
+                    document.querySelectorAll('.timeline-chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    state.stage = e.target.textContent.trim();
+                    renderEvents();
+                }
+            });
+
+            // Modal delegation
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-read-more')) {
+                    const id = parseInt(e.target.getAttribute('data-id'));
+                    openModal(id);
+                }
+                
+                // Close modal if clicked outside content
+                if (e.target === DOM.modal) {
+                    closeModal();
+                }
+            });
+
+            DOM.closeModalBtn.addEventListener('click', closeModal);
+        }
+
+        function renderTimeline() {
+            DOM.timelineContainer.innerHTML = STAGES.map(stage => `
+                <button class="btn btn-outline timeline-chip ${stage === state.stage ? 'active' : ''}">${stage}</button>
+            `).join('');
+        }
+
+        function getFilteredEvents() {
+            return seerahData.filter(event => {
+                const matchStage = state.stage === 'الكل' || event.period === state.stage;
+                const matchSearch = state.search === '' || 
+                                    event.title.toLowerCase().includes(state.search) || 
+                                    event.description.toLowerCase().includes(state.search) ||
+                                    event.tags.some(t => t.toLowerCase().includes(state.search));
+                return matchStage && matchSearch;
+            });
+        }
+
+        function renderEvents() {
+            const filtered = getFilteredEvents();
+            if (filtered.length === 0) {
+                DOM.eventsGrid.innerHTML = `<div class="empty-state">لا توجد أحداث مطابقة في هذه المرحلة أو البحث.</div>`;
+                return;
+            }
+            DOM.eventsGrid.innerHTML = filtered.map(e => generateEventCard(e)).join('');
+        }
+
+        function generateEventCard(e, isDaily = false) {
+            return `
+                <article class="glass-card event-card ${isDaily ? 'daily-highlight' : ''}">
+                    ${isDaily ? '<span class="daily-badge">حدث اليوم</span>' : ''}
+                    <div class="event-header">
+                        <h3 class="event-title">${e.title}</h3>
+                        <div class="event-meta">
+                            <span>📅 ${e.period}</span>
+                            ${e.year_hijri !== '-' ? `<span>هجري: ${e.year_hijri}</span>` : ''}
+                            <span>ميلادي: ${e.year_gregorian}</span>
+                        </div>
+                    </div>
+                    <div class="event-desc-short">${e.description}</div>
+                    <div class="event-actions">
+                        <button class="btn-read-more" data-id="${e.id}">اقرأ المزيد ⇦</button>
+                    </div>
+                </article>
+            `;
+        }
+
+        // ==================== DAILY EVENT ====================
+        function setDailyEvent() {
+            const dateStr = new Date().toDateString();
+            const storedDate = localStorage.getItem('sabeel_daily_seerah_date');
+            let dailyId = parseInt(localStorage.getItem('sabeel_daily_seerah_id'));
+
+            if (storedDate !== dateStr || isNaN(dailyId)) {
+                // Select Random Event
+                dailyId = seerahData[Math.floor(Math.random() * seerahData.length)].id;
+                localStorage.setItem('sabeel_daily_seerah_date', dateStr);
+                localStorage.setItem('sabeel_daily_seerah_id', dailyId);
+            }
+
+            const dailyEvent = seerahData.find(e => e.id === dailyId) || seerahData[0];
+            DOM.dailyContainer.innerHTML = `<h2 class="section-title">✨ حدث اليوم من السيرة</h2>` + generateEventCard(dailyEvent, true);
+        }
+
+        // ==================== MODAL ====================
+        function openModal(id) {
+            const event = seerahData.find(e => e.id === id);
+            if (!event) return;
+
+            DOM.modalTitle.textContent = event.title;
+            
+            let metaHtml = `<span>📅 المرحلة: ${event.period}</span>`;
+            if (event.year_hijri !== '-') metaHtml += `<span>التاريخ الهجري: ${event.year_hijri}</span>`;
+            if (event.year_gregorian !== '-') metaHtml += `<span>التاريخ الميلادي: ${event.year_gregorian}</span>`;
+            DOM.modalMeta.innerHTML = metaHtml;
+
+            DOM.modalDesc.textContent = event.description;
+
+            if (event.lessons && event.lessons.length > 0) {
+                DOM.modalLessonsTitle.classList.remove('hidden');
+                DOM.modalLessons.innerHTML = event.lessons.map(l => `<li>${l}</li>`).join('');
+            } else {
+                DOM.modalLessonsTitle.classList.add('hidden');
+                DOM.modalLessons.innerHTML = '';
+            }
+
+            if (event.tags && event.tags.length > 0) {
+                DOM.modalTags.innerHTML = event.tags.map(t => `<span class="modal-tag">#${t}</span>`).join('');
+            } else {
+                DOM.modalTags.innerHTML = '';
+            }
+
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            DOM.modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+    </script>
+</body>
+</html>

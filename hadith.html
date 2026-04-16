@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبيل - أحاديث نبوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== VARIABLES ==================== */
+        :root {
+            --primary-white: #ffffff;
+            --primary-soft-green: #e9f5ec;
+            --primary-deep-green: #1a4a38;
+            --primary-gold: #d4af37;
+            --text-dark: #1f2937;
+            --text-light: #f3f4f6;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --hadith-font-size: 1.15rem;
+        }
+
+        [data-theme="dark"] {
+            --primary-white: #0f172a;
+            --primary-soft-green: #1e293b;
+            --primary-deep-green: #064e3b;
+            --primary-gold: #fbbf24;
+            --text-dark: #f8fafc;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.7; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: var(--transition-smooth); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; }
+
+        /* ==================== BACKGROUND ==================== */
+        .site-bg {
+            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center; z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth);
+        }
+        [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.85); }
+
+        /* ==================== UTILITIES ==================== */
+        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
+        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); padding: 1.5rem; transition: var(--transition-smooth); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-sm); font-weight: 600; cursor: pointer; border: none; transition: var(--transition-smooth); font-size: 0.95rem; gap: 0.5rem; }
+        .btn-outline { background-color: transparent; border: 1px solid var(--primary-gold); color: var(--primary-gold); }
+        .btn-outline:hover, .btn-outline.active { background-color: var(--primary-gold); color: #fff; }
+        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
+        .btn-icon { background: transparent; color: var(--text-muted); border: none; font-size: 1.2rem; cursor: pointer; padding: 0.4rem; transition: var(--transition-smooth); border-radius: 50%; }
+        .btn-icon:hover { color: var(--primary-gold); background: rgba(0,0,0,0.05); }
+        .btn-icon.active { color: #ef4444; }
+        .hidden { display: none !important; }
+
+        /* ==================== HEADER ==================== */
+        header { padding: 1rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        [data-theme="dark"] .logo { color: var(--primary-gold); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .theme-toggle, .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
+        .mobile-nav { position: fixed; top: 68px; right: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; z-index: 99; }
+        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
+        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
+        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
+        .desktop-nav { display: none; }
+
+        /* ==================== MAIN PAGE ==================== */
+        .page-layout { display: flex; flex-direction: column; gap: 2rem; padding: 2rem 1rem; flex: 1; }
+        .page-header { text-align: center; margin-bottom: 1rem; }
+        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
+        [data-theme="dark"] .page-title { color: var(--primary-gold); }
+        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+
+        .font-controls { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
+        .font-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); width: 40px; height: 40px; border-radius: 50%; font-weight: 700; font-size: 1.1rem; color: var(--text-dark); cursor: pointer; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); display: flex; align-items: center; justify-content: center; }
+        .font-btn:hover { background: var(--primary-gold); color: white; }
+
+        /* ==================== STICKY SEARCH ==================== */
+        .search-container { 
+            position: sticky; top: 75px; z-index: 90; margin-bottom: 1.5rem; padding: 10px 0;
+        }
+        .search-input { 
+            width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--glass-border); 
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            color: var(--text-dark); font-size: 1.05rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: var(--transition-smooth); 
+        }
+        [data-theme="dark"] .search-input { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .search-input:focus { border-color: var(--primary-gold); }
+
+        /* Categories */
+        .categories-scroll { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 1rem; }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .category-chip { flex-shrink: 0; border-radius: 50px; padding: 0.5rem 1.25rem; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; order: 1; }
+        .main-content { order: 2; }
+
+        .section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        [data-theme="dark"] .section-title { color: var(--primary-gold); }
+
+        /* Hadith Card */
+        .hadith-card { display: flex; flex-direction: column; animation: fadeIn 0.4s ease; height: 100%; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hadith-card.daily-highlight { border: 2px solid var(--primary-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 74, 56, 0.05) 100%); }
+        .daily-badge { display: inline-block; background: var(--primary-gold); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; align-self: flex-start; }
+        [data-theme="dark"] .daily-badge { color: var(--primary-deep-green); }
+
+        .hadith-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 1px dashed var(--glass-border); padding-bottom: 0.75rem; }
+        .hadith-title { font-weight: 700; color: var(--primary-gold); font-size: 1.1rem; }
+        .hadith-grade { font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; background: rgba(16, 185, 129, 0.15); color: #059669; }
+        [data-theme="dark"] .hadith-grade { color: #34d399; }
+        .hadith-grade.hasan { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+        [data-theme="dark"] .hadith-grade.hasan { color: #fbbf24; }
+
+        .hadith-text { font-size: var(--hadith-font-size); color: var(--text-dark); line-height: 2.2; flex: 1; text-align: justify; text-align-last: right; margin-bottom: 1rem; font-family: 'Amiri', 'Tajawal', serif; }
+        
+        .hadith-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; background: rgba(0,0,0,0.02); padding: 0.75rem; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border); }
+        [data-theme="dark"] .hadith-meta { background: rgba(255,255,255,0.02); }
+        .meta-item { display: flex; align-items: center; gap: 0.3rem; }
+        .meta-label { font-weight: 700; color: var(--primary-deep-green); }
+        [data-theme="dark"] .meta-label { color: var(--primary-gold); }
+
+        .hadith-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .hadith-tag { background: rgba(0,0,0,0.05); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem;}
+        [data-theme="dark"] .hadith-tag { background: rgba(255,255,255,0.05); }
+
+        .hadith-actions { display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--glass-border); padding-top: 0.75rem; margin-top: auto; }
+
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 1.1rem; background: var(--glass-bg); border-radius: var(--border-radius-md); }
+
+        /* Load More Button */
+        .load-more-container { text-align: center; margin-top: 2rem; }
+        .btn-load-more { background: var(--primary-deep-green); color: white; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; border: none; cursor: pointer; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); }
+        .btn-load-more:hover { background: var(--primary-gold); transform: translateY(-2px); }
+        [data-theme="dark"] .btn-load-more { background: var(--primary-gold); color: var(--primary-deep-green); }
+
+        .fav-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto; padding-left: 0.5rem; }
+        .fav-mini-card { background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 0.75rem; border-radius: var(--border-radius-sm); font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; }
+        [data-theme="dark"] .fav-mini-card { background: rgba(255,255,255,0.02); }
+        .fav-mini-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
+
+        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary-deep-green); color: white; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; text-align: center; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        [data-theme="dark"] .toast { background: var(--primary-gold); color: var(--primary-deep-green); }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (min-width: 769px) {
+            .hamburger { display: none; }
+            .desktop-nav { display: block; }
+            .desktop-nav ul { display: flex; gap: 1.2rem; }
+            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
+            .desktop-nav a:hover { color: var(--primary-gold); }
+            .categories-scroll { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .search-container { top: 80px; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { max-width: 1400px; padding: 0 2rem; }
+            .content-grid { grid-template-columns: 320px 1fr; }
+            .sidebar { order: 1; position: sticky; top: 100px; }
+            .main-content { order: 2; }
+            .page-header { position: relative; }
+            .font-controls { position: absolute; left: 0; top: 0; margin-top: 0; }
+        }
+
+        @media (min-width: 1280px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); } /* 2 cards wide looks better for hadith text */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-bg"></div>
+    <div class="bg-overlay"></div>
+
+   <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">سبيل</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="masbaha.html">المسبحة</a></li>
+                    <li><a href="odea.html">الأدعية</a></li>
+                    <li><a href="quran.html">القرآن</a></li>
+                    <li><a href="hadith.html">أحاديث نبوية</a></li>
+                    <li><a href="sira.html">السيرة النبوية</a></li>
+                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
+                    <li><a href="prophets.html">قصص الأنبياء</a></li>
+                    <li><a href="azkar.html">الأذكار</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="masbaha.html">المسبحة</a></li>
+            <li><a href="odea.html">الأدعية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">أحاديث نبوية</a></li>
+            <li><a href="sira.html">السيرة النبوية</a></li>
+            <li><a href="sahaba.html">عظماء الصحابة</a></li>
+            <li><a href="prophets.html">قصص الأنبياء</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+        </ul>
+    </nav>
+
+    <main class="page-layout container">
+        
+        <div class="page-header">
+            <h1 class="page-title">أحاديث نبوية</h1>
+            <p class="page-subtitle">نور من مشكاة النبوة، وهدي المصطفى ﷺ ينير دروبنا</p>
+            
+            <div class="font-controls">
+                <button class="font-btn" id="btnIncFont" title="تكبير الخط">+</button>
+                <button class="font-btn" id="btnResetFont" title="إعادة الحجم">↺</button>
+                <button class="font-btn" id="btnDecFont" title="تصغير الخط">-</button>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            
+            <aside class="sidebar">
+                <div class="glass-card" id="dailyHadithContainer">
+                    <h2 class="section-title">✨ حديث اليوم</h2>
+                </div>
+            </aside>
+
+            <section class="main-content">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن حديث... (مثال: النية، الإيمان، الصلاة)">
+                </div>
+
+                <div class="categories-scroll" id="categoriesContainer"></div>
+
+                <div class="cards-grid" id="hadithsGrid"></div>
+
+                <div class="load-more-container" id="loadMoreContainer">
+                    <button class="btn-load-more" id="btnLoadMore">تحميل المزيد</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="toastMsg" class="toast">رسالة التنبيه</div>
+
+    <script>
+        // ==================== MASSIVE HADITH DATASET (> 200 Hadiths) ====================
+        // Categories: الإيمان، الصلاة، الذكر، الصبر، التوبة، الأخلاق، العلم، الدعاء، بر الوالدين، الرزق، الفتن، الجنة والنار.
+        const hadithsData = [
+            // ====== أحاديث الإيمان (Faith) ======
+            { id: 1, title: "إنما الأعمال بالنيات", text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى، فمن كانت هجرته إلى الله ورسوله، فهجرته إلى الله ورسوله، ومن كانت هجرته لدنيا يصيبها، أو امرأة ينكحها، فهجرته إلى ما هاجر إليه.", narrator: "عمر بن الخطاب", source: "صحيح البخاري ومسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["نية", "إخلاص", "هجرة"] },
+            { id: 2, title: "الدين النصيحة", text: "الدِّينُ النَّصِيحَةُ. قُلْنَا: لِمَنْ؟ قَالَ: لِلَّهِ وَلِكِتَابِهِ وَلِرَسُولِهِ وَلِأَئِمَّةِ الْمُسْلِمِينَ وَعَامَّتِهِمْ.", narrator: "تميم الداري", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["نصيحة", "دين"] },
+            { id: 3, title: "حب الخير للأخ", text: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ.", narrator: "أنس بن مالك", source: "صحيح البخاري", category: "أحاديث الإيمان", grade: "صحيح", tags: ["أخوة", "إيثار", "إيمان"] },
+            { id: 4, title: "شعب الإيمان", text: "الْإِيمَانُ بِضْعٌ وَسَبْعُونَ -أَوْ بِضْعٌ وَسِتُّونَ- شُعْبَةً، فَأَفْضَلُهَا قَوْلُ: لَا إِلَهَ إِلَّا اللَّهُ، وَأَدْنَاهَا إِمَاطَةُ الْأَذَى عَنِ الطَّرِيقِ، وَالْحَيَاءُ شُعْبَةٌ مِنَ الْإِيمَانِ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["حياء", "طريق", "شعب الإيمان"] },
+            { id: 5, title: "حلاوة الإيمان", text: "ثَلَاثٌ مَنْ كُنَّ فِيهِ وَجَدَ حَلَاوَةَ الْإِيمَانِ: أَنْ يَكُونَ اللَّهُ وَرَسُولُهُ أَحَبَّ إِلَيْهِ مِمَّا سِوَاهُمَا، وَأَنْ يُحِبَّ الْمَرْءَ لَا يُحِبُّهُ إِلَّا لِلَّهِ، وَأَنْ يَكْرَهَ أَنْ يَعُودَ فِي الْكُفْرِ كَمَا يَكْرَهُ أَنْ يُقْذَفَ فِي النَّارِ.", narrator: "أنس بن مالك", source: "متفق عليه", category: "أحاديث الإيمان", grade: "صحيح", tags: ["حب الله", "حلاوة الإيمان"] },
+            { id: 6, title: "المرء مع من أحب", text: "الْمَرْءُ مَعَ مَنْ أَحَبَّ.", narrator: "عبد الله بن مسعود", source: "متفق عليه", category: "أحاديث الإيمان", grade: "صحيح", tags: ["حب", "محبة", "قيامة"] },
+            { id: 7, title: "دع الإطراء", text: "لَا تُطْرُونِي كَمَا أَطْرَتِ النَّصَارَى ابْنَ مَرْيَمَ، فَإِنَّمَا أَنَا عَبْدُهُ، فَقُولُوا عَبْدُ اللَّهِ وَرَسُولُهُ.", narrator: "عمر بن الخطاب", source: "صحيح البخاري", category: "أحاديث الإيمان", grade: "صحيح", tags: ["توحيد", "عقيدة"] },
+            { id: 8, title: "قل آمنت بالله ثم استقم", text: "قُلْ: آمَنْتُ بِاللَّهِ، ثُمَّ اسْتَقِمْ.", narrator: "سفيان بن عبد الله الثقفي", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["استقامة", "إيمان"] },
+            { id: 9, title: "علامة المنافق", text: "آيَةُ الْمُنَافِقِ ثَلَاثٌ: إِذَا حَدَّثَ كَذَبَ، وَإِذَا وَعَدَ أَخْلَفَ، وَإِذَا اؤْتُمِنَ خَانَ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الإيمان", grade: "صحيح", tags: ["نفاق", "أمانة", "كذب"] },
+            { id: 10, title: "الطهور شطر الإيمان", text: "الطُّهُورُ شَطْرُ الْإِيمَانِ، وَالْحَمْدُ لِلَّهِ تَمْلَأُ الْمِيزَانَ...", narrator: "أبو مالك الأشعري", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["طهارة", "إيمان", "ميزان"] },
+            { id: 11, title: "من كان يؤمن بالله", text: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ، وَمَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُكْرِمْ جَارَهُ، وَمَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُكْرِمْ ضَيْفَهُ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الإيمان", grade: "صحيح", tags: ["كلام", "جار", "ضيف"] },
+            { id: 12, title: "تذوق طعم الإيمان", text: "ذَاقَ طَعْمَ الْإِيمَانِ مَنْ رَضِيَ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ رَسُولًا.", narrator: "العباس بن عبد المطلب", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["رضا", "إيمان"] },
+            { id: 13, title: "البراءة من الشرك", text: "مَنْ لَقِيَ اللَّهَ لَا يُشْرِكُ بِهِ شَيْئًا دَخَلَ الْجَنَّةَ، وَمَنْ لَقِيَهُ يُشْرِكُ بِهِ دَخَلَ النَّارَ.", narrator: "جابر بن عبد الله", source: "صحيح مسلم", category: "أحاديث الإيمان", grade: "صحيح", tags: ["توحيد", "شرك", "جنة"] },
+            { id: 14, title: "لا يزني الزاني", text: "لَا يَزْنِي الزَّانِي حِينَ يَزْنِي وَهُوَ مُؤْمِنٌ، وَلَا يَسْرِقُ السَّارِقُ حِينَ يَسْرِقُ وَهُوَ مُؤْمِنٌ...", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الإيمان", grade: "صحيح", tags: ["إيمان", "معاصي"] },
+            { id: 15, title: "أوثق عرى الإيمان", text: "أَوْثَقُ عُرَى الْإِيمَانِ: الْمُوَالَاةُ فِي اللَّهِ وَالْمُعَادَاةُ فِي اللَّهِ، وَالْحُبُّ فِي اللَّهِ وَالْبُغْضُ فِي اللَّهِ.", narrator: "ابن عباس", source: "الطبراني", category: "أحاديث الإيمان", grade: "حسن", tags: ["حب في الله", "ولاء"] },
+            { id: 16, title: "الإيمان قيد الفتك", text: "الإِيمَانُ قَيَّدَ الْفَتْكَ، لاَ يَفْتِكُ مُؤْمِنٌ.", narrator: "أبو هريرة", source: "مسند أحمد", category: "أحاديث الإيمان", grade: "صحيح", tags: ["غدر", "إيمان"] },
+            { id: 17, title: "النهي عن الحلف بغير الله", text: "مَنْ حَلَفَ بِغَيْرِ اللَّهِ فَقَدْ كَفَرَ أَوْ أَشْرَكَ.", narrator: "ابن عمر", source: "الترمذي", category: "أحاديث الإيمان", grade: "صحيح", tags: ["حلف", "توحيد"] },
+            { id: 18, title: "تجديد الإيمان", text: "جَدِّدُوا إِيمَانَكُمْ. قِيلَ: يَا رَسُولَ اللَّهِ وَكَيْفَ نُجَدِّدُ إِيمَانَنَا؟ قَالَ: أَكْثِرُوا مِنْ قَوْلِ لَا إِلَهَ إِلَّا اللَّهُ.", narrator: "أبو هريرة", source: "مسند أحمد", category: "أحاديث الإيمان", grade: "حسن", tags: ["تجديد", "لا إله إلا الله"] },
+            { id: 19, title: "لا إيمان لمن لا أمانة له", text: "لَا إِيمَانَ لِمَنْ لَا أَمَانَةَ لَهُ، وَلَا دِينَ لِمَنْ لَا عَهْدَ لَهُ.", narrator: "أنس بن مالك", source: "مسند أحمد", category: "أحاديث الإيمان", grade: "صحيح", tags: ["أمانة", "عهد"] },
+            { id: 20, title: "كمال الإيمان في الخلق", text: "أَكْمَلُ الْمُؤْمِنِينَ إِيمَانًا أَحْسَنُهُمْ خُلُقًا.", narrator: "أبو هريرة", source: "الترمذي", category: "أحاديث الإيمان", grade: "صحيح", tags: ["أخلاق", "إيمان"] },
+
+            // ====== أحاديث الصلاة (Prayer) ======
+            { id: 21, title: "فضل ركعتي الفجر", text: "رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا.", narrator: "عائشة رضي الله عنها", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["فجر", "سنة", "دنيا"] },
+            { id: 22, title: "أول ما يحاسب عليه العبد", text: "إِنَّ أَوَّلَ مَا يُحَاسَبُ بِهِ الْعَبْدُ يَوْمَ الْقِيَامَةِ مِنْ عَمَلِهِ صَلَاتُهُ، فَإِنْ صَلُحَتْ فَقَدْ أَفْلَحَ وَأَنْجَحَ، وَإِنْ فَسَدَتْ فَقَدْ خَابَ وَخَسِرَ.", narrator: "أبو هريرة", source: "الترمذي", category: "أحاديث الصلاة", grade: "صحيح", tags: ["حساب", "قيامة", "صلاة"] },
+            { id: 23, title: "فضل صلاة الجماعة", text: "صَلَاةُ الْجَمَاعَةِ تَفْضُلُ صَلَاةَ الْفَذِّ بِسَبْعٍ وَعِشْرِينَ دَرَجَةً.", narrator: "ابن عمر", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["جماعة", "أجر"] },
+            { id: 24, title: "الصلاة نور", text: "الصَّلَاةُ نُورٌ، وَالصَّدَقَةُ بُرْهَانٌ، وَالصَّبْرُ ضِيَاءٌ.", narrator: "أبو مالك الأشعري", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["نور", "صدقة", "صبر"] },
+            { id: 25, title: "انتظار الصلاة", text: "لَا يَزَالُ أَحَدُكُمْ فِي صَلَاةٍ مَا دَامَتِ الصَّلَاةُ تَحْبِسُهُ، لَا يَمْنَعُهُ أَنْ يَنْقَلِبَ إِلَى أَهْلِهِ إِلَّا الصَّلَاةُ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["مسجد", "انتظار"] },
+            { id: 26, title: "الصلوات الخمس كالنهر", text: "أَرَأَيْتُمْ لَوْ أَنَّ نَهَرًا بِبَابِ أَحَدِكُمْ يَغْتَسِلُ مِنْهُ كُلَّ يَوْمٍ خَمْسَ مَرَّاتٍ، هَلْ يَبْقَى مِنْ دَرَنِهِ شَيْءٌ؟ قَالُوا: لَا يَبْقَى مِنْ دَرَنِهِ شَيْءٌ. قَالَ: فَذَلِكَ مَثَلُ الصَّلَوَاتِ الْخَمْسِ، يَمْحُو اللَّهُ بِهِنَّ الْخَطَايَا.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["مغفرة", "خمس", "خطايا"] },
+            { id: 27, title: "فضل المشي إلى الصلاة", text: "مَنْ تَطَهَّرَ فِي بَيْتِهِ، ثُمَّ مَشَى إِلَى بَيْتٍ مِنْ بُيُوتِ اللَّهِ لِيَقْضِيَ فَرِيضَةً مِنْ فَرَائِضِ اللَّهِ، كَانَتْ خَطْوَتَاهُ إِحْدَاهُمَا تَحُطُّ خَطِيئَةً، وَالْأُخْرَى تَرْفَعُ دَرَجَةً.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["مشي", "مسجد", "درجات"] },
+            { id: 28, title: "الصلاة على وقتها", text: "سَأَلْتُ النَّبِيَّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ: أَيُّ الْعَمَلِ أَحَبُّ إِلَى اللَّهِ؟ قَالَ: الصَّلَاةُ عَلَى وَقْتِهَا.", narrator: "عبد الله بن مسعود", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["وقت", "أحب الأعمال"] },
+            { id: 29, title: "أقرب ما يكون العبد من ربه", text: "أَقْرَبُ مَا يَكُونُ الْعَبْدُ مِنْ رَبِّهِ وَهُوَ سَاجِدٌ، فَأَكْثِرُوا الدُّعَاءَ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["سجود", "دعاء", "قرب"] },
+            { id: 30, title: "العهد الذي بيننا وبينهم", text: "الْعَهْدُ الَّذِي بَيْنَنَا وَبَيْنَهُمُ الصَّلَاةُ، فَمَنْ تَرَكَهَا فَقَدْ كَفَرَ.", narrator: "بريدة بن الحصيب", source: "الترمذي", category: "أحاديث الصلاة", grade: "صحيح", tags: ["ترك الصلاة", "كفر"] },
+            { id: 31, title: "صلاة الوتر", text: "إِنَّ اللَّهَ وِتْرٌ يُحِبُّ الْوِتْرَ، فَأَوْتِرُوا يَا أَهْلَ الْقُرْآنِ.", narrator: "علي بن أبي طالب", source: "أبو داود", category: "أحاديث الصلاة", grade: "صحيح", tags: ["وتر", "قيام الليل"] },
+            { id: 32, title: "من صلى البردين", text: "مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ. (الفجر والعصر)", narrator: "أبو موسى الأشعري", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["فجر", "عصر", "جنة"] },
+            { id: 33, title: "لا صلاة بحضرة الطعام", text: "لَا صَلَاةَ بِحَضْرَةِ الطَّعَامِ، وَلَا وَهُوَ يُدَافِعُهُ الْأَخْبَثَانِ.", narrator: "عائشة رضي الله عنها", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["خشوع", "طعام"] },
+            { id: 34, title: "فضل الصف الأول", text: "لَوْ يَعْلَمُ النَّاسُ مَا فِي النِّدَاءِ وَالصَّفِّ الْأَوَّلِ، ثُمَّ لَمْ يَجِدُوا إِلَّا أَنْ يَسْتَهِمُوا عَلَيْهِ لَاسْتَهَمُوا.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["صف أول", "أذان"] },
+            { id: 35, title: "فضل التأمين", text: "إِذَا أَمَّنَ الْإِمَامُ فَأَمِّنُوا، فَإِنَّهُ مَنْ وَافَقَ تَأْمِينُهُ تَأْمِينَ الْمَلَائِكَةِ غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["آمين", "ملائكة", "مغفرة"] },
+            { id: 36, title: "الطمأنينة في الصلاة", text: "ثُمَّ ارْكَعْ حَتَّى تَطْمَئِنَّ رَاكِعًا، ثُمَّ ارْفَعْ حَتَّى تَعْتَدِلَ قَائِمًا، ثُمَّ اسْجُدْ حَتَّى تَطْمَئِنَّ سَاجِدًا...", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["طمأنينة", "أركان"] },
+            { id: 37, title: "صلاة الليل مثنى مثنى", text: "صَلَاةُ اللَّيْلِ مَثْنَى مَثْنَى، فَإِذَا خَشِيَ أَحَدُكُمُ الصُّبْحَ صَلَّى رَكْعَةً وَاحِدَةً تُوتِرُ لَهُ مَا قَدْ صَلَّى.", narrator: "ابن عمر", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["قيام الليل", "وتر"] },
+            { id: 38, title: "تحية المسجد", text: "إِذَا دَخَلَ أَحَدُكُمُ الْمَسْجِدَ فَلَا يَجْلِسْ حَتَّى يُصَلِّيَ رَكْعَتَيْنِ.", narrator: "أبو قتادة", source: "متفق عليه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["مسجد", "سنة"] },
+            { id: 39, title: "صلاة الضحى", text: "يُصْبِحُ عَلَى كُلِّ سُلَامَى مِنْ أَحَدِكُمْ صَدَقَةٌ... وَيُجْزِئُ مِنْ ذَلِكَ رَكْعَتَانِ يَرْكَعُهُمَا مِنَ الضُّحَى.", narrator: "أبو ذر الغفاري", source: "صحيح مسلم", category: "أحاديث الصلاة", grade: "صحيح", tags: ["ضحى", "صدقة"] },
+            { id: 40, title: "بناء مسجد", text: "مَنْ بَنَى مَسْجِدًا لِلَّهِ كَمَفْحَصِ قَطَاةٍ، أَوْ أَصْغَرَ، بَنَى اللَّهُ لَهُ بَيْتًا فِي الْجَنَّةِ.", narrator: "جابر بن عبد الله", source: "ابن ماجه", category: "أحاديث الصلاة", grade: "صحيح", tags: ["بناء مسجد", "صدقة جارية"] },
+
+            // ====== أحاديث الذكر (Remembrance) ======
+            { id: 41, title: "مثل الذي يذكر ربه", text: "مَثَلُ الَّذِي يَذْكُرُ رَبَّهُ وَالَّذِي لَا يَذْكُرُ رَبَّهُ، مَثَلُ الْحَيِّ وَالْمَيِّتِ.", narrator: "أبو موسى الأشعري", source: "صحيح البخاري", category: "أحاديث الذكر", grade: "صحيح", tags: ["ذكر", "حياة", "موت"] },
+            { id: 42, title: "أحب الكلام إلى الله", text: "أَحَبُّ الْكَلَامِ إِلَى اللَّهِ أَرْبَعٌ: سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ.", narrator: "سمرة بن جندب", source: "صحيح مسلم", category: "أحاديث الذكر", grade: "صحيح", tags: ["تسبيح", "تحميد"] },
+            { id: 43, title: "كلمتان خفيفتان", text: "كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الذكر", grade: "صحيح", tags: ["ميزان", "تسبيح"] },
+            { id: 44, title: "فضل لا حول ولا قوة إلا بالله", text: "يَا عَبْدَ اللَّهِ بْنَ قَيْسٍ، أَلَا أَدُلُّكَ عَلَى كَنْزٍ مِنْ كُنُوزِ الْجَنَّةِ؟ فَقُلْتُ: بَلَى يَا رَسُولَ اللَّهِ، قَالَ: قُلْ لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ.", narrator: "أبو موسى الأشعري", source: "متفق عليه", category: "أحاديث الذكر", grade: "صحيح", tags: ["حوقلة", "كنز", "جنة"] },
+            { id: 45, title: "سبق المفردون", text: "سَبَقَ الْمُفَرِّدُونَ. قَالُوا: وَمَا الْمُفَرِّدُونَ يَا رَسُولَ اللَّهِ؟ قَالَ: الذَّاكِرُونَ اللَّهَ كَثِيرًا وَالذَّاكِرَاتُ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الذكر", grade: "صحيح", tags: ["مفردون", "كثرة الذكر"] },
+            { id: 46, title: "فضل سبحان الله وبحمده 100 مرة", text: "مَنْ قَالَ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ فِي يَوْمٍ مِائَةَ مَرَّةٍ حُطَّتْ خَطَايَاهُ وَإِنْ كَانَتْ مِثْلَ زَبَدِ الْبَحْرِ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الذكر", grade: "صحيح", tags: ["مغفرة", "تسبيح"] },
+            { id: 47, title: "ذكر الله في الملأ", text: "يَقُولُ اللَّهُ تَعَالَى: أَنَا عِنْدَ ظَنِّ عَبْدِي بِي، وَأَنَا مَعَهُ إِذَا ذَكَرَنِي، فَإِنْ ذَكَرَنِي فِي نَفْسِهِ ذَكَرْتُهُ فِي نَفْسِي، وَإِنْ ذَكَرَنِي فِي مَلَإٍ ذَكَرْتُهُ فِي مَلَإٍ خَيْرٍ مِنْهُمْ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الذكر", grade: "صحيح", tags: ["حديث قدسي", "ذكر"] },
+            { id: 48, title: "الاستغفار", text: "وَاللَّهِ إِنِّي لَأَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ فِي الْيَوْمِ أَكْثَرَ مِنْ سَبْعِينَ مَرَّةً.", narrator: "أبو هريرة", source: "صحيح البخاري", category: "أحاديث الذكر", grade: "صحيح", tags: ["استغفار", "توبة"] },
+            { id: 49, title: "مجالس الذكر", text: "لَا يَقْعُدُ قَوْمٌ يَذْكُرُونَ اللَّهَ عَزَّ وَجَلَّ إِلَّا حَفَّتْهُمُ الْمَلَائِكَةُ، وَغَشِيَتْهُمُ الرَّحْمَةُ، وَنَزَلَتْ عَلَيْهِمُ السَّكِينَةُ، وَذَكَرَهُمُ اللَّهُ فِيمَنْ عِنْدَهُ.", narrator: "أبو هريرة وأبو سعيد", source: "صحيح مسلم", category: "أحاديث الذكر", grade: "صحيح", tags: ["مجالس", "ملائكة", "سكينة"] },
+            { id: 50, title: "فضل قراءة سورة الإخلاص", text: "أَيَعْجِزُ أَحَدُكُمْ أَنْ يَقْرَأَ ثُلُثَ الْقُرْآنِ فِي لَيْلَةٍ؟ ... (قُلْ هُوَ اللَّهُ أَحَدٌ) تَعْدِلُ ثُلُثَ الْقُرْآنِ.", narrator: "أبو سعيد الخدري", source: "صحيح البخاري", category: "أحاديث الذكر", grade: "صحيح", tags: ["قرآن", "إخلاص"] },
+            { id: 51, title: "فضل الصلاة على النبي", text: "مَنْ صَلَّى عَلَيَّ صَلَاةً صَلَّى اللَّهُ عَلَيْهِ بِهَا عَشْرًا.", narrator: "عبد الله بن عمرو", source: "صحيح مسلم", category: "أحاديث الذكر", grade: "صحيح", tags: ["صلاة على النبي", "أجر"] },
+            { id: 52, title: "أفضل الذكر والآية", text: "أَفْضَلُ الذِّكْرِ لَا إِلَهَ إِلَّا اللَّهُ، وَأَفْضَلُ الدُّعَاءِ الْحَمْدُ لِلَّهِ.", narrator: "جابر بن عبد الله", source: "الترمذي", category: "أحاديث الذكر", grade: "حسن", tags: ["توحيد", "حمد"] },
+            { id: 53, title: "كلمات الفرج", text: "دَعْوَةُ ذِي النُّونِ إِذْ دَعَا وَهُوَ فِي بَطْنِ الْحُوتِ: لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ، فَإِنَّهُ لَمْ يَدْعُ بِهَا رَجُلٌ مُسْلِمٌ فِي شَيْءٍ قَطُّ إِلَّا اسْتَجَابَ اللَّهُ لَهُ.", narrator: "سعد بن أبي وقاص", source: "الترمذي", category: "أحاديث الذكر", grade: "صحيح", tags: ["يونس", "فرج"] },
+            { id: 54, title: "أعظم سورة في القرآن", text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ، هِيَ السَّبْعُ الْمَثَانِي، وَالْقُرْآنُ الْعَظِيمُ الَّذِي أُوتِيتُهُ.", narrator: "أبو سعيد بن المعلى", source: "صحيح البخاري", category: "أحاديث الذكر", grade: "صحيح", tags: ["فاتحة", "قرآن"] },
+            { id: 55, title: "خواتيم سورة البقرة", text: "الْآيَتَانِ مِنْ آخِرِ سُورَةِ الْبَقَرَةِ مَنْ قَرَأَهُمَا فِي لَيْلَةٍ كَفَتَاهُ.", narrator: "أبو مسعود الأنصاري", source: "متفق عليه", category: "أحاديث الذكر", grade: "صحيح", tags: ["بقرة", "حفظ", "ليل"] },
+
+            // ====== أحاديث الصبر (Patience) ======
+            { id: 56, title: "عجبا لأمر المؤمن", text: "عَجَبًا لِأَمْرِ الْمُؤْمِنِ إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ، وَلَيْسَ ذَاكَ لِأَحَدٍ إِلَّا لِلْمُؤْمِنِ، إِنْ أَصَابَتْهُ سَرَّاءُ شَكَرَ فَكَانَ خَيْرًا لَهُ، وَإِنْ أَصَابَتْهُ ضَرَّاءُ صَبَرَ فَكَانَ خَيْرًا لَهُ.", narrator: "صهيب الرومي", source: "صحيح مسلم", category: "أحاديث الصبر", grade: "صحيح", tags: ["شكر", "صبر", "مؤمن"] },
+            { id: 57, title: "الصبر عند الصدمة الأولى", text: "إِنَّمَا الصَّبْرُ عِنْدَ الصَّدْمَةِ الْأُولَى.", narrator: "أنس بن مالك", source: "متفق عليه", category: "أحاديث الصبر", grade: "صحيح", tags: ["صدمة", "مصيبة"] },
+            { id: 58, title: "ما يعطى عطاء خيرا من الصبر", text: "وَمَنْ يَتَصَبَّرْ يُصَبِّرْهُ اللَّهُ، وَمَا أُعْطِيَ أَحَدٌ عَطَاءً خَيْرًا وَأَوْسَعَ مِنَ الصَّبْرِ.", narrator: "أبو سعيد الخدري", source: "متفق عليه", category: "أحاديث الصبر", grade: "صحيح", tags: ["عطاء", "صبر"] },
+            { id: 59, title: "تكفير السيئات بالابتلاء", text: "مَا يُصِيبُ الْمُسْلِمَ مِنْ نَصَبٍ وَلَا وَصَبٍ وَلَا هَمٍّ وَلَا حُزْنٍ وَلَا أَذًى وَلَا غَمٍّ حَتَّى الشَّوْكَةِ يُشَاكُهَا إِلَّا كَفَّرَ اللَّهُ بِهَا مِنْ خَطَايَاهُ.", narrator: "أبو هريرة وأبو سعيد", source: "متفق عليه", category: "أحاديث الصبر", grade: "صحيح", tags: ["مرض", "أذى", "مغفرة"] },
+            { id: 60, title: "جزاء فقد البصر", text: "إِذَا ابْتَلَيْتُ عَبْدِي بِحَبِيبَتَيْهِ فَصَبَرَ، عَوَّضْتُهُ مِنْهُمَا الْجَنَّةَ (يريد عينيه).", narrator: "أنس بن مالك", source: "صحيح البخاري", category: "أحاديث الصبر", grade: "صحيح", tags: ["حديث قدسي", "بصر", "جنة"] },
+            { id: 61, title: "الابتلاء على قدر الدين", text: "أَشَدُّ النَّاسِ بَلَاءً الْأَنْبِيَاءُ ثُمَّ الْأَمْثَلُ فَالْأَمْثَلُ، يُبْتَلَى الرَّجُلُ عَلَى حَسَبِ دِينِهِ...", narrator: "سعد بن أبي وقاص", source: "الترمذي", category: "أحاديث الصبر", grade: "صحيح", tags: ["بلاء", "أنبياء"] },
+            { id: 62, title: "دعاء المصيبة", text: "مَا مِنْ مُسْلِمٍ تُصِيبُهُ مُصِيبَةٌ فَيَقُولُ مَا أَمَرَهُ اللَّهُ: إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي، وَأَخْلِفْ لِي خَيْرًا مِنْهَا، إِلَّا أَخْلَفَ اللَّهُ لَهُ خَيْرًا مِنْهَا.", narrator: "أم سلمة", source: "صحيح مسلم", category: "أحاديث الصبر", grade: "صحيح", tags: ["مصيبة", "خلف"] },
+            { id: 63, title: "حلاوة الإيمان مع البلاء", text: "إِنَّ عِظَمَ الْجَزَاءِ مَعَ عِظَمِ الْبَلَاءِ، وَإِنَّ اللَّهَ إِذَا أَحَبَّ قَوْمًا ابْتَلَاهُمْ، فَمَنْ رَضِيَ فَلَهُ الرِّضَا، وَمَنْ سَخِطَ فَلَهُ السَّخَطُ.", narrator: "أنس بن مالك", source: "الترمذي", category: "أحاديث الصبر", grade: "حسن صحيح", tags: ["رضا", "بلاء"] },
+            { id: 64, title: "الصبر على أذى الناس", text: "الْمُؤْمِنُ الَّذِي يُخَالِطُ النَّاسَ، وَيَصْبِرُ عَلَى أَذَاهُمْ، أَعْظَمُ أَجْرًا مِنَ الْمُؤْمِنِ الَّذِي لَا يُخَالِطُ النَّاسَ، وَلَا يَصْبِرُ عَلَى أَذَاهُمْ.", narrator: "ابن عمر", source: "ابن ماجه", category: "أحاديث الصبر", grade: "صحيح", tags: ["مخالطة", "أذى", "أجر"] },
+            { id: 65, title: "من يرد الله به خيرا", text: "مَنْ يُرِدِ اللَّهُ بِهِ خَيْرًا يُصِبْ مِنْهُ.", narrator: "أبو هريرة", source: "صحيح البخاري", category: "أحاديث الصبر", grade: "صحيح", tags: ["بلاء", "خير"] },
+
+            // ====== أحاديث التوبة (Repentance) ======
+            { id: 66, title: "الله أفرح بتوبة عبده", text: "لَلَّهُ أَشَدُّ فَرَحًا بِتَوْبَةِ عَبْدِهِ حِينَ يَتُوبُ إِلَيْهِ مِنْ أَحَدِكُمْ كَانَ عَلَى رَاحِلَتِهِ بِأَرْضِ فَلَاةٍ، فَانْفَلَتَتْ مِنْهُ...", narrator: "أنس بن مالك", source: "متفق عليه", category: "أحاديث التوبة", grade: "صحيح", tags: ["فرح الله", "توبة"] },
+            { id: 67, title: "كل بني آدم خطاء", text: "كُلُّ بَنِي آدَمَ خَطَّاءٌ، وَخَيْرُ الْخَطَّائِينَ التَّوَّابُونَ.", narrator: "أنس بن مالك", source: "الترمذي", category: "أحاديث التوبة", grade: "حسن", tags: ["خطأ", "توابون"] },
+            { id: 68, title: "التوبة تجب ما قبلها", text: "الإِسْلامَ يَهْدِمُ مَا كَانَ قَبْلَهُ، وَإِنَّ الْهِجْرَةَ تَهْدِمُ مَا كَانَ قَبْلَهَا، وَإِنَّ الْحَجَّ يَهْدِمُ مَا كَانَ قَبْلَهُ.", narrator: "عمرو بن العاص", source: "صحيح مسلم", category: "أحاديث التوبة", grade: "صحيح", tags: ["إسلام", "هدم الذنوب"] },
+            { id: 69, title: "قبول التوبة قبل الغرغرة", text: "إِنَّ اللَّهَ يَقْبَلُ تَوْبَةَ الْعَبْدِ مَا لَمْ يُغَرْغِرْ.", narrator: "عبد الله بن عمر", source: "الترمذي", category: "أحاديث التوبة", grade: "حسن", tags: ["موت", "غرغرة"] },
+            { id: 70, title: "يبسط يده بالليل", text: "إِنَّ اللَّهَ تَعَالَى يَبْسُطُ يَدَهُ بِاللَّيْلِ لِيَتُوبَ مُسِيءُ النَّهَارِ، وَيَبْسُطُ يَدَهُ بِالنَّهَارِ لِيَتُوبَ مُسِيءُ اللَّيْلِ، حَتَّى تَطْلُعَ الشَّمْسُ مِنْ مَغْرِبِهَا.", narrator: "أبو موسى الأشعري", source: "صحيح مسلم", category: "أحاديث التوبة", grade: "صحيح", tags: ["ليل", "نهار", "رحمة"] },
+            { id: 71, title: "لو لم تذنبوا", text: "وَالَّذِي نَفْسِي بِيَدِهِ لَوْ لَمْ تُذْنِبُوا لَذَهَبَ اللَّهُ بِكُمْ، وَلَجَاءَ بِقَوْمٍ يُذْنِبُونَ فَيَسْتَغْفِرُونَ اللَّهَ فَيَغْفِرُ لَهُمْ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث التوبة", grade: "صحيح", tags: ["استغفار", "طبيعة البشر"] },
+            { id: 72, title: "اتبع السيئة الحسنة", text: "اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ، وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا، وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ.", narrator: "أبو ذر ومعاذ", source: "الترمذي", category: "أحاديث التوبة", grade: "حسن صحيح", tags: ["أخلاق", "حسنات"] },
+            { id: 73, title: "يا عبادي إنكم تخطئون", text: "يَا عِبَادِي إِنَّكُمْ تُخْطِئُونَ بِاللَّيْلِ وَالنَّهَارِ، وَأَنَا أَغْفِرُ الذُّنُوبَ جَمِيعًا، فَاسْتَغْفِرُونِي أَغْفِرْ لَكُمْ.", narrator: "أبو ذر الغفاري", source: "صحيح مسلم", category: "أحاديث التوبة", grade: "صحيح", tags: ["حديث قدسي", "مغفرة"] },
+            { id: 74, title: "الندم توبة", text: "النَّدَمُ تَوْبَةٌ.", narrator: "عبد الله بن مسعود", source: "ابن ماجه", category: "أحاديث التوبة", grade: "صحيح", tags: ["ندم", "شروط التوبة"] },
+            { id: 75, title: "كفارة المجلس", text: "مَنْ جَلَسَ فِي مَجْلِسٍ فَكَثُرَ فِيهِ لَغَطُهُ، فَقَالَ قَبْلَ أَنْ يَقُومَ: سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ، إِلَّا غُفِرَ لَهُ مَا كَانَ فِي مَجْلِسِهِ ذَلِكَ.", narrator: "أبو هريرة", source: "الترمذي", category: "أحاديث التوبة", grade: "صحيح", tags: ["مجلس", "كفارة"] },
+
+            // ====== أحاديث الأخلاق (Manners) ======
+            { id: 76, title: "إنما بعثت لأتمم مكارم الأخلاق", text: "إِنَّمَا بُعِثْتُ لِأُتَمِّمَ صَالِحَ الْأَخْلَاقِ.", narrator: "أبو هريرة", source: "مسند أحمد", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["مكارم", "بعثة"] },
+            { id: 77, title: "أثقل شيء في الميزان", text: "مَا مِنْ شَيْءٍ أَثْقَلُ فِي مِيزَانِ الْمُؤْمِنِ يَوْمَ الْقِيَامَةِ مِنْ حُسْنِ الْخُلُقِ، وَإِنَّ اللَّهَ لَيُبْغِضُ الْفَاحِشَ الْبَذِيءَ.", narrator: "أبو الدرداء", source: "الترمذي", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["ميزان", "بذاءة"] },
+            { id: 78, title: "تبسمك في وجه أخيك صدقة", text: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ.", narrator: "أبو ذر الغفاري", source: "الترمذي", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["ابتسامة", "صدقة"] },
+            { id: 79, title: "الكلمة الطيبة صدقة", text: "وَالْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["كلام", "صدقة"] },
+            { id: 80, title: "ليس الشديد بالصرعة", text: "لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ، إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["غضب", "قوة", "نفس"] },
+            { id: 81, title: "من حسن إسلام المرء", text: "مِنْ حُسْنِ إِسْلَامِ الْمَرْءِ تَرْكُهُ مَا لَا يَعْنِيهِ.", narrator: "أبو هريرة", source: "الترمذي", category: "أحاديث الأخلاق", grade: "حسن", tags: ["تدخل", "إسلام"] },
+            { id: 82, title: "لا تحقرن من المعروف شيئا", text: "لَا تَحْقِرَنَّ مِنَ الْمَعْرُوفِ شَيْئًا، وَلَوْ أَنْ تَلْقَى أَخَاكَ بِوَجْهٍ طَلْقٍ.", narrator: "أبو ذر الغفاري", source: "صحيح مسلم", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["معروف", "بشاشة"] },
+            { id: 83, title: "أقربكم مني مجلسا", text: "إِنَّ مِنْ أَحَبِّكُمْ إِلَيَّ وَأَقْرَبِكُمْ مِنِّي مَجْلِسًا يَوْمَ الْقِيَامَةِ أَحَاسِنَكُمْ أَخْلَاقًا...", narrator: "جابر بن عبد الله", source: "الترمذي", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["حب رسول الله", "قيامة"] },
+            { id: 84, title: "المؤمن يألف ويؤلف", text: "الْمُؤْمِنُ يَأْلَفُ وَيُؤْلَفُ، وَلَا خَيْرَ فِيمَنْ لَا يَأْلَفُ وَلَا يُؤْلَفُ، وَخَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ.", narrator: "جابر بن عبد الله", source: "الطبراني", category: "أحاديث الأخلاق", grade: "حسن", tags: ["ألفة", "نفع"] },
+            { id: 85, title: "يسروا ولا تعسروا", text: "يَسِّرُوا وَلَا تُعَسِّرُوا، وَبَشِّرُوا وَلَا تُنَفِّرُوا.", narrator: "أنس بن مالك", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["تيسير", "تبشير"] },
+            { id: 86, title: "الرفق في الأمر كله", text: "إِنَّ الرِّفْقَ لَا يَكُونُ فِي شَيْءٍ إِلَّا زَانَهُ، وَلَا يُنْزَعُ مِنْ شَيْءٍ إِلَّا شَانَهُ.", narrator: "عائشة رضي الله عنها", source: "صحيح مسلم", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["رفق", "زينة"] },
+            { id: 87, title: "إياكم والظن", text: "إِيَّاكُمْ وَالظَّنَّ فَإِنَّ الظَّنَّ أَكْذَبُ الْحَدِيثِ، وَلَا تَحَسَّسُوا، وَلَا تَجَسَّسُوا، وَلَا تَنَافَسُوا، وَلَا تَحَاسَدُوا...", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["ظن", "تجسس", "حسد"] },
+            { id: 88, title: "لا يرحم الله من لا يرحم الناس", text: "مَنْ لَا يَرْحَمِ النَّاسَ لَا يَرْحَمْهُ اللَّهُ.", narrator: "جرير بن عبد الله", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["رحمة"] },
+            { id: 89, title: "أحب الأعمال ألا تموت وأنت تذكر الله", text: "قِيلَ: يَا رَسُولَ اللَّهِ أَيُّ الأَعْمَالِ أَفْضَلُ؟ قَالَ: أَنْ تَمُوتَ وَلِسَانُكَ رَطْبٌ مِنْ ذِكْرِ اللَّهِ.", narrator: "عبد الله بن بسر", source: "الترمذي", category: "أحاديث الذكر", grade: "حسن", tags: ["أفضل الأعمال", "ذكر"] },
+            { id: 90, title: "المسلم من سلم المسلمون", text: "الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ، وَالْمُهَاجِرُ مَنْ هَجَرَ مَا نَهَى اللَّهُ عَنْهُ.", narrator: "عبد الله بن عمرو", source: "متفق عليه", category: "أحاديث الأخلاق", grade: "صحيح", tags: ["سلامة", "لسان", "هجرة"] },
+
+            // ====== أحاديث العلم (Knowledge) ======
+            { id: 91, title: "من سلك طريقا يلتمس فيه علما", text: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث العلم", grade: "صحيح", tags: ["طريق", "جنة"] },
+            { id: 92, title: "خيركم من تعلم القرآن", text: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ.", narrator: "عثمان بن عفان", source: "صحيح البخاري", category: "أحاديث العلم", grade: "صحيح", tags: ["قرآن", "تعليم"] },
+            { id: 93, title: "فضل العالم على العابد", text: "فَضْلُ الْعَالِمِ عَلَى الْعَابِدِ كَفَضْلِ الْقَمَرِ لَيْلَةَ الْبَدْرِ عَلَى سَائِرِ الْكَوَاكِبِ، وَإِنَّ الْعُلَمَاءَ وَرَثَةُ الْأَنْبِيَاءِ...", narrator: "أبو الدرداء", source: "أبو داود", category: "أحاديث العلم", grade: "صحيح", tags: ["علماء", "ورثة الأنبياء"] },
+            { id: 94, title: "طلب العلم فريضة", text: "طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ.", narrator: "أنس بن مالك", source: "ابن ماجه", category: "أحاديث العلم", grade: "صحيح", tags: ["فريضة", "طلب"] },
+            { id: 95, title: "انقطاع العمل إلا من ثلاث", text: "إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ: إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ، أَوْ عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث العلم", grade: "صحيح", tags: ["موت", "صدقة جارية", "ولد صالح"] },
+            { id: 96, title: "الدال على الخير", text: "مَنْ دَلَّ عَلَى خَيْرٍ فَلَهُ مِثْلُ أَجْرِ فَاعِلِهِ.", narrator: "أبو مسعود الأنصاري", source: "صحيح مسلم", category: "أحاديث العلم", grade: "صحيح", tags: ["دلالة", "أجر"] },
+            { id: 97, title: "مجالس العلم", text: "وَمَا اجْتَمَعَ قَوْمٌ فِي بَيْتٍ مِنْ بُيُوتِ اللَّهِ يَتْلُونَ كِتَابَ اللَّهِ وَيَتَدَارَسُونَهُ بَيْنَهُمْ، إِلَّا نَزَلَتْ عَلَيْهِمُ السَّكِينَةُ...", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث العلم", grade: "صحيح", tags: ["مساجد", "سكينة", "قرآن"] },
+            { id: 98, title: "من يرد الله به خيرا يفقهه", text: "مَنْ يُرِدِ اللَّهُ بِهِ خَيْرًا يُفَقِّهْهُ فِي الدِّينِ.", narrator: "معاوية بن أبي سفيان", source: "متفق عليه", category: "أحاديث العلم", grade: "صحيح", tags: ["فقه", "خير"] },
+            { id: 99, title: "نضر الله امرأ سمع مقالتي", text: "نَضَّرَ اللَّهُ امْرَأً سَمِعَ مِنَّا شَيْئًا فَبَلَّغَهُ كَمَا سَمِعَ، فَرُبَّ مُبَلَّغٍ أَوْعَى مِنْ سَامِعٍ.", narrator: "عبد الله بن مسعود", source: "الترمذي", category: "أحاديث العلم", grade: "صحيح", tags: ["تبليغ", "نضارة"] },
+
+            // ====== أحاديث الدعاء (Supplication) ======
+            { id: 100, title: "الدعاء هو العبادة", text: "الدُّعَاءُ هُوَ الْعِبَادَةُ.", narrator: "النعمان بن بشير", source: "أبو داود", category: "أحاديث الدعاء", grade: "صحيح", tags: ["عبادة", "سؤال"] },
+            { id: 101, title: "إن الله حيي كريم", text: "إِنَّ رَبَّكُمْ تَبَارَكَ وَتَعَالَى حَيِيٌّ كَرِيمٌ، يَسْتَحْيِي مِنْ عَبْدِهِ إِذَا رَفَعَ يَدَيْهِ إِلَيْهِ أَنْ يَرُدَّهُمَا صِفْرًا.", narrator: "سلمان الفارسي", source: "أبو داود", category: "أحاديث الدعاء", grade: "صحيح", tags: ["كرم الله", "رفع اليدين"] },
+            { id: 102, title: "يستجاب لأحدكم ما لم يعجل", text: "يُسْتَجَابُ لِأَحَدِكُمْ مَا لَمْ يَعْجَلْ، يَقُولُ: دَعَوْتُ فَلَمْ يُسْتَجَبْ لِي.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الدعاء", grade: "صحيح", tags: ["استعجال", "إجابة"] },
+            { id: 103, title: "ليس شيء أكرم على الله من الدعاء", text: "لَيْسَ شَيْءٌ أَكْرَمَ عَلَى اللَّهِ مِنَ الدُّعَاءِ.", narrator: "أبو هريرة", source: "الترمذي", category: "أحاديث الدعاء", grade: "حسن", tags: ["كرامة"] },
+            { id: 104, title: "دعوة المظلوم", text: "وَاتَّقِ دَعْوَةَ الْمَظْلُومِ، فَإِنَّهُ لَيْسَ بَيْنَهَا وَبَيْنَ اللَّهِ حِجَابٌ.", narrator: "ابن عباس", source: "متفق عليه", category: "أحاديث الدعاء", grade: "صحيح", tags: ["مظلوم", "حجاب"] },
+            { id: 105, title: "الدعاء بظهر الغيب", text: "دَعْوَةُ الْمَرْءِ الْمُسْلِمِ لِأَخِيهِ بِظَهْرِ الْغَيْبِ مُسْتَجَابَةٌ، عِنْدَ رَأْسِهِ مَلَكٌ مُوَكَّلٌ كُلَّمَا دَعَا لِأَخِيهِ بِخَيْرٍ، قَالَ الْمَلَكُ الْمُوَكَّلُ بِهِ: آمِينَ وَلَكَ بِمِثْلٍ.", narrator: "أبو الدرداء", source: "صحيح مسلم", category: "أحاديث الدعاء", grade: "صحيح", tags: ["أخوة", "ظهر الغيب", "ملائكة"] },
+            { id: 106, title: "أوقات الإجابة", text: "يَنْزِلُ رَبُّنَا تَبَارَكَ وَتَعَالَى كُلَّ لَيْلَةٍ إِلَى السَّمَاءِ الدُّنْيَا حِينَ يَبْقَى ثُلُثُ اللَّيْلِ الْآخِرُ، فَيَقُولُ: مَنْ يَدْعُونِي فَأَسْتَجِيبَ لَهُ...", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الدعاء", grade: "صحيح", tags: ["ثلث الليل", "نزول إلهي"] },
+            { id: 107, title: "الدعاء بين الأذان والإقامة", text: "الدُّعَاءُ لَا يُرَدُّ بَيْنَ الْأَذَانِ وَالْإِقَامَةِ.", narrator: "أنس بن مالك", source: "الترمذي", category: "أحاديث الدعاء", grade: "صحيح", tags: ["أذان", "إقامة"] },
+
+            // ====== بر الوالدين (Parents) ======
+            { id: 108, title: "أحب الأعمال بر الوالدين", text: "سَأَلْتُ النَّبِيَّ ﷺ: أَيُّ الْعَمَلِ أَحَبُّ إِلَى اللَّهِ؟ قَالَ: الصَّلَاةُ عَلَى وَقْتِهَا. قُلْتُ: ثُمَّ أَيُّ؟ قَالَ: بِرُّ الْوَالِدَيْنِ. قُلْتُ: ثُمَّ أَيُّ؟ قَالَ: الْجِهَادُ فِي سَبِيلِ اللَّهِ.", narrator: "عبد الله بن مسعود", source: "متفق عليه", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["أم", "أب", "جهاد"] },
+            { id: 109, title: "أمك ثم أمك", text: "جَاءَ رَجُلٌ... فَقَالَ: مَنْ أَحَقُّ النَّاسِ بِحُسْنِ صَحَابَتِي؟ قَالَ: أُمُّكَ. قَالَ: ثُمَّ مَنْ؟ قَالَ: ثُمَّ أُمُّكَ. قَالَ: ثُمَّ مَنْ؟ قَالَ: ثُمَّ أُمُّكَ. قَالَ: ثُمَّ مَنْ؟ قَالَ: ثُمَّ أَبُوكَ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["أم", "حقوق"] },
+            { id: 110, title: "رضا الرب في رضا الوالد", text: "رِضَا الرَّبِّ فِي رِضَا الْوَالِدِ، وَسَخَطُ الرَّبِّ فِي سَخَطِ الْوَالِدِ.", narrator: "عبد الله بن عمرو", source: "الترمذي", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["رضا", "سخط", "أب"] },
+            { id: 111, title: "الوالد أوسط أبواب الجنة", text: "الْوَالِدُ أَوْسَطُ أَبْوَابِ الْجَنَّةِ، فَإِنْ شِئْتَ فَأَضِعْ ذَلِكَ الْبَابَ أَوْ احْفَظْهُ.", narrator: "أبو الدرداء", source: "الترمذي", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["جنة", "أبواب الجنة"] },
+            { id: 112, title: "رغم أنفه", text: "رَغِمَ أَنْفُهُ، ثُمَّ رَغِمَ أَنْفُهُ، ثُمَّ رَغِمَ أَنْفُهُ! قِيلَ: مَنْ يَا رَسُولَ اللَّهِ؟ قَالَ: مَنْ أَدْرَكَ وَالِدَيْهِ عِنْدَ الْكِبَرِ، أَحَدَهُمَا أَوْ كِلَيْهِمَا، ثُمَّ لَمْ يَدْخُلِ الْجَنَّةَ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["كبر", "جنة", "عقوق"] },
+            { id: 113, title: "الجنة تحت أقدام الأمهات", text: "الْزَمْ رِجْلَهَا، فَإِنَّ الْجَنَّةَ ثَمَّ (أي هناك).", narrator: "معاوية بن جاهمة", source: "ابن ماجه", category: "أحاديث بر الوالدين", grade: "حسن صحيح", tags: ["أم", "جنة"] },
+            { id: 114, title: "لا يجزئ ولد والده", text: "لَا يَجْزِي وَلَدٌ وَالِدًا، إِلَّا أَنْ يَجِدَهُ مَمْلُوكًا فَيَشْتَرِيَهُ فَيُعْتِقَهُ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["عتق", "حقوق"] },
+            { id: 115, title: "الخالة بمنزلة الأم", text: "الْخَالَةُ بِمَنْزِلَةِ الْأُمِّ.", narrator: "البراء بن عازب", source: "صحيح البخاري", category: "أحاديث بر الوالدين", grade: "صحيح", tags: ["خالة", "قرابة"] },
+
+            // ====== أحاديث الرزق (Provision) ======
+            { id: 116, title: "لو توكلتم على الله", text: "لَوْ أَنَّكُمْ تَتَوَكَّلُونَ عَلَى اللَّهِ حَقَّ تَوَكُّلِهِ لَرَزَقَكُمْ كَمَا يَرْزُقُ الطَّيْرَ، تَغْدُو خِمَاصًا وَتَرُوحُ بِطَانًا.", narrator: "عمر بن الخطاب", source: "الترمذي", category: "أحاديث الرزق", grade: "صحيح", tags: ["توكل", "طير"] },
+            { id: 117, title: "صلة الرحم والرزق", text: "مَنْ أَحَبَّ أَنْ يُبْسَطَ لَهُ فِي رِزْقِهِ، وَيُنْسَأَ لَهُ فِي أَثَرِهِ، فَلْيَصِلْ رَحِمَهُ.", narrator: "أنس بن مالك", source: "متفق عليه", category: "أحاديث الرزق", grade: "صحيح", tags: ["صلة الرحم", "عمر"] },
+            { id: 118, title: "اليد العليا خير من اليد السفلى", text: "الْيَدُ الْعُلْيَا خَيْرٌ مِنَ الْيَدِ السُّفْلَى، وَالْيَدُ الْعُلْيَا هِيَ الْمُنْفِقَةُ، وَالسُّفْلَى هِيَ السَّائِلَةُ.", narrator: "عبد الله بن عمر", source: "متفق عليه", category: "أحاديث الرزق", grade: "صحيح", tags: ["إنفاق", "عمل", "سؤال"] },
+            { id: 119, title: "ما أكل أحد طعاما قط خيرا...", text: "مَا أَكَلَ أَحَدٌ طَعَامًا قَطُّ خَيْرًا مِنْ أَنْ يَأْكُلَ مِنْ عَمَلِ يَدِهِ، وَإِنَّ نَبِيَّ اللَّهِ دَاوُدَ كَانَ يَأْكُلُ مِنْ عَمَلِ يَدِهِ.", narrator: "المقدام بن معديكرب", source: "صحيح البخاري", category: "أحاديث الرزق", grade: "صحيح", tags: ["عمل", "كسب"] },
+            { id: 120, title: "إن روح القدس نفث في روعي", text: "إِنَّ رُوحَ الْقُدُسِ نَفَثَ فِي رُوعِي: أَنَّ نَفْسًا لَنْ تَمُوتَ حَتَّى تَسْتَكْمِلَ رِزْقَهَا وَأَجَلَهَا، فَاتَّقُوا اللَّهَ وَأَجْمِلُوا فِي الطَّلَبِ.", narrator: "جابر بن عبد الله", source: "ابن ماجه", category: "أحاديث الرزق", grade: "صحيح", tags: ["يقين", "أجل"] },
+            { id: 121, title: "لا يمنعكم من الرزق المعصية", text: "إِنَّ الرَّجُلَ لَيُحْرَمُ الرِّزْقَ بِالذَّنْبِ يُصِيبُهُ.", narrator: "ثوبان", source: "ابن ماجه", category: "أحاديث الرزق", grade: "حسن", tags: ["ذنب", "حرمان"] },
+            { id: 122, title: "التاجر الصدوق", text: "التَّاجِرُ الصَّدُوقُ الْأَمِينُ مَعَ النَّبِيِّينَ وَالصِّدِّيقِينَ وَالشُّهَدَاءِ.", narrator: "أبو سعيد الخدري", source: "الترمذي", category: "أحاديث الرزق", grade: "حسن", tags: ["تجارة", "صدق", "أمانة"] },
+
+            // ====== أحاديث الفتن (Trials) ======
+            { id: 123, title: "بادروا بالأعمال فتنا", text: "بَادِرُوا بِالْأَعْمَالِ فِتَنًا كَقِطَعِ اللَّيْلِ الْمُظْلِمِ، يُصْبِحُ الرَّجُلُ مُؤْمِنًا وَيُمْسِي كَافِرًا، أَوْ يُمْسِي مُؤْمِنًا وَيُصْبِحُ كَافِرًا، يَبِيعُ دِينَهُ بِعَرَضٍ مِنَ الدُّنْيَا.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الفتن", grade: "صحيح", tags: ["عمل", "ظلام", "دين"] },
+            { id: 124, title: "كيف بكم إذا تداعت عليكم الأمم", text: "يُوشِكُ أَنْ تَدَاعَى عَلَيْكُمُ الْأُمَمُ كَمَا تَدَاعَى الْأَكَلَةُ إِلَى قَصْعَتِهَا... بَلْ أَنْتُمْ يَوْمَئِذٍ كَثِيرٌ وَلَكِنَّكُمْ غُثَاءٌ كَغُثَاءِ السَّيْلِ...", narrator: "ثوبان", source: "أبو داود", category: "أحاديث الفتن", grade: "صحيح", tags: ["أمم", "وهن", "غثاء"] },
+            { id: 125, title: "ستكون فتن القاعد فيها خير", text: "سَتَكُونُ فِتَنٌ الْقَاعِدُ فِيهَا خَيْرٌ مِنَ الْقَائِمِ، وَالْقَائِمُ فِيهَا خَيْرٌ مِنَ الْمَاشِي، وَالْمَاشِي فِيهَا خَيْرٌ مِنَ السَّاعِي.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الفتن", grade: "صحيح", tags: ["اعتزال", "قعود"] },
+            { id: 126, title: "العبادة في الهرج", text: "الْعِبَادَةُ فِي الْهَرْجِ كَهِجْرَةٍ إِلَيَّ.", narrator: "معقل بن يسار", source: "صحيح مسلم", category: "أحاديث الفتن", grade: "صحيح", tags: ["هرج", "قتل", "هجرة"] },
+            { id: 127, title: "يأتي على الناس زمان الصابر فيهم", text: "يَأْتِي عَلَى النَّاسِ زَمَانٌ الصَّابِرُ فِيهِمْ عَلَى دِينِهِ كَالْقَابِضِ عَلَى الْجَمْرِ.", narrator: "أنس بن مالك", source: "الترمذي", category: "أحاديث الفتن", grade: "صحيح", tags: ["جمر", "صبر", "زمان"] },
+            { id: 128, title: "لا تقوم الساعة حتى يقبض العلم", text: "لَا تَقُومُ السَّاعَةُ حَتَّى يُقْبَضَ الْعِلْمُ، وَتَكْثُرَ الزَّلَازِلُ، وَيَتَقَارَبَ الزَّمَانُ، وَتَظْهَرَ الْفِتَنُ، وَيَكْثُرَ الْهَرْجُ.", narrator: "أبو هريرة", source: "صحيح البخاري", category: "أحاديث الفتن", grade: "صحيح", tags: ["أشراط الساعة", "هرج", "زلازل"] },
+
+            // ====== الجنة والنار (Paradise & Hell) ======
+            { id: 129, title: "موضع سوط في الجنة", text: "مَوْضِعُ سَوْطٍ فِي الْجَنَّةِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا.", narrator: "سهل بن سعد", source: "صحيح البخاري", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["جنة", "دنيا", "سوط"] },
+            { id: 130, title: "أدنى أهل الجنة منزلة", text: "إِنَّ أَدْنَى أَهْلِ الْجَنَّةِ مَنْزِلَةً لَرَجُلٌ يُقَالُ لَهُ: تَمَنَّ. فَيَتَمَنَّى وَيَتَمَنَّى، فَيَقُولُ لَهُ: لَكَ الَّذِي تَمَنَّيْتَ وَعَشَرَةُ أَضْعَافِ الدُّنْيَا.", narrator: "عبد الله بن مسعود", source: "صحيح مسلم", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["أدنى", "عشرة أضعاف"] },
+            { id: 131, title: "حفت الجنة بالمكاره", text: "حُفَّتِ الْجَنَّةُ بِالْمَكَارِهِ، وَحُفَّتِ النَّارُ بِالشَّهَوَاتِ.", narrator: "أبو هريرة", source: "صحيح مسلم", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["مكاره", "شهوات"] },
+            { id: 132, title: "ناركم هذه جزء من سبعين جزءا", text: "نَارُكُمْ هَذِهِ الَّتِي يُوقِدُ ابْنُ آدَمَ جُزْءٌ مِنْ سَبْعِينَ جُزْءًا مِنْ حَرِّ جَهَنَّمَ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["جهنم", "حر"] },
+            { id: 133, title: "أهون أهل النار عذابا", text: "إِنَّ أَهْوَنَ أَهْلِ النَّارِ عَذَابًا يَوْمَ الْقِيَامَةِ لَرَجُلٌ، تُوضَعُ فِي أَخْمَصِ قَدَمَيْهِ جَمْرَتَانِ يَغْلِي مِنْهُمَا دِمَاغُهُ.", narrator: "النعمان بن بشير", source: "متفق عليه", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["عذاب", "أهون", "نار"] },
+            { id: 134, title: "أعددت لعبادي الصالحين", text: "يَقُولُ اللَّهُ تَعَالَى: أَعْدَدْتُ لِعِبَادِي الصَّالِحِينَ مَا لَا عَيْنٌ رَأَتْ، وَلَا أُذُنٌ سَمِعَتْ، وَلَا خَطَرَ عَلَى قَلْبِ بَشَرٍ.", narrator: "أبو هريرة", source: "متفق عليه", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["حديث قدسي", "نعيم"] },
+            { id: 135, title: "ينادي مناد في الجنة", text: "يُنَادِي مُنَادٍ: إِنَّ لَكُمْ أَنْ تَصِحُّوا فَلَا تَسْقَمُوا أَبَدًا، وَإِنَّ لَكُمْ أَنْ تَحْيَوْا فَلَا تَمُوتُوا أَبَدًا، وَإِنَّ لَكُمْ أَنْ تَشِبُّوا فَلَا تَهْرَمُوا أَبَدًا...", narrator: "أبو سعيد وأبو هريرة", source: "صحيح مسلم", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["خلود", "صحة", "شباب"] },
+            { id: 136, title: "الرؤية في الجنة", text: "إِنَّكُمْ سَتَرَوْنَ رَبَّكُمْ كَمَا تَرَوْنَ هَذَا الْقَمَرَ لَا تُضَامُّونَ فِي رُؤْيَتِهِ.", narrator: "جرير بن عبد الله", source: "متفق عليه", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["رؤية الله", "قمر"] },
+            { id: 137, title: "خيمة الدرة المجاوفة", text: "إِنَّ لِلْمُؤْمِنِ فِي الْجَنَّةِ لَخَيْمَةً مِنْ لُؤْلُؤَةٍ وَاحِدَةٍ مُجَوَّفَةٍ، طُولُهَا سِتُّونَ مِيلًا، لِلْمُؤْمِنِ فِيهَا أَهْلُونَ، يَطُوفُ عَلَيْهِمْ الْمُؤْمِنُ فَلَا يَرَى بَعْضُهُمْ بَعْضًا.", narrator: "أبو موسى الأشعري", source: "متفق عليه", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["لؤلؤ", "خيمة", "نعيم"] },
+            { id: 138, title: "شفاعة النبي", text: "لِكُلِّ نَبِيٍّ دَعْوَةٌ مُسْتَجَابَةٌ يَدْعُو بِهَا، وَأُرِيدُ أَنْ أَخْتَبِئَ دَعْوَتِي شَفَاعَةً لِأُمَّتِي فِي الْآخِرَةِ.", narrator: "أبو هريرة", source: "صحيح البخاري", category: "أحاديث الجنة والنار", grade: "صحيح", tags: ["شفاعة", "أمة"] }
+            // تم دمج مجموعة غنية جداً تمثل 138 حديثاً متنوعاً وصحيحاً لضمان أفضل تجربة، ويمكن إضافة المزيد بسهولة في نفس المصفوفة.
+        ];
+
+        const CATEGORIES = [
+            "الكل", "أحاديث الإيمان", "أحاديث الصلاة", "أحاديث الذكر", 
+            "أحاديث الصبر", "أحاديث التوبة", "أحاديث الأخلاق", "أحاديث العلم", 
+            "أحاديث الدعاء", "أحاديث بر الوالدين", "أحاديث الرزق", "أحاديث الفتن", 
+            "أحاديث الجنة والنار"
+        ];
+
+        // ==================== STATE ====================
+        const ITEMS_PER_PAGE = 20;
+        const state = {
+            category: 'الكل',
+            search: '',
+            favorites: [],
+            fontSize: 1.15,
+            currentPage: 1,
+            filteredData: []
+        };
+
+        // ==================== DOM ELEMENTS ====================
+        const DOM = {
+            themeToggle: document.getElementById('themeToggle'),
+            hamburgerBtn: document.getElementById('hamburgerBtn'),
+            mobileNav: document.getElementById('mobileNav'),
+            categoriesContainer: document.getElementById('categoriesContainer'),
+            grid: document.getElementById('hadithsGrid'),
+            searchInput: document.getElementById('searchInput'),
+            toastMsg: document.getElementById('toastMsg'),
+            btnIncFont: document.getElementById('btnIncFont'),
+            btnDecFont: document.getElementById('btnDecFont'),
+            btnResetFont: document.getElementById('btnResetFont'),
+            dailyContainer: document.getElementById('dailyHadithContainer'),
+            favSidebarList: document.getElementById('favSidebarList'),
+            btnLoadMore: document.getElementById('btnLoadMore'),
+            loadMoreContainer: document.getElementById('loadMoreContainer')
+        };
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleMobileMenu();
+            renderCategories();
+            loadState();
+            setDailyHadith();
+            updateFilteredData();
+            renderHadiths();
+            renderFavoritesSidebar();
+            setupEventListeners();
+        });
+
+        // ==================== THEME & MENU ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            DOM.themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('sabeel_theme', next);
+                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        function handleMobileMenu() {
+            DOM.hamburgerBtn.addEventListener('click', () => {
+                DOM.mobileNav.classList.toggle('active');
+                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
+        // ==================== LOGIC ====================
+        function loadState() {
+            const savedFavs = localStorage.getItem('sabeel_fav_hadiths');
+            if (savedFavs) state.favorites = JSON.parse(savedFavs);
+
+            const savedFont = localStorage.getItem('sabeel_hadith_font');
+            if (savedFont) {
+                state.fontSize = parseFloat(savedFont);
+                applyFontSize();
+            }
+        }
+
+        function setupEventListeners() {
+            DOM.searchInput.addEventListener('input', (e) => {
+                state.search = e.target.value.trim().toLowerCase();
+                state.currentPage = 1; // reset page on search
+                updateFilteredData();
+                renderHadiths();
+            });
+
+            DOM.categoriesContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('category-chip')) {
+                    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    state.category = e.target.textContent.trim();
+                    state.currentPage = 1; // reset page on category change
+                    updateFilteredData();
+                    renderHadiths();
+                }
+            });
+
+            DOM.btnIncFont.addEventListener('click', () => changeFontSize(0.1));
+            DOM.btnDecFont.addEventListener('click', () => changeFontSize(-0.1));
+            DOM.btnResetFont.addEventListener('click', () => { state.fontSize = 1.15; applyFontSize(); });
+
+            DOM.btnLoadMore.addEventListener('click', () => {
+                state.currentPage++;
+                renderHadiths(true); // append instead of replace
+            });
+
+            document.addEventListener('click', handleHadithActions);
+        }
+
+        function renderCategories() {
+            DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
+                <button class="btn btn-outline category-chip ${cat === state.category ? 'active' : ''}">${cat}</button>
+            `).join('');
+        }
+
+        function changeFontSize(step) {
+            state.fontSize += step;
+            if (state.fontSize < 0.9) state.fontSize = 0.9;
+            if (state.fontSize > 2.2) state.fontSize = 2.2;
+            applyFontSize();
+        }
+
+        function applyFontSize() {
+            document.documentElement.style.setProperty('--hadith-font-size', `${state.fontSize}rem`);
+            localStorage.setItem('sabeel_hadith_font', state.fontSize);
+        }
+
+        // ==================== RENDERING & PAGINATION ====================
+        function updateFilteredData() {
+            state.filteredData = hadithsData.filter(hadith => {
+                const matchCategory = state.category === 'الكل' || 
+                                      (state.category === 'المفضلة' && state.favorites.includes(hadith.id)) ||
+                                      hadith.category === state.category;
+                const matchSearch = state.search === '' || 
+                                    hadith.title.toLowerCase().includes(state.search) || 
+                                    hadith.text.toLowerCase().includes(state.search) ||
+                                    hadith.narrator.toLowerCase().includes(state.search);
+                return matchCategory && matchSearch;
+            });
+        }
+
+        function renderHadiths(append = false) {
+            if (state.filteredData.length === 0) {
+                DOM.grid.innerHTML = `<div class="empty-state">لا توجد أحاديث مطابقة في هذا القسم.</div>`;
+                DOM.loadMoreContainer.style.display = 'none';
+                return;
+            }
+
+            const startIndex = append ? (state.currentPage - 1) * ITEMS_PER_PAGE : 0;
+            const endIndex = state.currentPage * ITEMS_PER_PAGE;
+            const paginatedItems = state.filteredData.slice(startIndex, endIndex);
+
+            const html = paginatedItems.map(h => generateCardHTML(h)).join('');
+
+            if (append) {
+                DOM.grid.insertAdjacentHTML('beforeend', html);
+            } else {
+                DOM.grid.innerHTML = html;
+            }
+
+            // Check if we need the Load More button
+            if (endIndex >= state.filteredData.length) {
+                DOM.loadMoreContainer.style.display = 'none';
+            } else {
+                DOM.loadMoreContainer.style.display = 'block';
+            }
+        }
+
+        function renderFavoritesSidebar() {
+            const favHadiths = hadithsData.filter(h => state.favorites.includes(h.id));
+            if (favHadiths.length === 0) {
+                DOM.favSidebarList.innerHTML = `<div style="text-align:center; color: var(--text-muted); font-size: 0.9rem;">قائمتك فارغة. أضف أحاديث!</div>`;
+                return;
+            }
+            DOM.favSidebarList.innerHTML = favHadiths.map(h => `
+                <div class="fav-mini-card">
+                    <span class="fav-mini-text">${h.title}</span>
+                    <button class="btn-icon fav-btn active" data-id="${h.id}" style="padding:0; font-size:1rem;" title="إزالة">❤️</button>
+                </div>
+            `).join('');
+        }
+
+        function generateCardHTML(hadith, isDaily = false) {
+            const isFav = state.favorites.includes(hadith.id);
+            const favIcon = isFav ? '❤️' : '🤍';
+            const favClass = isFav ? 'active' : '';
+            const tagsHTML = hadith.tags ? hadith.tags.map(t => `<span class="hadith-tag">#${t}</span>`).join('') : '';
+            const gradeClass = hadith.grade.includes('حسن') ? 'hasan' : '';
+
+            return `
+                <article class="glass-card hadith-card ${isDaily ? 'daily-highlight' : ''}">
+                    ${isDaily ? '<span class="daily-badge">حديث اليوم</span>' : ''}
+                    <div class="hadith-header">
+                        <h3 class="hadith-title">${hadith.title}</h3>
+                        ${hadith.grade ? `<span class="hadith-grade ${gradeClass}">${hadith.grade}</span>` : ''}
+                    </div>
+                    <div class="hadith-text">${hadith.text}</div>
+                    
+                    <div class="hadith-meta">
+                        <div class="meta-item"><span class="meta-label">الراوي:</span> ${hadith.narrator}</div>
+                        <div class="meta-item"><span class="meta-label">المصدر:</span> ${hadith.source}</div>
+                        ${tagsHTML ? `<div class="hadith-tags">${tagsHTML}</div>` : ''}
+                    </div>
+
+                    <div class="hadith-actions">
+                        <button class="btn-icon fav-btn ${favClass}" data-id="${hadith.id}" aria-label="إضافة للمفضلة" title="المفضلة">${favIcon}</button>
+                        <button class="btn-icon copy-btn" data-text="${hadith.text} (الراوي: ${hadith.narrator} | المصدر: ${hadith.source})" aria-label="نسخ الحديث" title="نسخ">📋</button>
+                        <button class="btn-icon share-btn" data-title="${hadith.title}" data-text="${hadith.text} (الراوي: ${hadith.narrator})" aria-label="مشاركة الحديث" title="مشاركة">📤</button>
+                    </div>
+                </article>
+            `;
+        }
+
+        // ==================== DAILY HADITH ====================
+        function setDailyHadith() {
+            const dateStr = new Date().toDateString();
+            const storedDate = localStorage.getItem('sabeel_daily_hadith_date');
+            let dailyId = parseInt(localStorage.getItem('sabeel_daily_hadith_id'));
+
+            if (storedDate !== dateStr || isNaN(dailyId)) {
+                // Select Random Hadith
+                dailyId = hadithsData[Math.floor(Math.random() * hadithsData.length)].id;
+                localStorage.setItem('sabeel_daily_hadith_date', dateStr);
+                localStorage.setItem('sabeel_daily_hadith_id', dailyId);
+            }
+
+            const dailyHadith = hadithsData.find(h => h.id === dailyId) || hadithsData[0];
+            DOM.dailyContainer.innerHTML = `<h2 class="section-title">✨ حديث اليوم</h2>` + generateCardHTML(dailyHadith, true);
+        }
+
+        // ==================== ACTIONS ====================
+        function handleHadithActions(e) {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            if (btn.classList.contains('fav-btn')) {
+                const id = parseInt(btn.getAttribute('data-id'));
+                toggleFavorite(id);
+            } else if (btn.classList.contains('copy-btn')) {
+                const text = btn.getAttribute('data-text');
+                copyText(text);
+            } else if (btn.classList.contains('share-btn')) {
+                const title = btn.getAttribute('data-title');
+                const text = btn.getAttribute('data-text');
+                shareText(title, text);
+            }
+        }
+
+        function toggleFavorite(id) {
+            const index = state.favorites.indexOf(id);
+            if (index > -1) {
+                state.favorites.splice(index, 1);
+                showToast("تمت الإزالة من المفضلة");
+            } else {
+                state.favorites.push(id);
+                showToast("تمت الإضافة إلى المفضلة");
+            }
+            
+            localStorage.setItem('sabeel_fav_hadiths', JSON.stringify(state.favorites));
+            
+            setDailyHadith(); 
+            renderFavoritesSidebar();
+            
+            if (state.category === 'المفضلة') {
+                state.currentPage = 1;
+                updateFilteredData();
+                renderHadiths();
+            } else {
+                document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
+                    if (index > -1) {
+                        btn.classList.remove('active');
+                        btn.textContent = '🤍';
+                    } else {
+                        btn.classList.add('active');
+                        btn.textContent = '❤️';
+                    }
+                });
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("تم النسخ بنجاح");
+            }).catch(() => {
+                showToast("تعذر النسخ");
+            });
+        }
+
+        async function shareText(title, text) {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: title,
+                        text: `${text}\n\n- من موقع سبيل`
+                    });
+                    showToast("تمت المشاركة");
+                } catch (err) {}
+            } else {
+                copyText(text);
+                showToast("تم النسخ بدل المشاركة (المتصفح لا يدعم)");
+            }
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            DOM.toastMsg.textContent = msg;
+            DOM.toastMsg.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                DOM.toastMsg.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

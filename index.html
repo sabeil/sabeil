@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سبيل - محطتك الإيمانية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== VARIABLES ==================== */
+        :root {
+            --primary-white: #ffffff;
+            --primary-soft-green: #e9f5ec;
+            --primary-deep-green: #1a4a38;
+            --primary-gold: #d4af37;
+            --text-dark: #1f2937;
+            --text-light: #f3f4f6;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary-white: #0f172a;
+            --primary-soft-green: #1e293b;
+            --primary-deep-green: #064e3b;
+            --primary-gold: #fbbf24;
+            --text-dark: #f8fafc;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, select { font-family: inherit; }
+
+        /* ==================== BACKGROUND ==================== */
+        .site-bg {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(243,244,246,0.9) 100%);
+            z-index: -1;
+            transition: var(--transition-smooth);
+        }
+
+        [data-theme="dark"] .bg-overlay {
+            background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(2,6,23,0.95) 100%);
+        }
+
+        /* ==================== UTILITIES ==================== */
+        .container {
+            width: 100%;
+            padding: 0 1rem;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+            height: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary { background-color: var(--primary-deep-green); color: #ffffff; }
+        .btn-primary:hover { background-color: var(--primary-gold); color: var(--primary-deep-green); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--primary-gold); color: var(--primary-gold); }
+        .btn-outline:hover { background-color: var(--primary-gold); color: #fff; }
+        .hidden { display: none !important; }
+
+        /* ==================== HEADER ==================== */
+        header {
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        [data-theme="dark"] .logo { color: var(--primary-gold); }
+
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+
+        .theme-toggle, .hamburger {
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 68px; right: 0; width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            z-index: 99;
+        }
+        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
+        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
+        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
+
+        .desktop-nav { display: none; }
+
+        /* ==================== MAIN LAYOUT (MOBILE FIRST) ==================== */
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem 1rem;
+            flex: 1;
+        }
+
+        /* Order for Mobile: Intro -> Prayers -> Daily */
+        .intro-col { order: 1; }
+        .prayers-col { order: 2; }
+        .daily-col { order: 3; }
+
+        /* ==================== HERO / INTRO SECTION ==================== */
+        .hero-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 1.5rem; text-align: center; }
+        [data-theme="dark"] .hero-title { color: var(--primary-gold); }
+        .hero-desc { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; min-height: 120px; text-align: justify; text-align-last: center; line-height: 1.8; }
+        
+        .cursor { display: inline-block; width: 3px; height: 1.2rem; background-color: var(--primary-gold); animation: blink 0.7s infinite; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ==================== PRAYER TIMES ==================== */
+        .section-title { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1.5rem; }
+        [data-theme="dark"] .section-title { color: var(--primary-gold); }
+
+        .location-controls { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; align-items: center; }
+        .select-wilaya { width: 100%; max-width: 300px; padding: 0.75rem; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-dark); outline: none; }
+        .error-msg { color: #ef4444; font-size: 0.9rem; text-align: center; margin-top: 0.5rem; }
+        .location-display { text-align: center; font-weight: 700; color: var(--primary-gold); margin-bottom: 1.5rem; font-size: 0.95rem;}
+
+        .countdown-card {
+            background: linear-gradient(135deg, var(--primary-deep-green) 0%, #10b981 100%);
+            color: white; text-align: center; padding: 1.25rem; border-radius: var(--border-radius-md); margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        [data-theme="dark"] .countdown-card { background: linear-gradient(135deg, var(--primary-gold) 0%, #d97706 100%); color: var(--primary-deep-green); }
+
+        .countdown-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .countdown-time { font-size: 2rem; font-weight: 800; direction: ltr; }
+        .next-prayer-name { font-size: 1.3rem; font-weight: 700; margin-top: 0.5rem; }
+
+        .prayer-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+        .prayer-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-sm); padding: 1rem; display: flex; justify-content: space-between; align-items: center; transition: var(--transition-smooth); }
+        .prayer-card.active { background: var(--primary-gold); color: var(--primary-deep-green); transform: scale(1.02); border-color: var(--primary-gold); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+        .prayer-card.active .prayer-time { color: var(--primary-deep-green); }
+        .prayer-name { font-weight: 700; font-size: 1.1rem; }
+        .prayer-time { font-weight: 700; font-size: 1.1rem; color: var(--text-muted); direction: ltr; }
+
+        /* ==================== DAILY CONTENT ==================== */
+        .daily-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+        .daily-item { padding: 1rem; border-radius: var(--border-radius-sm); background: rgba(0,0,0,0.02); }
+        [data-theme="dark"] .daily-item { background: rgba(255,255,255,0.02); }
+        .daily-item h3 { color: var(--primary-gold); margin-bottom: 0.75rem; font-size: 1.2rem; display: inline-block; border-bottom: 2px solid var(--primary-soft-green); }
+        .daily-item p { font-size: 1.05rem; }
+
+        /* ==================== QUOTE ==================== */
+        .quote-section { padding: 2rem 0; text-align: center; margin-top: 1rem; }
+        .quote-text { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        [data-theme="dark"] .quote-text { color: var(--primary-gold); }
+
+        /* ==================== FOOTER ==================== */
+        footer { background: var(--glass-bg); backdrop-filter: blur(12px); border-top: 1px solid var(--glass-border); padding: 2rem 0; text-align: center; margin-top: auto; }
+        .footer-content { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+        .footer-date { font-weight: 700; color: var(--primary-gold); }
+        
+        .social-links { display: flex; gap: 1.2rem; align-items: center; justify-content: center; }
+        .social-icon { 
+            width: 28px; 
+            height: 28px; 
+            transition: var(--transition-smooth); 
+            object-fit: contain;
+        }
+        .social-links a { display: inline-block; transition: var(--transition-smooth); }
+        .social-links a:hover .social-icon { 
+            transform: translateY(-5px) scale(1.1); 
+            filter: drop-shadow(0 5px 10px rgba(212, 175, 55, 0.4));
+        }
+
+        /* ==================== DESKTOP ENHANCEMENTS (3 COLUMNS) ==================== */
+        @media (min-width: 769px) {
+            .hamburger { display: none; }
+            .desktop-nav { display: block; }
+            .desktop-nav ul { display: flex; gap: 1.2rem; }
+            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
+            .desktop-nav a:hover { color: var(--primary-gold); }
+            
+            .hero-title { font-size: 2.8rem; }
+            .footer-content { flex-direction: row; justify-content: space-between; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { max-width: 1400px; padding: 0 2rem; }
+            
+            .main-layout {
+                display: grid;
+                /* RTL Logic: Right(1fr) = Daily, Center(2fr) = Intro, Left(1fr) = Prayers */
+                grid-template-columns: minmax(280px, 320px) 1fr minmax(280px, 320px);
+                grid-template-areas: "daily intro prayers";
+                align-items: start;
+                gap: 2rem;
+                padding: 3rem 0;
+            }
+
+            /* Assign areas and reset order */
+            .daily-col { grid-area: daily; order: 0; }
+            .intro-col { grid-area: intro; order: 0; }
+            .prayers-col { grid-area: prayers; order: 0; }
+
+            .hero-desc { font-size: 1.2rem; }
+            .quote-text { font-size: 2.2rem; }
+            .btn-outline { margin: 0 auto; display: block; } /* Center the read more button */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-bg"></div>
+    <div class="bg-overlay"></div>
+
+   <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">سبيل</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="masbaha.html">المسبحة</a></li>
+                    <li><a href="odea.html">الأدعية</a></li>
+                    <li><a href="quran.html">القرآن</a></li>
+                    <li><a href="hadith.html">أحاديث نبوية</a></li>
+                    <li><a href="sira.html">السيرة النبوية</a></li>
+                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
+                    <li><a href="prophets.html">قصص الأنبياء</a></li>
+                    <li><a href="azkar.html">الأذكار</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="masbaha.html">المسبحة</a></li>
+            <li><a href="odea.html">الأدعية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">أحاديث نبوية</a></li>
+            <li><a href="sira.html">السيرة النبوية</a></li>
+            <li><a href="sahaba.html">عظماء الصحابة</a></li>
+            <li><a href="prophets.html">قصص الأنبياء</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-layout container">
+        
+        <aside class="daily-col">
+            <div class="glass-card">
+                <h2 class="section-title">إشراقات اليوم</h2>
+                <div class="daily-grid">
+                    <div class="daily-item">
+                        <h3>آية اليوم</h3>
+                        <p>﴿ وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ ۚ إِنَّ اللَّهَ بَالِغُ أَمْرِهِ ۚ قَدْ جَعَلَ اللَّهُ لِكُلِّ شَيْءٍ قَدْرًا ﴾</p>
+                    </div>
+                    <div class="daily-item">
+                        <h3>حديث اليوم</h3>
+                        <p>قال رسول الله ﷺ: «كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن: سبحان الله وبحمده، سبحان الله العظيم»</p>
+                    </div>
+                    <div class="daily-item">
+                        <h3>دعاء اليوم</h3>
+                        <p>اللهم إني أسألك الهدى والتقى والعفاف والغنى، اللهم يامقلب القلوب ثبت قلبي على دينك.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="intro-col">
+            <div class="glass-card" style="margin-bottom: 2rem;">
+                <h1 class="hero-title" id="heroTitle"></h1>
+                <div class="hero-desc">
+                    <span id="heroText"></span><span class="cursor"></span>
+                </div>
+                
+            </div>
+
+            <div class="quote-section">
+                <h2 class="quote-text">"ألا بذكر الله تطمئن القلوب"</h2>
+            </div>
+        </section>
+
+        <aside class="prayers-col">
+            <div class="glass-card">
+                <h2 class="section-title">مواقيت الصلاة</h2>
+                
+                <div class="location-controls">
+                    <button id="locateBtn" class="btn btn-primary" style="width: 100%;">📍 تحديد موقعي</button>
+                    <select id="wilayaSelect" class="select-wilaya hidden">
+                        <option value="" disabled selected>أو اختر ولاية يدوياً...</option>
+                    </select>
+                </div>
+                <div id="errorMsg" class="error-msg hidden"></div>
+                <div id="locationDisplay" class="location-display hidden"></div>
+
+                <div class="countdown-card">
+                    <div class="countdown-title">الصلاة القادمة: <span id="nextPrayerNameLabel" class="next-prayer-name">--</span></div>
+                    <div class="countdown-title">الوقت المتبقي للأذان</div>
+                    <div class="countdown-time" id="countdownTimer">00:00:00</div>
+                </div>
+
+                <div class="prayer-grid" id="prayerGrid">
+                    </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <footer>
+        <footer>
+        <div class="container footer-content">
+            <div class="footer-date" id="hijriDate"></div>
+            
+            <div class="social-links">
+                <a href="https://www.facebook.com/ilyes.attabi" target="_blank" aria-label="Facebook">
+                    <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" class="social-icon">
+                </a>
+                <a href="https://x.com/Attabi_ilyas" target="_blank" aria-label="Twitter">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png" alt="Twitter" class="social-icon">
+                </a>
+                <a href="https://www.instagram.com/ilyas.attabi/" target="_blank" aria-label="Instagram">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="social-icon">
+                </a>
+                <a href="https://t.me/Ilyas_attabi" target="_blank" aria-label="Telegram">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" class="social-icon">
+                </a>
+                <a href="mailto:attabiilyas06@gmail.com" aria-label="Email">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email" class="social-icon">
+                </a>
+            </div>
+
+            <div class="footer-date" id="gregDate"></div>
+        </div>
+    </footer>
+    </footer>
+
+    <script>
+        const API_KEY = "YOUR_API_KEY";
+        
+        const wilayas = [
+            { id: 1, ar_name: "أدرار", lat: 27.8767, lon: -0.2833 }, { id: 2, ar_name: "الشلف", lat: 36.1659, lon: 1.3345 },
+            { id: 3, ar_name: "الأغواط", lat: 33.8078, lon: 2.8808 }, { id: 4, ar_name: "أم البواقي", lat: 35.8752, lon: 7.1135 },
+            { id: 5, ar_name: "باتنة", lat: 35.5559, lon: 6.1741 }, { id: 6, ar_name: "بجاية", lat: 36.7525, lon: 5.0847 },
+            { id: 7, ar_name: "بسكرة", lat: 34.8504, lon: 5.7280 }, { id: 8, ar_name: "بشار", lat: 31.6238, lon: -2.2162 },
+            { id: 9, ar_name: "البليدة", lat: 36.4700, lon: 2.8287 }, { id: 10, ar_name: "البويرة", lat: 36.3749, lon: 3.9020 },
+            { id: 11, ar_name: "تمنراست", lat: 22.7850, lon: 5.5228 }, { id: 12, ar_name: "تبسة", lat: 35.4042, lon: 8.1242 },
+            { id: 13, ar_name: "تلمسان", lat: 34.8783, lon: -1.3150 }, { id: 14, ar_name: "تيارت", lat: 35.3710, lon: 1.3160 },
+            { id: 15, ar_name: "تيزي وزو", lat: 36.7169, lon: 4.0497 }, { id: 16, ar_name: "الجزائر", lat: 36.7538, lon: 3.0588 },
+            { id: 17, ar_name: "الجلفة", lat: 34.6728, lon: 3.2630 }, { id: 18, ar_name: "جيجل", lat: 36.8210, lon: 5.7667 },
+            { id: 19, ar_name: "سطيف", lat: 36.1900, lon: 5.4100 }, { id: 20, ar_name: "سعيدة", lat: 34.8303, lon: 0.1517 },
+            { id: 21, ar_name: "سكيكدة", lat: 36.8667, lon: 6.9000 }, { id: 22, ar_name: "سيدي بلعباس", lat: 35.1899, lon: -0.6308 },
+            { id: 23, ar_name: "عنابة", lat: 36.9000, lon: 7.7667 }, { id: 24, ar_name: "قالمة", lat: 36.4621, lon: 7.4261 },
+            { id: 25, ar_name: "قسنطينة", lat: 36.3650, lon: 6.6147 }, { id: 26, ar_name: "المدية", lat: 36.2642, lon: 2.7539 },
+            { id: 27, ar_name: "مستغانم", lat: 35.9311, lon: 0.0892 }, { id: 28, ar_name: "المسيلة", lat: 35.7058, lon: 4.5419 },
+            { id: 29, ar_name: "معسكر", lat: 35.3966, lon: 0.1403 }, { id: 30, ar_name: "ورقلة", lat: 31.9493, lon: 5.3250 },
+            { id: 31, ar_name: "وهران", lat: 35.6971, lon: -0.6308 }, { id: 32, ar_name: "البيض", lat: 33.6833, lon: 1.0193 },
+            { id: 33, ar_name: "إليزي", lat: 26.4833, lon: 8.4667 }, { id: 34, ar_name: "برج بوعريريج", lat: 36.0732, lon: 4.7611 },
+            { id: 35, ar_name: "بومرداس", lat: 36.7664, lon: 3.4772 }, { id: 36, ar_name: "الطارف", lat: 36.7672, lon: 8.3138 },
+            { id: 37, ar_name: "تندوف", lat: 27.6711, lon: -8.1474 }, { id: 38, ar_name: "تيسمسيلت", lat: 35.6072, lon: 1.8108 },
+            { id: 39, ar_name: "الوادي", lat: 33.3678, lon: 6.8515 }, { id: 40, ar_name: "خنشلة", lat: 35.4358, lon: 7.1433 },
+            { id: 41, ar_name: "سوق أهراس", lat: 36.2864, lon: 7.9511 }, { id: 42, ar_name: "تيبازة", lat: 36.5897, lon: 2.4475 },
+            { id: 43, ar_name: "ميلة", lat: 36.4500, lon: 6.2644 }, { id: 44, ar_name: "عين الدفلى", lat: 36.2641, lon: 1.9679 },
+            { id: 45, ar_name: "النعامة", lat: 33.2667, lon: -0.3167 }, { id: 46, ar_name: "عين تموشنت", lat: 35.2975, lon: -1.1404 },
+            { id: 47, ar_name: "غرداية", lat: 32.4909, lon: 3.6735 }, { id: 48, ar_name: "غليزان", lat: 35.7373, lon: 0.5559 },
+            { id: 49, ar_name: "تيميمون", lat: 29.2639, lon: 0.2306 }, { id: 50, ar_name: "برج باجي مختار", lat: 21.3289, lon: 0.9539 },
+            { id: 51, ar_name: "أولاد جلال", lat: 34.4167, lon: 5.0833 }, { id: 52, ar_name: "بني عباس", lat: 30.1333, lon: -2.1667 },
+            { id: 53, ar_name: "عين صالح", lat: 27.1935, lon: 2.4607 }, { id: 54, ar_name: "عين قزام", lat: 19.5667, lon: 5.7667 },
+            { id: 55, ar_name: "تقرت", lat: 33.1053, lon: 6.0574 }, { id: 56, ar_name: "جانت", lat: 24.5542, lon: 9.4847 },
+            { id: 57, ar_name: "المغير", lat: 33.9500, lon: 5.9167 }, { id: 58, ar_name: "المنيعة", lat: 30.5833, lon: 2.8833 }
+        ];
+
+        const PRAYERS = [
+            { key: 'Fajr', ar: 'الفجر' },
+            { key: 'Sunrise', ar: 'الشروق' },
+            { key: 'Dhuhr', ar: 'الظهر' },
+            { key: 'Asr', ar: 'العصر' }, 
+            { key: 'Maghrib', ar: 'المغرب' },
+            { key: 'Isha', ar: 'العشاء' }
+        ];
+
+        let currentPrayerData = null;
+        let countdownInterval = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleMobileMenu();
+            handleTypingEffect();
+            populateWilayaDropdown();
+            setDates();
+            setupInitialPrayerState();
+
+            document.getElementById('locateBtn').addEventListener('click', requestLocation);
+            document.getElementById('wilayaSelect').addEventListener('change', handleWilayaSelection);
+        });
+
+        function initTheme() {
+            const toggle = document.getElementById('themeToggle');
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            toggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            toggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('sabeel_theme', next);
+                toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        function handleMobileMenu() {
+            const btn = document.getElementById('hamburgerBtn');
+            const nav = document.getElementById('mobileNav');
+            btn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                btn.textContent = nav.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
+        function setDates() {
+            const today = new Date();
+            const gOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('gregDate').textContent = today.toLocaleDateString('ar-DZ', gOptions);
+            
+            try {
+                const hOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('hijriDate').textContent = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hOptions).format(today);
+            } catch(e) {
+                document.getElementById('hijriDate').textContent = "التاريخ الهجري غير متوفر";
+            }
+        }
+
+        function handleTypingEffect() {
+            const titleEl = document.getElementById('heroTitle');
+            const textEl = document.getElementById('heroText');
+            
+            titleEl.textContent = "سبيل";
+            
+            const fullText = "محطّتك الإيمانية الهادئة في عالم مزدحم، ووجهتك الرقمية للسكينة، والتزود بالعلم، والارتواء من معين الهداية. هنا نسير معًا في دروب الذكر والتدبر، ونتأمل معاني القرآن، ونتفيّأ ظلال السنّة، ونُحيي في قلوبنا نور الإيمان.<br><br>في سبيل، نؤمن أن لكل قلبٍ عطش، ولا يُروى إلا بالقرب من الله، فكان هذا الموقع سعيًا خالصًا ليكون لك معينًا في درب الطاعة، وسبيلاً إلى المعرفة الربانية النقية.<br><br>نُقدّم لك محتوى إسلاميًا موثوقًا، وأدوات نافعة مثل السبحة الإلكترونية، وأوقات الصلاة، والقرآن الكريم بأجمل الأصوات، والأذكار اليومية، ليكون الموقع رفيقك في كل حين.<br><br>نسأل الله أن يجعل سبيل منارةً للخير، وصدقةً جارية، ونورًا يهتدي به كل من مرّ من هنا.<br>أهلًا بك… وجعلنا الله وإياك من السائرين على السبيل المستقيم، الثابتين على الحق، السالكين درب الرضا واليقين.";
+
+            const isMobile = window.innerWidth <= 768;
+            const speed = isMobile ? 15 : 25;
+            let i = 0;
+            let isTag = false;
+
+            function typeText() {
+                if (i < fullText.length) {
+                    // تجاوز علامات الـ HTML (مثل <br>) باش ما يكتبهاش حرف بحرف
+                    if (fullText.charAt(i) === '<') isTag = true;
+                    if (fullText.charAt(i) === '>') isTag = false;
+                    
+                    textEl.innerHTML = fullText.substring(0, i + 1);
+                    i++;
+                    
+                    setTimeout(typeText, isTag ? 0 : speed);
+                }
+            }
+            setTimeout(typeText, 500);
+        }
+
+        function populateWilayaDropdown() {
+            const select = document.getElementById('wilayaSelect');
+            wilayas.forEach(w => {
+                const opt = document.createElement('option');
+                opt.value = w.id;
+                opt.textContent = `${String(w.id).padStart(2, '0')} - ${w.ar_name}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function hideError() { document.getElementById('errorMsg').classList.add('hidden'); }
+
+        function setupInitialPrayerState() {
+            renderEmptyGrid();
+            const cachedLoc = localStorage.getItem('sabeel_loc');
+            if (cachedLoc) {
+                const loc = JSON.parse(cachedLoc);
+                document.getElementById('wilayaSelect').classList.remove('hidden');
+                document.getElementById('wilayaSelect').value = loc.id;
+                fetchPrayerTimes(loc.lat, loc.lon, loc.name, loc.id);
+            }
+        }
+
+        function requestLocation() {
+            hideError();
+            if (!navigator.geolocation) {
+                showError("تعذر الوصول إلى الموقع الجغرافي، يرجى اختيار ولاية");
+                document.getElementById('wilayaSelect').classList.remove('hidden');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude, "موقعك الحالي", "geo");
+                },
+                (err) => {
+                    showError("تعذر الوصول إلى الموقع الجغرافي، يرجى اختيار ولاية");
+                    document.getElementById('wilayaSelect').classList.remove('hidden');
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+            );
+        }
+
+        function handleWilayaSelection(e) {
+            hideError();
+            const wilaya = wilayas.find(w => w.id == e.target.value);
+            if (wilaya) {
+                localStorage.setItem('sabeel_loc', JSON.stringify({ id: wilaya.id, name: wilaya.ar_name, lat: wilaya.lat, lon: wilaya.lon }));
+                fetchPrayerTimes(wilaya.lat, wilaya.lon, wilaya.ar_name, wilaya.id);
+            }
+        }
+
+        function getCurrentDateString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        }
+
+        function getCachedPrayerTimes(locId) {
+            const cached = localStorage.getItem(`prayers_${locId}_${getCurrentDateString()}`);
+            return cached ? JSON.parse(cached) : null;
+        }
+
+        function setCachedPrayerTimes(locId, data) {
+            Object.keys(localStorage).forEach(k => { if(k.startsWith('prayers_')) localStorage.removeItem(k); });
+            localStorage.setItem(`prayers_${locId}_${getCurrentDateString()}`, JSON.stringify(data));
+        }
+
+        async function fetchPrayerTimes(lat, lon, locationName, locId) {
+            document.getElementById('locationDisplay').textContent = "جاري جلب المواقيت...";
+            document.getElementById('locationDisplay').classList.remove('hidden');
+
+            const cachedData = getCachedPrayerTimes(locId);
+            if (cachedData) return processPrayerData(cachedData, locationName);
+
+            try {
+                let dataToUse = null;
+                if(API_KEY !== "YOUR_API_KEY") {
+                    const res = await fetch(`https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=5&school=1&api_key=${API_KEY}`);
+                    if (!res.ok) throw new Error("API Error");
+                    const json = await res.json();
+                    const t = json.data || json;
+                    dataToUse = { Fajr: t.Fajr||t.fajr, Sunrise: t.Sunrise||t.sunrise, Dhuhr: t.Dhuhr||t.dhuhr, Asr: t.Asr||t.asr, Maghrib: t.Maghrib||t.maghrib, Isha: t.Isha||t.isha };
+                } else {
+                    dataToUse = { Fajr: "05:15", Sunrise: "06:40", Dhuhr: "12:45", Asr: "16:20", Maghrib: "18:45", Isha: "20:10" };
+                }
+                setCachedPrayerTimes(locId, dataToUse);
+                processPrayerData(dataToUse, locationName);
+            } catch (error) {
+                const fallbackCache = Object.keys(localStorage).find(k => k.startsWith(`prayers_${locId}`));
+                if (fallbackCache) {
+                    processPrayerData(JSON.parse(localStorage.getItem(fallbackCache)), locationName);
+                    showError("يتم عرض بيانات محفوظة مسبقاً (تعذر الاتصال بالشبكة)");
+                } else {
+                    showError("حدث خطأ في جلب مواقيت الصلاة");
+                    document.getElementById('locationDisplay').classList.add('hidden');
+                }
+            }
+        }
+
+        function renderEmptyGrid() {
+            document.getElementById('prayerGrid').innerHTML = PRAYERS.map(p => `
+                <div class="prayer-card" id="card-${p.key}">
+                    <span class="prayer-name">${p.ar}</span><span class="prayer-time">--:--</span>
+                </div>
+            `).join('');
+        }
+
+        function processPrayerData(data, locationName) {
+            currentPrayerData = data;
+            document.getElementById('locationDisplay').textContent = `المواقيت في: ${locationName}`;
+            document.getElementById('prayerGrid').innerHTML = PRAYERS.map(p => `
+                <div class="prayer-card" id="card-${p.key}">
+                    <span class="prayer-name">${p.ar}</span><span class="prayer-time">${data[p.key] || "--:--"}</span>
+                </div>
+            `).join('');
+            startCountdown();
+        }
+
+        function parseTimeString(timeStr, dateObj) {
+            if(!timeStr) return dateObj;
+            const [h, m] = timeStr.split(':').map(Number);
+            const d = new Date(dateObj);
+            d.setHours(h, m, 0, 0);
+            return d;
+        }
+
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            highlightNextPrayer();
+            countdownInterval = setInterval(highlightNextPrayer, 1000);
+        }
+
+        function highlightNextPrayer() {
+            if (!currentPrayerData) return;
+            const now = new Date();
+            let nextPrayer = null;
+            let targetDate = null;
+
+            const evalList = PRAYERS.filter(p => p.key !== 'Sunrise');
+            for (let i = 0; i < evalList.length; i++) {
+                const pTime = parseTimeString(currentPrayerData[evalList[i].key], now);
+                if (pTime > now) { nextPrayer = evalList[i]; targetDate = pTime; break; }
+            }
+
+            if (!nextPrayer) {
+                nextPrayer = evalList[0];
+                targetDate = parseTimeString(currentPrayerData['Fajr'], now);
+                targetDate.setDate(targetDate.getDate() + 1);
+            }
+
+            document.querySelectorAll('.prayer-card').forEach(c => c.classList.remove('active'));
+            const activeCard = document.getElementById(`card-${nextPrayer.key}`);
+            if(activeCard) activeCard.classList.add('active');
+
+            const diffMs = targetDate - now;
+            if (diffMs <= 0) return highlightNextPrayer();
+
+            const h = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diffMs / 1000 / 60) % 60);
+            const s = Math.floor((diffMs / 1000) % 60);
+            const format = n => String(n).padStart(2, '0');
+
+            document.getElementById('nextPrayerNameLabel').textContent = nextPrayer.ar;
+            document.getElementById('countdownTimer').textContent = `${format(h)}:${format(m)}:${format(s)}`;
+        }
+    </script>
+</body>
+</html>
