@@ -387,7 +387,6 @@
     </main>
 
     <footer>
-        <footer>
         <div class="container footer-content">
             <div class="footer-date" id="hijriDate"></div>
             
@@ -412,303 +411,442 @@
             <div class="footer-date" id="gregDate"></div>
         </div>
     </footer>
-    </footer>
 
     <script>
-        const API_KEY = "YOUR_API_KEY";
-        
-        const wilayas = [
-            { id: 1, ar_name: "أدرار", lat: 27.8767, lon: -0.2833 }, { id: 2, ar_name: "الشلف", lat: 36.1659, lon: 1.3345 },
-            { id: 3, ar_name: "الأغواط", lat: 33.8078, lon: 2.8808 }, { id: 4, ar_name: "أم البواقي", lat: 35.8752, lon: 7.1135 },
-            { id: 5, ar_name: "باتنة", lat: 35.5559, lon: 6.1741 }, { id: 6, ar_name: "بجاية", lat: 36.7525, lon: 5.0847 },
-            { id: 7, ar_name: "بسكرة", lat: 34.8504, lon: 5.7280 }, { id: 8, ar_name: "بشار", lat: 31.6238, lon: -2.2162 },
-            { id: 9, ar_name: "البليدة", lat: 36.4700, lon: 2.8287 }, { id: 10, ar_name: "البويرة", lat: 36.3749, lon: 3.9020 },
-            { id: 11, ar_name: "تمنراست", lat: 22.7850, lon: 5.5228 }, { id: 12, ar_name: "تبسة", lat: 35.4042, lon: 8.1242 },
-            { id: 13, ar_name: "تلمسان", lat: 34.8783, lon: -1.3150 }, { id: 14, ar_name: "تيارت", lat: 35.3710, lon: 1.3160 },
-            { id: 15, ar_name: "تيزي وزو", lat: 36.7169, lon: 4.0497 }, { id: 16, ar_name: "الجزائر", lat: 36.7538, lon: 3.0588 },
-            { id: 17, ar_name: "الجلفة", lat: 34.6728, lon: 3.2630 }, { id: 18, ar_name: "جيجل", lat: 36.8210, lon: 5.7667 },
-            { id: 19, ar_name: "سطيف", lat: 36.1900, lon: 5.4100 }, { id: 20, ar_name: "سعيدة", lat: 34.8303, lon: 0.1517 },
-            { id: 21, ar_name: "سكيكدة", lat: 36.8667, lon: 6.9000 }, { id: 22, ar_name: "سيدي بلعباس", lat: 35.1899, lon: -0.6308 },
-            { id: 23, ar_name: "عنابة", lat: 36.9000, lon: 7.7667 }, { id: 24, ar_name: "قالمة", lat: 36.4621, lon: 7.4261 },
-            { id: 25, ar_name: "قسنطينة", lat: 36.3650, lon: 6.6147 }, { id: 26, ar_name: "المدية", lat: 36.2642, lon: 2.7539 },
-            { id: 27, ar_name: "مستغانم", lat: 35.9311, lon: 0.0892 }, { id: 28, ar_name: "المسيلة", lat: 35.7058, lon: 4.5419 },
-            { id: 29, ar_name: "معسكر", lat: 35.3966, lon: 0.1403 }, { id: 30, ar_name: "ورقلة", lat: 31.9493, lon: 5.3250 },
-            { id: 31, ar_name: "وهران", lat: 35.6971, lon: -0.6308 }, { id: 32, ar_name: "البيض", lat: 33.6833, lon: 1.0193 },
-            { id: 33, ar_name: "إليزي", lat: 26.4833, lon: 8.4667 }, { id: 34, ar_name: "برج بوعريريج", lat: 36.0732, lon: 4.7611 },
-            { id: 35, ar_name: "بومرداس", lat: 36.7664, lon: 3.4772 }, { id: 36, ar_name: "الطارف", lat: 36.7672, lon: 8.3138 },
-            { id: 37, ar_name: "تندوف", lat: 27.6711, lon: -8.1474 }, { id: 38, ar_name: "تيسمسيلت", lat: 35.6072, lon: 1.8108 },
-            { id: 39, ar_name: "الوادي", lat: 33.3678, lon: 6.8515 }, { id: 40, ar_name: "خنشلة", lat: 35.4358, lon: 7.1433 },
-            { id: 41, ar_name: "سوق أهراس", lat: 36.2864, lon: 7.9511 }, { id: 42, ar_name: "تيبازة", lat: 36.5897, lon: 2.4475 },
-            { id: 43, ar_name: "ميلة", lat: 36.4500, lon: 6.2644 }, { id: 44, ar_name: "عين الدفلى", lat: 36.2641, lon: 1.9679 },
-            { id: 45, ar_name: "النعامة", lat: 33.2667, lon: -0.3167 }, { id: 46, ar_name: "عين تموشنت", lat: 35.2975, lon: -1.1404 },
-            { id: 47, ar_name: "غرداية", lat: 32.4909, lon: 3.6735 }, { id: 48, ar_name: "غليزان", lat: 35.7373, lon: 0.5559 },
-            { id: 49, ar_name: "تيميمون", lat: 29.2639, lon: 0.2306 }, { id: 50, ar_name: "برج باجي مختار", lat: 21.3289, lon: 0.9539 },
-            { id: 51, ar_name: "أولاد جلال", lat: 34.4167, lon: 5.0833 }, { id: 52, ar_name: "بني عباس", lat: 30.1333, lon: -2.1667 },
-            { id: 53, ar_name: "عين صالح", lat: 27.1935, lon: 2.4607 }, { id: 54, ar_name: "عين قزام", lat: 19.5667, lon: 5.7667 },
-            { id: 55, ar_name: "تقرت", lat: 33.1053, lon: 6.0574 }, { id: 56, ar_name: "جانت", lat: 24.5542, lon: 9.4847 },
-            { id: 57, ar_name: "المغير", lat: 33.9500, lon: 5.9167 }, { id: 58, ar_name: "المنيعة", lat: 30.5833, lon: 2.8833 }
-        ];
-
-        const PRAYERS = [
-            { key: 'Fajr', ar: 'الفجر' },
-            { key: 'Sunrise', ar: 'الشروق' },
-            { key: 'Dhuhr', ar: 'الظهر' },
-            { key: 'Asr', ar: 'العصر' }, 
-            { key: 'Maghrib', ar: 'المغرب' },
-            { key: 'Isha', ar: 'العشاء' }
-        ];
-
-        let currentPrayerData = null;
-        let countdownInterval = null;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            handleMobileMenu();
-            handleTypingEffect();
-            populateWilayaDropdown();
-            setDates();
-            setupInitialPrayerState();
-
-            document.getElementById('locateBtn').addEventListener('click', requestLocation);
-            document.getElementById('wilayaSelect').addEventListener('change', handleWilayaSelection);
-        });
-
-        function initTheme() {
-            const toggle = document.getElementById('themeToggle');
-            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            toggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-
-            toggle.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('sabeel_theme', next);
-                toggle.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        }
-
-        function handleMobileMenu() {
-            const btn = document.getElementById('hamburgerBtn');
-            const nav = document.getElementById('mobileNav');
-            btn.addEventListener('click', () => {
-                nav.classList.toggle('active');
-                btn.textContent = nav.classList.contains('active') ? '✕' : '☰';
-            });
-        }
-
-        function setDates() {
-            const today = new Date();
-            const gOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('gregDate').textContent = today.toLocaleDateString('ar-DZ', gOptions);
+        (function() {
+            // ==================== CONFIGURATION ====================
+            const ALADHAN_API = 'https://api.aladhan.com/v1/timings';
+            // Standard calculation method for Algeria (Umm Al-Qura is widely used, but we'll use 5 for compatibility)
+            const CALCULATION_METHOD = 5; // Egyptian General Authority of Survey (works well for Algeria & Arab world)
+            const ASR_METHOD = 0; // 0 = Standard (Shafi, Maliki, Hanbali) - not Hanafi (1)
             
-            try {
-                const hOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                document.getElementById('hijriDate').textContent = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hOptions).format(today);
-            } catch(e) {
-                document.getElementById('hijriDate').textContent = "التاريخ الهجري غير متوفر";
+            // ==================== WILAYAS DATA ====================
+            const wilayas = [
+                { id: 1, ar_name: "أدرار", lat: 27.8767, lon: -0.2833 }, { id: 2, ar_name: "الشلف", lat: 36.1659, lon: 1.3345 },
+                { id: 3, ar_name: "الأغواط", lat: 33.8078, lon: 2.8808 }, { id: 4, ar_name: "أم البواقي", lat: 35.8752, lon: 7.1135 },
+                { id: 5, ar_name: "باتنة", lat: 35.5559, lon: 6.1741 }, { id: 6, ar_name: "بجاية", lat: 36.7525, lon: 5.0847 },
+                { id: 7, ar_name: "بسكرة", lat: 34.8504, lon: 5.7280 }, { id: 8, ar_name: "بشار", lat: 31.6238, lon: -2.2162 },
+                { id: 9, ar_name: "البليدة", lat: 36.4700, lon: 2.8287 }, { id: 10, ar_name: "البويرة", lat: 36.3749, lon: 3.9020 },
+                { id: 11, ar_name: "تمنراست", lat: 22.7850, lon: 5.5228 }, { id: 12, ar_name: "تبسة", lat: 35.4042, lon: 8.1242 },
+                { id: 13, ar_name: "تلمسان", lat: 34.8783, lon: -1.3150 }, { id: 14, ar_name: "تيارت", lat: 35.3710, lon: 1.3160 },
+                { id: 15, ar_name: "تيزي وزو", lat: 36.7169, lon: 4.0497 }, { id: 16, ar_name: "الجزائر", lat: 36.7538, lon: 3.0588 },
+                { id: 17, ar_name: "الجلفة", lat: 34.6728, lon: 3.2630 }, { id: 18, ar_name: "جيجل", lat: 36.8210, lon: 5.7667 },
+                { id: 19, ar_name: "سطيف", lat: 36.1900, lon: 5.4100 }, { id: 20, ar_name: "سعيدة", lat: 34.8303, lon: 0.1517 },
+                { id: 21, ar_name: "سكيكدة", lat: 36.8667, lon: 6.9000 }, { id: 22, ar_name: "سيدي بلعباس", lat: 35.1899, lon: -0.6308 },
+                { id: 23, ar_name: "عنابة", lat: 36.9000, lon: 7.7667 }, { id: 24, ar_name: "قالمة", lat: 36.4621, lon: 7.4261 },
+                { id: 25, ar_name: "قسنطينة", lat: 36.3650, lon: 6.6147 }, { id: 26, ar_name: "المدية", lat: 36.2642, lon: 2.7539 },
+                { id: 27, ar_name: "مستغانم", lat: 35.9311, lon: 0.0892 }, { id: 28, ar_name: "المسيلة", lat: 35.7058, lon: 4.5419 },
+                { id: 29, ar_name: "معسكر", lat: 35.3966, lon: 0.1403 }, { id: 30, ar_name: "ورقلة", lat: 31.9493, lon: 5.3250 },
+                { id: 31, ar_name: "وهران", lat: 35.6971, lon: -0.6308 }, { id: 32, ar_name: "البيض", lat: 33.6833, lon: 1.0193 },
+                { id: 33, ar_name: "إليزي", lat: 26.4833, lon: 8.4667 }, { id: 34, ar_name: "برج بوعريريج", lat: 36.0732, lon: 4.7611 },
+                { id: 35, ar_name: "بومرداس", lat: 36.7664, lon: 3.4772 }, { id: 36, ar_name: "الطارف", lat: 36.7672, lon: 8.3138 },
+                { id: 37, ar_name: "تندوف", lat: 27.6711, lon: -8.1474 }, { id: 38, ar_name: "تيسمسيلت", lat: 35.6072, lon: 1.8108 },
+                { id: 39, ar_name: "الوادي", lat: 33.3678, lon: 6.8515 }, { id: 40, ar_name: "خنشلة", lat: 35.4358, lon: 7.1433 },
+                { id: 41, ar_name: "سوق أهراس", lat: 36.2864, lon: 7.9511 }, { id: 42, ar_name: "تيبازة", lat: 36.5897, lon: 2.4475 },
+                { id: 43, ar_name: "ميلة", lat: 36.4500, lon: 6.2644 }, { id: 44, ar_name: "عين الدفلى", lat: 36.2641, lon: 1.9679 },
+                { id: 45, ar_name: "النعامة", lat: 33.2667, lon: -0.3167 }, { id: 46, ar_name: "عين تموشنت", lat: 35.2975, lon: -1.1404 },
+                { id: 47, ar_name: "غرداية", lat: 32.4909, lon: 3.6735 }, { id: 48, ar_name: "غليزان", lat: 35.7373, lon: 0.5559 },
+                { id: 49, ar_name: "تيميمون", lat: 29.2639, lon: 0.2306 }, { id: 50, ar_name: "برج باجي مختار", lat: 21.3289, lon: 0.9539 },
+                { id: 51, ar_name: "أولاد جلال", lat: 34.4167, lon: 5.0833 }, { id: 52, ar_name: "بني عباس", lat: 30.1333, lon: -2.1667 },
+                { id: 53, ar_name: "عين صالح", lat: 27.1935, lon: 2.4607 }, { id: 54, ar_name: "عين قزام", lat: 19.5667, lon: 5.7667 },
+                { id: 55, ar_name: "تقرت", lat: 33.1053, lon: 6.0574 }, { id: 56, ar_name: "جانت", lat: 24.5542, lon: 9.4847 },
+                { id: 57, ar_name: "المغير", lat: 33.9500, lon: 5.9167 }, { id: 58, ar_name: "المنيعة", lat: 30.5833, lon: 2.8833 }
+            ];
+
+            const PRAYERS = [
+                { key: 'Fajr', ar: 'الفجر' },
+                { key: 'Sunrise', ar: 'الشروق' },
+                { key: 'Dhuhr', ar: 'الظهر' },
+                { key: 'Asr', ar: 'العصر' }, 
+                { key: 'Maghrib', ar: 'المغرب' },
+                { key: 'Isha', ar: 'العشاء' }
+            ];
+
+            // ==================== GLOBAL STATE ====================
+            let currentPrayerData = null;
+            let countdownInterval = null;
+            let isLoading = false;
+
+            // ==================== DOM ELEMENTS ====================
+            const locationDisplay = document.getElementById('locationDisplay');
+            const errorMsg = document.getElementById('errorMsg');
+            const wilayaSelect = document.getElementById('wilayaSelect');
+            const locateBtn = document.getElementById('locateBtn');
+            const prayerGrid = document.getElementById('prayerGrid');
+            const nextPrayerNameLabel = document.getElementById('nextPrayerNameLabel');
+            const countdownTimer = document.getElementById('countdownTimer');
+
+            // ==================== INITIALIZATION ====================
+            function initTheme() {
+                const toggle = document.getElementById('themeToggle');
+                const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                toggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+                toggle.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('sabeel_theme', next);
+                    toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+                });
             }
-        }
 
-        function handleTypingEffect() {
-            const titleEl = document.getElementById('heroTitle');
-            const textEl = document.getElementById('heroText');
-            
-            titleEl.textContent = "سبيل";
-            
-            const fullText = "محطّتك الإيمانية الهادئة في عالم مزدحم، ووجهتك الرقمية للسكينة، والتزود بالعلم، والارتواء من معين الهداية. هنا نسير معًا في دروب الذكر والتدبر، ونتأمل معاني القرآن، ونتفيّأ ظلال السنّة، ونُحيي في قلوبنا نور الإيمان.<br><br>في سبيل، نؤمن أن لكل قلبٍ عطش، ولا يُروى إلا بالقرب من الله، فكان هذا الموقع سعيًا خالصًا ليكون لك معينًا في درب الطاعة، وسبيلاً إلى المعرفة الربانية النقية.<br><br>نُقدّم لك محتوى إسلاميًا موثوقًا، وأدوات نافعة مثل السبحة الإلكترونية، وأوقات الصلاة، والقرآن الكريم بأجمل الأصوات، والأذكار اليومية، ليكون الموقع رفيقك في كل حين.<br><br>نسأل الله أن يجعل سبيل منارةً للخير، وصدقةً جارية، ونورًا يهتدي به كل من مرّ من هنا.<br>أهلًا بك… وجعلنا الله وإياك من السائرين على السبيل المستقيم، الثابتين على الحق، السالكين درب الرضا واليقين.";
+            function handleMobileMenu() {
+                const btn = document.getElementById('hamburgerBtn');
+                const nav = document.getElementById('mobileNav');
+                btn.addEventListener('click', () => {
+                    nav.classList.toggle('active');
+                    btn.textContent = nav.classList.contains('active') ? '✕' : '☰';
+                });
+            }
 
-            const isMobile = window.innerWidth <= 768;
-            const speed = isMobile ? 15 : 25;
-            let i = 0;
-            let isTag = false;
-
-            function typeText() {
-                if (i < fullText.length) {
-                    // تجاوز علامات الـ HTML (مثل <br>) باش ما يكتبهاش حرف بحرف
-                    if (fullText.charAt(i) === '<') isTag = true;
-                    if (fullText.charAt(i) === '>') isTag = false;
-                    
-                    textEl.innerHTML = fullText.substring(0, i + 1);
-                    i++;
-                    
-                    setTimeout(typeText, isTag ? 0 : speed);
+            function setDates() {
+                const today = new Date();
+                const gOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('gregDate').textContent = today.toLocaleDateString('ar-DZ', gOptions);
+                
+                try {
+                    const hOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    document.getElementById('hijriDate').textContent = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hOptions).format(today);
+                } catch(e) {
+                    document.getElementById('hijriDate').textContent = "التاريخ الهجري غير متوفر";
                 }
             }
-            setTimeout(typeText, 500);
-        }
 
-        function populateWilayaDropdown() {
-            const select = document.getElementById('wilayaSelect');
-            wilayas.forEach(w => {
-                const opt = document.createElement('option');
-                opt.value = w.id;
-                opt.textContent = `${String(w.id).padStart(2, '0')} - ${w.ar_name}`;
-                select.appendChild(opt);
+            function handleTypingEffect() {
+                const titleEl = document.getElementById('heroTitle');
+                const textEl = document.getElementById('heroText');
+                
+                titleEl.textContent = "سبيل";
+                
+                const fullText = "محطّتك الإيمانية الهادئة في عالم مزدحم، ووجهتك الرقمية للسكينة، والتزود بالعلم، والارتواء من معين الهداية. هنا نسير معًا في دروب الذكر والتدبر، ونتأمل معاني القرآن، ونتفيّأ ظلال السنّة، ونُحيي في قلوبنا نور الإيمان.<br><br>في سبيل، نؤمن أن لكل قلبٍ عطش، ولا يُروى إلا بالقرب من الله، فكان هذا الموقع سعيًا خالصًا ليكون لك معينًا في درب الطاعة، وسبيلاً إلى المعرفة الربانية النقية.<br><br>نُقدّم لك محتوى إسلاميًا موثوقًا، وأدوات نافعة مثل السبحة الإلكترونية، وأوقات الصلاة، والقرآن الكريم بأجمل الأصوات، والأذكار اليومية، ليكون الموقع رفيقك في كل حين.<br><br>نسأل الله أن يجعل سبيل منارةً للخير، وصدقةً جارية، ونورًا يهتدي به كل من مرّ من هنا.<br>أهلًا بك… وجعلنا الله وإياك من السائرين على السبيل المستقيم، الثابتين على الحق، السالكين درب الرضا واليقين.";
+
+                const isMobile = window.innerWidth <= 768;
+                const speed = isMobile ? 15 : 25;
+                let i = 0;
+                let isTag = false;
+
+                function typeText() {
+                    if (i < fullText.length) {
+                        if (fullText.charAt(i) === '<') isTag = true;
+                        if (fullText.charAt(i) === '>') isTag = false;
+                        
+                        textEl.innerHTML = fullText.substring(0, i + 1);
+                        i++;
+                        
+                        setTimeout(typeText, isTag ? 0 : speed);
+                    }
+                }
+                setTimeout(typeText, 500);
+            }
+
+            function populateWilayaDropdown() {
+                wilayas.forEach(w => {
+                    const opt = document.createElement('option');
+                    opt.value = w.id;
+                    opt.textContent = `${String(w.id).padStart(2, '0')} - ${w.ar_name}`;
+                    wilayaSelect.appendChild(opt);
+                });
+            }
+
+            // ==================== UI HELPERS ====================
+            function showError(msg) {
+                errorMsg.textContent = msg;
+                errorMsg.classList.remove('hidden');
+            }
+
+            function hideError() {
+                errorMsg.classList.add('hidden');
+            }
+
+            function setLoading(loading) {
+                isLoading = loading;
+                locateBtn.disabled = loading;
+                locateBtn.style.opacity = loading ? '0.7' : '1';
+                if (loading) {
+                    locationDisplay.textContent = '⏳ جارٍ تحديد الموقع وجلب المواقيت...';
+                    locationDisplay.classList.remove('hidden');
+                }
+            }
+
+            function renderEmptyGrid() {
+                prayerGrid.innerHTML = PRAYERS.map(p => `
+                    <div class="prayer-card" id="card-${p.key}">
+                        <span class="prayer-name">${p.ar}</span><span class="prayer-time">--:--</span>
+                    </div>
+                `).join('');
+            }
+
+            function formatTimeToHHMM(date) {
+                return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+            }
+
+            // ==================== CACHE MANAGEMENT ====================
+            function getCacheKey(lat, lon) {
+                const date = new Date();
+                return `prayers_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${lat.toFixed(4)}_${lon.toFixed(4)}`;
+            }
+
+            function getCachedPrayerTimes(lat, lon) {
+                const key = getCacheKey(lat, lon);
+                const cached = localStorage.getItem(key);
+                if (cached) {
+                    try {
+                        return JSON.parse(cached);
+                    } catch (e) {
+                        return null;
+                    }
+                }
+                return null;
+            }
+
+            function setCachedPrayerTimes(lat, lon, data) {
+                const key = getCacheKey(lat, lon);
+                // Keep only today's cache for simplicity (automatically expires)
+                localStorage.setItem(key, JSON.stringify(data));
+            }
+
+            // ==================== API & PROCESSING ====================
+            async function fetchPrayerTimesFromAPI(lat, lon) {
+                const url = `${ALADHAN_API}/${Math.floor(Date.now() / 1000)}?latitude=${lat}&longitude=${lon}&method=${CALCULATION_METHOD}&school=${ASR_METHOD}`;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`API responded with status ${response.status}`);
+                }
+                const json = await response.json();
+                if (json.code !== 200) {
+                    throw new Error('Invalid API response');
+                }
+                return json.data.timings;
+            }
+
+            function transformTimings(timings) {
+                return {
+                    Fajr: timings.Fajr.substring(0, 5),
+                    Sunrise: timings.Sunrise.substring(0, 5),
+                    Dhuhr: timings.Dhuhr.substring(0, 5),
+                    Asr: timings.Asr.substring(0, 5),
+                    Maghrib: timings.Maghrib.substring(0, 5),
+                    Isha: timings.Isha.substring(0, 5)
+                };
+            }
+
+            async function fetchAndProcessPrayerTimes(lat, lon, locationName) {
+                // 1. Try cache first
+                const cached = getCachedPrayerTimes(lat, lon);
+                if (cached) {
+                    processPrayerData(cached, locationName);
+                    return;
+                }
+
+                // 2. Fetch from API
+                try {
+                    const timings = await fetchPrayerTimesFromAPI(lat, lon);
+                    const transformed = transformTimings(timings);
+                    setCachedPrayerTimes(lat, lon, transformed);
+                    processPrayerData(transformed, locationName);
+                } catch (error) {
+                    console.warn('API fetch failed:', error);
+                    // Fallback: try to use any cached data for this lat/lon from previous days?
+                    // Not implemented for simplicity, but we show error
+                    showError('تعذر جلب المواقيت من الشبكة. تأكد من اتصالك.');
+                    locationDisplay.textContent = `فشل في تحديث مواقيت ${locationName}`;
+                }
+            }
+
+            function processPrayerData(data, locationName) {
+                currentPrayerData = data;
+                locationDisplay.textContent = `🕌 المواقيت في: ${locationName}`;
+                
+                // Render prayer grid
+                prayerGrid.innerHTML = PRAYERS.map(p => `
+                    <div class="prayer-card" id="card-${p.key}">
+                        <span class="prayer-name">${p.ar}</span>
+                        <span class="prayer-time">${data[p.key] || "--:--"}</span>
+                    </div>
+                `).join('');
+                
+                startCountdown();
+                hideError();
+                setLoading(false);
+            }
+
+            // ==================== COUNTDOWN & HIGHLIGHT ====================
+            function parseTimeString(timeStr, dateObj) {
+                if(!timeStr) return dateObj;
+                const [h, m] = timeStr.split(':').map(Number);
+                const d = new Date(dateObj);
+                d.setHours(h, m, 0, 0);
+                return d;
+            }
+
+            function startCountdown() {
+                if (countdownInterval) clearInterval(countdownInterval);
+                highlightNextPrayer();
+                countdownInterval = setInterval(highlightNextPrayer, 1000);
+            }
+
+            function highlightNextPrayer() {
+                if (!currentPrayerData) return;
+                
+                const now = new Date();
+                let nextPrayer = null;
+                let targetDate = null;
+
+                const evalList = PRAYERS.filter(p => p.key !== 'Sunrise');
+                
+                for (let i = 0; i < evalList.length; i++) {
+                    const pTime = parseTimeString(currentPrayerData[evalList[i].key], now);
+                    if (pTime > now) {
+                        nextPrayer = evalList[i];
+                        targetDate = pTime;
+                        break;
+                    }
+                }
+
+                if (!nextPrayer) {
+                    nextPrayer = evalList[0];
+                    targetDate = parseTimeString(currentPrayerData['Fajr'], now);
+                    targetDate.setDate(targetDate.getDate() + 1);
+                }
+
+                // Update active card
+                document.querySelectorAll('.prayer-card').forEach(c => c.classList.remove('active'));
+                const activeCard = document.getElementById(`card-${nextPrayer.key}`);
+                if(activeCard) activeCard.classList.add('active');
+
+                const diffMs = targetDate - now;
+                if (diffMs <= 0) {
+                    // Re-run if we missed the exact second
+                    return highlightNextPrayer();
+                }
+
+                const h = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diffMs / 1000 / 60) % 60);
+                const s = Math.floor((diffMs / 1000) % 60);
+                const format = n => String(n).padStart(2, '0');
+
+                nextPrayerNameLabel.textContent = nextPrayer.ar;
+                countdownTimer.textContent = `${format(h)}:${format(m)}:${format(s)}`;
+            }
+
+            // ==================== LOCATION HANDLERS ====================
+            async function handleLocationSuccess(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                // Reverse geocode for name (simple fallback: coordinates)
+                let locationName = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+                try {
+                    // Simple reverse geocode using nominatim (optional, might fail)
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
+                    const data = await res.json();
+                    if (data && data.address) {
+                        const addr = data.address;
+                        locationName = addr.city || addr.town || addr.village || addr.state || addr.county || locationName;
+                        if (addr.state) locationName += `, ${addr.state}`;
+                    }
+                } catch (e) {
+                    console.warn('Reverse geocode failed, using coordinates.');
+                }
+
+                // Save to localStorage
+                localStorage.setItem('sabeel_loc', JSON.stringify({ lat, lon, name: locationName, id: 'gps' }));
+                wilayaSelect.classList.remove('hidden');
+                
+                await fetchAndProcessPrayerTimes(lat, lon, locationName);
+            }
+
+            function handleLocationError(error) {
+                setLoading(false);
+                let msg = 'تعذر تحديد الموقع. ';
+                if (error.code === 1) msg += 'تم رفض الإذن.';
+                else if (error.code === 2) msg += 'الموقع غير متوفر.';
+                else if (error.code === 3) msg += 'انتهت مهلة الطلب.';
+                else msg += 'يرجى اختيار ولاية يدوياً.';
+                
+                showError(msg);
+                wilayaSelect.classList.remove('hidden');
+                locationDisplay.classList.add('hidden');
+            }
+
+            function requestLocation() {
+                hideError();
+                setLoading(true);
+                
+                if (!navigator.geolocation) {
+                    setLoading(false);
+                    showError('متصفحك لا يدعم تحديد الموقع الجغرافي. اختر ولاية.');
+                    wilayaSelect.classList.remove('hidden');
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    handleLocationSuccess,
+                    handleLocationError,
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                );
+            }
+
+            async function handleWilayaSelection(e) {
+                hideError();
+                const wilayaId = e.target.value;
+                if (!wilayaId) return;
+                
+                const wilaya = wilayas.find(w => w.id == wilayaId);
+                if (!wilaya) return;
+                
+                setLoading(true);
+                localStorage.setItem('sabeel_loc', JSON.stringify({ 
+                    id: wilaya.id, 
+                    name: wilaya.ar_name, 
+                    lat: wilaya.lat, 
+                    lon: wilaya.lon 
+                }));
+                
+                await fetchAndProcessPrayerTimes(wilaya.lat, wilaya.lon, wilaya.ar_name);
+                wilayaSelect.classList.remove('hidden');
+            }
+
+            // ==================== RESTORE PREVIOUS LOCATION ====================
+            async function restorePreviousLocation() {
+                const cachedLoc = localStorage.getItem('sabeel_loc');
+                if (!cachedLoc) return;
+                
+                try {
+                    const loc = JSON.parse(cachedLoc);
+                    wilayaSelect.classList.remove('hidden');
+                    if (loc.id === 'gps') {
+                        // Use saved GPS coords
+                        setLoading(true);
+                        await fetchAndProcessPrayerTimes(loc.lat, loc.lon, loc.name || 'موقعك المحفوظ');
+                    } else if (loc.id) {
+                        wilayaSelect.value = loc.id;
+                        setLoading(true);
+                        await fetchAndProcessPrayerTimes(loc.lat, loc.lon, loc.name);
+                    }
+                } catch (e) {
+                    console.warn('Failed to restore location');
+                }
+            }
+
+            // ==================== EVENT LISTENERS & START ====================
+            document.addEventListener('DOMContentLoaded', () => {
+                initTheme();
+                handleMobileMenu();
+                handleTypingEffect();
+                populateWilayaDropdown();
+                setDates();
+                renderEmptyGrid();
+
+                locateBtn.addEventListener('click', requestLocation);
+                wilayaSelect.addEventListener('change', handleWilayaSelection);
+                
+                // Attempt to restore last known location
+                restorePreviousLocation();
             });
-        }
-
-        function showError(msg) {
-            const el = document.getElementById('errorMsg');
-            el.textContent = msg;
-            el.classList.remove('hidden');
-        }
-
-        function hideError() { document.getElementById('errorMsg').classList.add('hidden'); }
-
-        function setupInitialPrayerState() {
-            renderEmptyGrid();
-            const cachedLoc = localStorage.getItem('sabeel_loc');
-            if (cachedLoc) {
-                const loc = JSON.parse(cachedLoc);
-                document.getElementById('wilayaSelect').classList.remove('hidden');
-                document.getElementById('wilayaSelect').value = loc.id;
-                fetchPrayerTimes(loc.lat, loc.lon, loc.name, loc.id);
-            }
-        }
-
-        function requestLocation() {
-            hideError();
-            if (!navigator.geolocation) {
-                showError("تعذر الوصول إلى الموقع الجغرافي، يرجى اختيار ولاية");
-                document.getElementById('wilayaSelect').classList.remove('hidden');
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude, "موقعك الحالي", "geo");
-                },
-                (err) => {
-                    showError("تعذر الوصول إلى الموقع الجغرافي، يرجى اختيار ولاية");
-                    document.getElementById('wilayaSelect').classList.remove('hidden');
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
-            );
-        }
-
-        function handleWilayaSelection(e) {
-            hideError();
-            const wilaya = wilayas.find(w => w.id == e.target.value);
-            if (wilaya) {
-                localStorage.setItem('sabeel_loc', JSON.stringify({ id: wilaya.id, name: wilaya.ar_name, lat: wilaya.lat, lon: wilaya.lon }));
-                fetchPrayerTimes(wilaya.lat, wilaya.lon, wilaya.ar_name, wilaya.id);
-            }
-        }
-
-        function getCurrentDateString() {
-            const d = new Date();
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-        }
-
-        function getCachedPrayerTimes(locId) {
-            const cached = localStorage.getItem(`prayers_${locId}_${getCurrentDateString()}`);
-            return cached ? JSON.parse(cached) : null;
-        }
-
-        function setCachedPrayerTimes(locId, data) {
-            Object.keys(localStorage).forEach(k => { if(k.startsWith('prayers_')) localStorage.removeItem(k); });
-            localStorage.setItem(`prayers_${locId}_${getCurrentDateString()}`, JSON.stringify(data));
-        }
-
-        async function fetchPrayerTimes(lat, lon, locationName, locId) {
-            document.getElementById('locationDisplay').textContent = "جاري جلب المواقيت...";
-            document.getElementById('locationDisplay').classList.remove('hidden');
-
-            const cachedData = getCachedPrayerTimes(locId);
-            if (cachedData) return processPrayerData(cachedData, locationName);
-
-            try {
-                let dataToUse = null;
-                if(API_KEY !== "YOUR_API_KEY") {
-                    const res = await fetch(`https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=5&school=1&api_key=${API_KEY}`);
-                    if (!res.ok) throw new Error("API Error");
-                    const json = await res.json();
-                    const t = json.data || json;
-                    dataToUse = { Fajr: t.Fajr||t.fajr, Sunrise: t.Sunrise||t.sunrise, Dhuhr: t.Dhuhr||t.dhuhr, Asr: t.Asr||t.asr, Maghrib: t.Maghrib||t.maghrib, Isha: t.Isha||t.isha };
-                } else {
-                    dataToUse = { Fajr: "05:15", Sunrise: "06:40", Dhuhr: "12:45", Asr: "16:20", Maghrib: "18:45", Isha: "20:10" };
-                }
-                setCachedPrayerTimes(locId, dataToUse);
-                processPrayerData(dataToUse, locationName);
-            } catch (error) {
-                const fallbackCache = Object.keys(localStorage).find(k => k.startsWith(`prayers_${locId}`));
-                if (fallbackCache) {
-                    processPrayerData(JSON.parse(localStorage.getItem(fallbackCache)), locationName);
-                    showError("يتم عرض بيانات محفوظة مسبقاً (تعذر الاتصال بالشبكة)");
-                } else {
-                    showError("حدث خطأ في جلب مواقيت الصلاة");
-                    document.getElementById('locationDisplay').classList.add('hidden');
-                }
-            }
-        }
-
-        function renderEmptyGrid() {
-            document.getElementById('prayerGrid').innerHTML = PRAYERS.map(p => `
-                <div class="prayer-card" id="card-${p.key}">
-                    <span class="prayer-name">${p.ar}</span><span class="prayer-time">--:--</span>
-                </div>
-            `).join('');
-        }
-
-        function processPrayerData(data, locationName) {
-            currentPrayerData = data;
-            document.getElementById('locationDisplay').textContent = `المواقيت في: ${locationName}`;
-            document.getElementById('prayerGrid').innerHTML = PRAYERS.map(p => `
-                <div class="prayer-card" id="card-${p.key}">
-                    <span class="prayer-name">${p.ar}</span><span class="prayer-time">${data[p.key] || "--:--"}</span>
-                </div>
-            `).join('');
-            startCountdown();
-        }
-
-        function parseTimeString(timeStr, dateObj) {
-            if(!timeStr) return dateObj;
-            const [h, m] = timeStr.split(':').map(Number);
-            const d = new Date(dateObj);
-            d.setHours(h, m, 0, 0);
-            return d;
-        }
-
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            highlightNextPrayer();
-            countdownInterval = setInterval(highlightNextPrayer, 1000);
-        }
-
-        function highlightNextPrayer() {
-            if (!currentPrayerData) return;
-            const now = new Date();
-            let nextPrayer = null;
-            let targetDate = null;
-
-            const evalList = PRAYERS.filter(p => p.key !== 'Sunrise');
-            for (let i = 0; i < evalList.length; i++) {
-                const pTime = parseTimeString(currentPrayerData[evalList[i].key], now);
-                if (pTime > now) { nextPrayer = evalList[i]; targetDate = pTime; break; }
-            }
-
-            if (!nextPrayer) {
-                nextPrayer = evalList[0];
-                targetDate = parseTimeString(currentPrayerData['Fajr'], now);
-                targetDate.setDate(targetDate.getDate() + 1);
-            }
-
-            document.querySelectorAll('.prayer-card').forEach(c => c.classList.remove('active'));
-            const activeCard = document.getElementById(`card-${nextPrayer.key}`);
-            if(activeCard) activeCard.classList.add('active');
-
-            const diffMs = targetDate - now;
-            if (diffMs <= 0) return highlightNextPrayer();
-
-            const h = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diffMs / 1000 / 60) % 60);
-            const s = Math.floor((diffMs / 1000) % 60);
-            const format = n => String(n).padStart(2, '0');
-
-            document.getElementById('nextPrayerNameLabel').textContent = nextPrayer.ar;
-            document.getElementById('countdownTimer').textContent = `${format(h)}:${format(m)}:${format(s)}`;
-        }
+        })();
     </script>
 </body>
 </html>
