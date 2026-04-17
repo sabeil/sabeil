@@ -211,7 +211,7 @@
 
             <div id="listenPlayerView" class="hidden">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="window.location.hash=''" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
+                    <button onclick="backToReciters()" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
                     <h2 id="viewReciterName" style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;"></h2>
                 </div>
                 
@@ -632,18 +632,29 @@
         }
 
         function selectReciter(id, updateHash = true) {
-            state.currentReciter = recitersData.find(r => r.id === id);
-            if(!state.currentReciter) return;
-            
-            // تغيير اسم القارئ في صفحة الاستماع (العلوي)
-            document.getElementById('viewReciterName').textContent = state.currentReciter.name;
-            
-            DOM.listenRecitersView.classList.add('hidden');
-            DOM.listenPlayerView.classList.remove('hidden');
-            renderListenSurahs();
-            if (updateHash) window.location.hash = `/reciter/${id}`;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+    state.currentReciter = recitersData.find(r => r.id === id);
+    if(!state.currentReciter) return;
+    
+    // تغيير اسم القارئ في صفحة الاستماع (العلوي)
+    document.getElementById('viewReciterName').textContent = state.currentReciter.name;
+    
+    DOM.listenRecitersView.classList.add('hidden');
+    DOM.listenPlayerView.classList.remove('hidden');
+    renderListenSurahs();
+    if (updateHash) window.location.hash = `/reciter/${id}`;
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function backToReciters() {
+    // نخفيو واجهة اختيار السور (المشغل)
+    DOM.listenPlayerView.classList.add('hidden');
+    
+    // نرجعو نبينو قائمة القراء
+    DOM.listenRecitersView.classList.remove('hidden');
+    
+    // نحدثو الرابط باش يبقى في قسم الاستماع وميرجعناش للفهرس
+    window.location.hash = '#/listen';
+}
 
         function renderListenSurahs() {
             document.getElementById('listenSurahsGrid').innerHTML = surahsData.map(s => `
