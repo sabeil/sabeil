@@ -487,18 +487,34 @@
         }
 
         async function showReadingMode() {
-            switchTab('readTab');
-            const s = state.currentReadSurah;
-            document.getElementById('readingTitle').textContent = "سورة " + s.name;
-            DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
-            try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}`);
-                const data = await res.json();
-                DOM.versesContainer.innerHTML = data.data.ayahs.map(a => 
-                    a.text + ` <span class="verse-num">(${toArabicNumber(a.numberInSurah)})</span>`
-                ).join(' ');
-            } catch(e) { DOM.versesContainer.textContent = "خطأ في الاتصال بالسيرفر."; }
-        }
+    switchTab('readTab');
+    const s = state.currentReadSurah;
+    document.getElementById('readingTitle').textContent = "سورة " + s.name;
+    DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
+    
+    try {
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}`);
+        const data = await res.json();
+
+        // التعديل يبدأ هنا لتنظيف النص من البسملة الزائدة
+        DOM.versesContainer.innerHTML = data.data.ayahs.map((a, index) => {
+            let verseText = a.text;
+            
+            // نحذف البسملة من بداية أول آية في كل سورة ما عدا الفاتحة (1) والتوبة (9)
+            if (index === 0 && s.id !== 1 && s.id !== 9) {
+                const bismillah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+                if (verseText.startsWith(bismillah)) {
+                    verseText = verseText.replace(bismillah, "").trim();
+                }
+            }
+
+            return verseText + ` <span class="verse-num">(${toArabicNumber(a.numberInSurah)})</span>`;
+        }).join(' ');
+
+    } catch(e) { 
+        DOM.versesContainer.textContent = "خطأ في الاتصال بالسيرفر."; 
+    }
+}
 
         function selectReciter(id, updateHash = true) {
             state.currentReciter = recitersData.find(r => r.id === id);
