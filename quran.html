@@ -398,31 +398,51 @@
 
         // ==================== 3. وظائف التشغيل (Initialization) ====================
         function init() {
-            renderSurahCards(); 
-            renderReciters(); 
-            setupEvents();
-            handleRouting();
-            updateFavoritesUI();
-            
-            window.addEventListener('hashchange', handleRouting);
-            
-            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        }
+    renderSurahCards(); 
+    setupEvents();
+    handleRouting();
+    updateFavoritesUI();
+    renderReciters();
+    
+    // سطر جديد: التأكد إذا كان كاين رقم سورة في الرابط
+    checkSurahDeepLink(); 
+
+    window.addEventListener('hashchange', handleRouting);
+    const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
 
         function handleRouting() {
-            const hash = window.location.hash;
-            if (hash.startsWith('#/reciter/')) {
-                const rId = parseInt(hash.replace('#/reciter/', ''));
-                if (!isNaN(rId)) { switchTab('listenTab'); selectReciter(rId, false); }
-            } else {
-                if (state.activeTab === 'listenTab') {
-                    DOM.listenPlayerView.classList.add('hidden');
-                    DOM.listenRecitersView.classList.remove('hidden');
-                    stopAudio();
-                }
-            }
+    const hash = window.location.hash;
+
+    // 1. حالة القراء (الاستماع)
+    if (hash.startsWith('#/reciter/')) {
+        const rId = parseInt(hash.replace('#/reciter/', ''));
+        if (!isNaN(rId)) { 
+            switchTab('listenTab', false); 
+            selectReciter(rId, false); 
         }
+    } 
+    // 2. حالة قراءة سورة معينة
+    else if (hash.startsWith('#/surah/')) {
+        const sId = parseInt(hash.replace('#/surah/', ''));
+        const s = surahsData.find(x => x.id === sId);
+        if (s) {
+            state.currentReadSurah = s;
+            switchTab('readTab', false);
+            showReadingMode();
+        }
+    }
+    // 3. التنقل العادي بين التبويبات
+    else {
+        if (hash === '#/read') switchTab('readTab', false);
+        else if (hash === '#/listen') switchTab('listenTab', false);
+        else {
+            switchTab('indexTab', false);
+            backToIndex(); // يرجع للفهرس ويمسح تفاصيل السورة
+        }
+    }
+}
 
         function setupEvents() {
             DOM.tabBtns.forEach(btn => btn.onclick = () => switchTab(btn.dataset.target));
@@ -439,11 +459,17 @@
         }
 
         // ==================== 4. وظائف العرض (Rendering) ====================
-        function switchTab(id) {
-            state.activeTab = id;
-            DOM.tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-            DOM.tabContents.forEach(c => c.classList.toggle('hidden', c.id !== id));
-        }
+        function switchTab(id, updateHash = true) {
+    state.activeTab = id;
+    DOM.tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    DOM.tabContents.forEach(c => c.classList.toggle('hidden', c.id !== id));
+    
+    // تحديث الهاش في الرابط باش المتصفح يعقل عليه
+    if (updateHash) {
+        const hashMap = { 'indexTab': '#/index', 'readTab': '#/read', 'listenTab': '#/listen' };
+        window.location.hash = hashMap[id] || '#/index';
+    }
+}
 
         function renderSurahCards(f='') {
             DOM.surahsGrid.innerHTML = surahsData.filter(s => s.name.includes(f)).map(s => `
@@ -474,17 +500,25 @@
         }
 
         // ==================== 5. وظائف القراءة والاستماع ====================
-        function openSurahDetails(id) {
-            state.currentReadSurah = surahsData.find(x => x.id === id);
-            document.getElementById('detName').textContent = "سورة " + state.currentReadSurah.name;
-            document.getElementById('listView').classList.add('hidden');
-            document.getElementById('detailsView').classList.remove('hidden');
-        }
+       function openSurahDetails(id) {
+    state.currentReadSurah = surahsData.find(x => x.id === id);
+    document.getElementById('detName').textContent = "سورة " + state.currentReadSurah.name;
+    document.getElementById('listView').classList.add('hidden');
+    document.getElementById('detailsView').classList.remove('hidden');
+    
+    // تحديث الرابط بدون إعادة تحميل الصفحة
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?surah=' + id;
+    window.history.pushState({path:newUrl}, '', newUrl);
+}
 
         function backToIndex() {
-            document.getElementById('listView').classList.remove('hidden');
-            document.getElementById('detailsView').classList.add('hidden');
-        }
+    document.getElementById('listView').classList.remove('hidden');
+    document.getElementById('detailsView').classList.add('hidden');
+    
+    // مسح رقم السورة من الرابط
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.pushState({path:newUrl}, '', newUrl);
+}
 
         async function showReadingMode() {
     switchTab('readTab');
@@ -592,7 +626,17 @@
             const a=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩']; 
             return String(n).split('').map(c=>a[c]||c).join(''); 
         }
-
+function checkSurahDeepLink() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const surahId = urlParams.get('surah');
+    if (surahId) {
+        const s = surahsData.find(x => x.id == surahId);
+        if (s) {
+            state.currentReadSurah = s;
+            showReadingMode();
+        }
+    }
+}
         // تشغيل كل شيء
         init();
     </script>
