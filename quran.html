@@ -493,18 +493,25 @@
     DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
     
     try {
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}`);
+        // نطلب السورة بالتشكيل (quran-uthmani)
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}/quran-uthmani`);
         const data = await res.json();
 
-        // التعديل يبدأ هنا لتنظيف النص من البسملة الزائدة
         DOM.versesContainer.innerHTML = data.data.ayahs.map((a, index) => {
             let verseText = a.text;
             
-            // نحذف البسملة من بداية أول آية في كل سورة ما عدا الفاتحة (1) والتوبة (9)
+            // إذا كانت الآية الأولى (ما عدا الفاتحة والتوبة)
             if (index === 0 && s.id !== 1 && s.id !== 9) {
+                // البسملة المشكلة اللي تجي من السيرفر العثماني
                 const bismillah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+                
+                // نحذف البسملة إذا كانت في البداية
                 if (verseText.startsWith(bismillah)) {
-                    verseText = verseText.replace(bismillah, "").trim();
+                    verseText = verseText.substring(bismillah.length).trim();
+                } else {
+                    // حل احتياطي: نحذف أي نص يجي قبل أول "ألف" أو "م" في الآيات المعروفة
+                    // أو نعتمد على الحذف اليدوي لأول 38 حرف تشكيل
+                    verseText = verseText.replace(/^.{38}/, "").trim();
                 }
             }
 
