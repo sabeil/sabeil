@@ -192,13 +192,18 @@
         </div>
 
         <div id="readTab" class="tab-content hidden glass-card" style="max-width: 1000px; margin: 0 auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-gold); padding-bottom: 1.5rem; margin-bottom: 2rem;">
-                 <h2 id="readingTitle" style="font-family:'Amiri'; font-size: 2.5rem; color: var(--primary-green);"></h2>
-                 <div>
-                    <button onclick="changeFontSize(0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">+</button>
-                    <button onclick="changeFontSize(-0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">-</button>
-                 </div>
-            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    
+    <button onclick="window.location.hash='/listen'" 
+        style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">
+        ⇦ العودة لقائمة القراء
+    </button>
+
+    <h2 id="viewReciterName" 
+        style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;">
+    </h2>
+
+</div>
             <div id="versesContainer" class="verses-container"></div>
         </div>
 
@@ -210,10 +215,20 @@
             </div>
 
             <div id="listenPlayerView" class="hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="window.location.hash=''" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
-                    <h2 id="viewReciterName" style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;"></h2>
-                </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; direction: rtl;">
+        
+        <button onclick="window.location.href='https://sabeil.github.io/sabeil/quran.html#/listen'" 
+            style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">
+            ⇦ العودة لقائمة القراء
+        </button>
+
+        <h2 id="viewReciterName" 
+            style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;">
+        </h2>
+
+    </div>
+</div>
+</div>
                 
                 <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
                 <h3 style="margin: 0 0 1.5rem; text-align: center; font-size: 1.8rem; font-family: 'Amiri'; color: var(--primary-green);">اختر السورة للاستماع</h3>
