@@ -211,9 +211,13 @@
 
             <div id="listenPlayerView" class="hidden">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="backToReciters()" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
-                    <h2 id="viewReciterName" style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;"></h2>
-                </div>
+    <button onclick="backToReciters()" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
+    
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <img id="viewReciterImg" src="" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-gold); display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <h2 id="viewReciterName" style="color:var(--primary-gold); font-family:'Amiri'; font-size: 2.2rem; margin: 0;"></h2>
+    </div>
+</div>
                 
                 <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
                 <h3 style="margin: 0 0 1.5rem; text-align: center; font-size: 1.8rem; font-family: 'Amiri'; color: var(--primary-green);">اختر السورة للاستماع</h3>
@@ -638,13 +642,18 @@
     // تغيير اسم القارئ في صفحة الاستماع (العلوي)
     document.getElementById('viewReciterName').textContent = state.currentReciter.name;
     
+    // -- الأسطر الجديدة الخاصة بالصورة --
+    const imgEl = document.getElementById('viewReciterImg');
+    imgEl.src = state.currentReciter.img || 'https://via.placeholder.com/120';
+    imgEl.style.display = 'block'; // باش نظهرو الصورة
+    // -----------------------------------
+
     DOM.listenRecitersView.classList.add('hidden');
     DOM.listenPlayerView.classList.remove('hidden');
     renderListenSurahs();
     if (updateHash) window.location.hash = `/reciter/${id}`;
     window.scrollTo({top:0, behavior:'smooth'});
 }
-
 function backToReciters() {
     // نخفيو واجهة اختيار السور (المشغل)
     DOM.listenPlayerView.classList.add('hidden');
