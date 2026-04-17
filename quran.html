@@ -23,7 +23,15 @@
 
         /* ==================== GLOBAL STYLES ==================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--primary-beige); color: var(--text-dark); min-height: 100vh; transition: 0.3s; position: relative; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--primary-beige);
+            color: var(--text-dark);
+            min-height: 100vh;
+            transition: 0.3s;
+            position: relative;
+            padding-bottom: 150px;
+        }
         
         /* BACKGROUND IMAGE */
         .site-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000'); background-size: cover; background-position: center; z-index: -2; }
@@ -65,15 +73,144 @@
         }
         .btn-select-reciter:hover { background: var(--primary-green); color: white; }
 
-        /* ==================== PLAYER AREA ==================== */
-        .custom-player { background: var(--primary-beige-dark); padding: 3rem 2rem; border-radius: 30px; text-align: center; margin-bottom: 3rem; border: 1px solid var(--glass-border); box-shadow: var(--shadow); }
-        [data-theme="dark"] .custom-player { background: rgba(0,0,0,0.2); }
-        .play-btn-large { width: 85px; height: 85px; border-radius: 50%; border: none; background: var(--primary-gold); color: white; font-size: 2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3); }
-        .play-btn-large:hover { transform: scale(1.1); background: var(--primary-green); }
-        
-        .progress-container { width: 100%; height: 10px; background: rgba(0,0,0,0.1); border-radius: 10px; cursor: pointer; margin-top: 2rem; position: relative; direction: ltr; }
-        .progress-bar { position: absolute; left: 0; top: 0; height: 100%; background: var(--primary-gold); border-radius: 10px; width: 0%; pointer-events: none; }
-        .time-display { display: flex; justify-content: space-between; direction: ltr; font-weight: 800; font-size: 0.95rem; margin-top: 10px; color: var(--text-muted); }
+        /* ==================== LISTENING INFO AREA ==================== */
+        .player-info-card {
+            background: var(--primary-beige-dark);
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+        }
+        [data-theme="dark"] .player-info-card { background: rgba(0,0,0,0.2); }
+
+        /* ==================== FIXED BOTTOM PLAYER ==================== */
+        .bottom-player {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            border-top: 1px solid var(--glass-border);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
+            padding: 0.9rem 1rem 0.8rem;
+        }
+        .bottom-player.hidden-player {
+            display: none;
+        }
+        .bottom-player-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .bottom-player-top {
+            display: grid;
+            grid-template-columns: 1.5fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+        }
+        .player-meta {
+            min-width: 0;
+        }
+        .player-meta-title {
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        [data-theme="dark"] .player-meta-title { color: var(--primary-gold); }
+        .player-meta-subtitle {
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+        }
+        .player-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--primary-beige-dark);
+            color: var(--text-dark);
+            cursor: pointer;
+            font-size: 1.15rem;
+            font-weight: 800;
+            transition: 0.25s;
+        }
+        .player-btn:hover {
+            transform: scale(1.08);
+            border-color: var(--primary-gold);
+        }
+        .player-btn.primary {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gold);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.28);
+        }
+        .player-btn.primary:hover {
+            background: var(--primary-green);
+        }
+        .volume-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.7rem;
+            min-width: 0;
+        }
+        .volume-wrap span {
+            font-size: 1.1rem;
+        }
+        .volume-slider {
+            width: 150px;
+            accent-color: var(--primary-gold);
+            cursor: pointer;
+        }
+        .bottom-progress-area {
+            margin-top: 0.8rem;
+        }
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            direction: ltr;
+        }
+        .progress-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--primary-gold);
+            border-radius: 10px;
+            width: 0%;
+            pointer-events: none;
+        }
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            direction: ltr;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            color: var(--text-muted);
+        }
 
         .listen-surahs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; margin-top: 2rem; }
         .listen-surah-btn { padding: 1rem; cursor: pointer; border: 1px solid var(--glass-border); border-radius: 12px; background: var(--glass-bg); color: var(--text-dark); font-family: 'Amiri'; font-size: 1.2rem; font-weight: 700; transition: 0.2s; }
@@ -83,11 +220,35 @@
         .verses-container { font-family: 'Amiri', serif; font-size: var(--quran-font-size); text-align: justify; text-align-last: center; line-height: 2.8; padding: 2rem; }
         .verse-num { color: var(--primary-gold); font-weight: 700; margin: 0 0.5rem; font-size: 0.8em; }
 
+        @media (max-width: 900px) {
+            .bottom-player-top {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .player-meta {
+                order: 1;
+            }
+            .player-controls {
+                order: 2;
+            }
+            .volume-wrap {
+                order: 3;
+                justify-content: center;
+            }
+            .volume-slider {
+                width: 190px;
+            }
+        }
+
         @media (max-width: 768px) {
             .desktop-nav { display: none; }
             .surahs-grid, .reciters-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
             .tabs-container { margin: 1.5rem auto; }
             .tab-btn { font-size: 0.9rem; padding: 0.7rem; }
+            body { padding-bottom: 185px; }
+            .player-meta-title { font-size: 1.2rem; }
+            .player-btn { width: 42px; height: 42px; }
+            .player-btn.primary { width: 52px; height: 52px; }
         }
     </style>
 </head>
@@ -124,14 +285,16 @@
 
         <div id="indexTab" class="tab-content">
             <div id="favoritesSection" class="hidden" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 1.5rem; color: var(--primary-gold); font-weight: 800;">⭐ قراءك المفضلون</h2>
-    <div class="reciters-grid" id="favoritesGrid"></div>
-    <hr style="margin-top: 2rem; border: 0; border-top: 1px solid var(--glass-border);">
-</div>
+                <h2 style="margin-bottom: 1.5rem; color: var(--primary-gold); font-weight: 800;">⭐ قراءك المفضلون</h2>
+                <div class="reciters-grid" id="favoritesGrid"></div>
+                <hr style="margin-top: 2rem; border: 0; border-top: 1px solid var(--glass-border);">
+            </div>
+
             <div id="listView">
                 <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن سورة... (مثال: الكهف)">
                 <div class="surahs-grid" id="surahsGrid"></div>
             </div>
+
             <div id="detailsView" class="glass-card hidden" style="text-align:center; max-width: 700px; margin: 0 auto;">
                 <h2 id="detName" style="font-family:'Amiri'; font-size:3.5rem; color: var(--primary-green); margin-bottom: 1.5rem;"></h2>
                 <button onclick="showReadingMode()" style="padding:1.2rem 3rem; border-radius:60px; background:var(--primary-green); color:white; border:none; cursor:pointer; font-weight:800; font-size: 1.2rem;">📖 ابدأ القراءة الآن</button>
@@ -141,35 +304,30 @@
 
         <div id="readTab" class="tab-content hidden glass-card" style="max-width: 1000px; margin: 0 auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-gold); padding-bottom: 1.5rem; margin-bottom: 2rem;">
-                 <h2 id="readingTitle" style="font-family:'Amiri'; font-size: 2.5rem; color: var(--primary-green);"></h2>
-                 <div>
+                <h2 id="readingTitle" style="font-family:'Amiri'; font-size: 2.5rem; color: var(--primary-green);"></h2>
+                <div>
                     <button onclick="changeFontSize(0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">+</button>
                     <button onclick="changeFontSize(-0.2)" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--primary-gold); cursor:pointer; font-weight:bold;">-</button>
-                 </div>
+                </div>
             </div>
             <div id="versesContainer" class="verses-container"></div>
         </div>
 
         <div id="listenTab" class="tab-content hidden glass-card">
             <div id="listenRecitersView">
-                <h2 style="text-align: center; margin-bottom: 2rem; font-weight: 800;">اختر القارئ
-
-                </h2>
+                <h2 style="text-align: center; margin-bottom: 2rem; font-weight: 800;">اختر القارئ</h2>
                 <input type="text" id="searchReciterInput" class="search-input" placeholder="ابحث عن قارئ... (مثال: العفاسي)">
                 <div class="reciters-grid" id="recitersGrid"></div>
             </div>
 
             <div id="listenPlayerView" class="hidden">
                 <button onclick="window.location.hash=''" style="cursor:pointer; background:none; border:none; font-weight:800; color:var(--primary-green); margin-bottom:1.5rem; font-size: 1.1rem;">⇦ العودة لقائمة القراء</button>
-                <div class="custom-player">
-                    <h2 id="audioSurahTitle" style="font-family:'Amiri'; font-size:3rem; color: var(--primary-green);"></h2>
+                
+                <div class="player-info-card">
+                    <h2 id="audioSurahTitle" style="font-family:'Amiri'; font-size:3rem; color: var(--primary-green);">اختر سورة للتشغيل</h2>
                     <p id="currentReciterNameLabel" style="color:var(--primary-gold); font-weight:800; font-size: 1.3rem; margin-top: 0.5rem;"></p>
-                    
-                    <button class="play-btn-large" id="btnPlayPause">▶</button>
-                    
-                    <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
-                    <div class="time-display"><span id="currentTime">00:00</span><span id="durationTime">00:00</span></div>
-                    <audio id="audioPlayer"></audio>
+                    <p style="margin-top:1rem; color:var(--text-muted); font-weight:700;">شريط التشغيل مثبت أسفل الصفحة وسيبقى يعمل أثناء التنقل داخل الصفحة.</p>
+                    <audio id="audioPlayer" preload="metadata"></audio>
                 </div>
                 
                 <h3 style="margin: 3rem 0 1.5rem; text-align: center; font-size: 1.8rem; font-family: 'Amiri';">اختر السورة للاستماع</h3>
@@ -177,6 +335,39 @@
             </div>
         </div>
     </main>
+
+    <!-- ==================== FIXED BOTTOM PLAYER ==================== -->
+    <div id="bottomPlayer" class="bottom-player hidden-player">
+        <div class="bottom-player-inner">
+            <div class="bottom-player-top">
+                <div class="player-meta">
+                    <div id="bottomPlayerTitle" class="player-meta-title">لا يوجد تشغيل حالياً</div>
+                    <div id="bottomPlayerSubtitle" class="player-meta-subtitle">اختر قارئاً ثم اختر سورة</div>
+                </div>
+
+                <div class="player-controls">
+                    <button id="btnPrev" class="player-btn" title="السابق">⏮</button>
+                    <button id="btnPlayPause" class="player-btn primary" title="تشغيل / إيقاف">▶</button>
+                    <button id="btnNext" class="player-btn" title="التالي">⏭</button>
+                </div>
+
+                <div class="volume-wrap">
+                    <span>🔊</span>
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+            </div>
+
+            <div class="bottom-progress-area">
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">00:00</span>
+                    <span id="durationTime">00:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // ==================== SURAHS DATASET (114 Surahs) ====================
@@ -240,7 +431,7 @@
             { id: 113, name: "الفلق", type: "مكية", verses: 5 }, { id: 114, name: "الناس", type: "مكية", verses: 6 }
         ];
 
-        // ==================== RECITERS DATASET (80+ Comprehensive List) ====================
+        // ==================== RECITERS DATASET ====================
         const recitersData = [
             { id: 1, name: "إبراهيم الأخضر", url: "https://server6.mp3quran.net/akdr/" },
             { id: 2, name: "إبراهيم الدوسري", url: "https://server10.mp3quran.net/ibrahim_dosri/Rewayat-Warsh-A-n-Nafi/" },
@@ -342,35 +533,45 @@
             { id: 98, name: "هارون بقائي", url: "https://server16.mp3quran.net/h_baqai/Rewayat-Hafs-A-n-Assem/" },
             { id: 99, name: "هيثم الدخين", url: "https://server16.mp3quran.net/h_dukhain/Rewayat-Hafs-A-n-Assem/" },
             { id: 100, name: "وديع اليمني", url: "https://server6.mp3quran.net/wdee3/" },
-
         ];
 
-        // ==================== 1. الحالة والمراجع (State & DOM) ====================
-        const state = { 
-            activeTab: 'indexTab', 
-            currentReciter: null, 
-            currentListenSurah: null, 
-            fontSize: 1.8 
+        // ==================== STATE & DOM ====================
+        const state = {
+            activeTab: 'indexTab',
+            currentReciter: null,
+            currentListenSurah: null,
+            currentReadSurah: null,
+            fontSize: 1.8,
+            isAutoplayingNext: false
         };
 
         const DOM = {
-            tabBtns: document.querySelectorAll('.tab-btn'), 
+            tabBtns: document.querySelectorAll('.tab-btn'),
             tabContents: document.querySelectorAll('.tab-content'),
-            surahsGrid: document.getElementById('surahsGrid'), 
+            surahsGrid: document.getElementById('surahsGrid'),
             recitersGrid: document.getElementById('recitersGrid'),
-            favoritesGrid: document.getElementById('favoritesGrid'), // مضافة للمفضلة
-            favoritesSection: document.getElementById('favoritesSection'), // مضافة للمفضلة
-            listenRecitersView: document.getElementById('listenRecitersView'), 
+            favoritesGrid: document.getElementById('favoritesGrid'),
+            favoritesSection: document.getElementById('favoritesSection'),
+            listenRecitersView: document.getElementById('listenRecitersView'),
             listenPlayerView: document.getElementById('listenPlayerView'),
-            audioPlayer: document.getElementById('audioPlayer'), 
+            audioPlayer: document.getElementById('audioPlayer'),
             btnPlayPause: document.getElementById('btnPlayPause'),
-            progressBar: document.getElementById('progressBar'), 
-            currentTime: document.getElementById('currentTime'), 
+            btnPrev: document.getElementById('btnPrev'),
+            btnNext: document.getElementById('btnNext'),
+            volumeSlider: document.getElementById('volumeSlider'),
+            progressContainer: document.getElementById('progressContainer'),
+            progressBar: document.getElementById('progressBar'),
+            currentTime: document.getElementById('currentTime'),
             durationTime: document.getElementById('durationTime'),
-            versesContainer: document.getElementById('versesContainer')
+            versesContainer: document.getElementById('versesContainer'),
+            bottomPlayer: document.getElementById('bottomPlayer'),
+            bottomPlayerTitle: document.getElementById('bottomPlayerTitle'),
+            bottomPlayerSubtitle: document.getElementById('bottomPlayerSubtitle'),
+            audioSurahTitle: document.getElementById('audioSurahTitle'),
+            currentReciterNameLabel: document.getElementById('currentReciterNameLabel')
         };
 
-        // ==================== 2. نظام المفضلة (LocalStorage) ====================
+        // ==================== FAVORITES ====================
         let favoriteReciters = JSON.parse(localStorage.getItem('sabeel_favs')) || [];
 
         function updateFavoritesUI() {
@@ -396,61 +597,86 @@
             renderReciters(document.getElementById('searchReciterInput').value);
         }
 
-        // ==================== 3. وظائف التشغيل (Initialization) ====================
+        // ==================== INIT ====================
         function init() {
-    renderSurahCards(); 
-    setupEvents();
-    handleRouting();
-    updateFavoritesUI();
-    renderReciters();
-    
-    // سطر جديد: التأكد إذا كان كاين رقم سورة في الرابط
-    checkSurahDeepLink(); 
+            renderSurahCards();
+            setupEvents();
+            handleRouting();
+            updateFavoritesUI();
+            renderReciters();
+            checkSurahDeepLink();
 
-    window.addEventListener('hashchange', handleRouting);
-    const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-}
+            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            const savedVolume = localStorage.getItem('sabeel_volume');
+            if (savedVolume !== null) {
+                DOM.audioPlayer.volume = parseFloat(savedVolume);
+                DOM.volumeSlider.value = savedVolume;
+            } else {
+                DOM.audioPlayer.volume = 1;
+                DOM.volumeSlider.value = 1;
+            }
+
+            window.addEventListener('hashchange', handleRouting);
+            syncPlayerUI();
+        }
 
         function handleRouting() {
-    const hash = window.location.hash;
+            const hash = window.location.hash;
 
-    // 1. حالة القراء (الاستماع)
-    if (hash.startsWith('#/reciter/')) {
-        const rId = parseInt(hash.replace('#/reciter/', ''));
-        if (!isNaN(rId)) { 
-            switchTab('listenTab', false); 
-            selectReciter(rId, false); 
+            if (hash.startsWith('#/reciter/')) {
+                const rId = parseInt(hash.replace('#/reciter/', ''));
+                if (!isNaN(rId)) {
+                    switchTab('listenTab', false);
+                    selectReciter(rId, false);
+                }
+            } else if (hash.startsWith('#/surah/')) {
+                const sId = parseInt(hash.replace('#/surah/', ''));
+                const s = surahsData.find(x => x.id === sId);
+                if (s) {
+                    state.currentReadSurah = s;
+                    switchTab('readTab', false);
+                    showReadingMode();
+                }
+            } else {
+                if (hash === '#/read') switchTab('readTab', false);
+                else if (hash === '#/listen') switchTab('listenTab', false);
+                else {
+                    switchTab('indexTab', false);
+                    backToIndex();
+                }
+            }
         }
-    } 
-    // 2. حالة قراءة سورة معينة
-    else if (hash.startsWith('#/surah/')) {
-        const sId = parseInt(hash.replace('#/surah/', ''));
-        const s = surahsData.find(x => x.id === sId);
-        if (s) {
-            state.currentReadSurah = s;
-            switchTab('readTab', false);
-            showReadingMode();
-        }
-    }
-    // 3. التنقل العادي بين التبويبات
-    else {
-        if (hash === '#/read') switchTab('readTab', false);
-        else if (hash === '#/listen') switchTab('listenTab', false);
-        else {
-            switchTab('indexTab', false);
-            backToIndex(); // يرجع للفهرس ويمسح تفاصيل السورة
-        }
-    }
-}
 
         function setupEvents() {
             DOM.tabBtns.forEach(btn => btn.onclick = () => switchTab(btn.dataset.target));
             document.getElementById('searchInput').oninput = (e) => renderSurahCards(e.target.value);
             document.getElementById('searchReciterInput').oninput = (e) => renderReciters(e.target.value);
+
             DOM.btnPlayPause.onclick = toggleAudio;
+            DOM.btnPrev.onclick = playPreviousSurah;
+            DOM.btnNext.onclick = playNextSurah;
+
             DOM.audioPlayer.ontimeupdate = updateProgress;
-            document.getElementById('progressContainer').onclick = setAudioProgress;
+            DOM.audioPlayer.onloadedmetadata = updateProgress;
+            DOM.audioPlayer.onplay = () => {
+                DOM.btnPlayPause.textContent = '⏸';
+                syncPlayerUI();
+            };
+            DOM.audioPlayer.onpause = () => {
+                DOM.btnPlayPause.textContent = '▶';
+                syncPlayerUI();
+            };
+            DOM.audioPlayer.onended = handleAudioEnded;
+
+            DOM.progressContainer.onclick = setAudioProgress;
+
+            DOM.volumeSlider.oninput = (e) => {
+                DOM.audioPlayer.volume = parseFloat(e.target.value);
+                localStorage.setItem('sabeel_volume', e.target.value);
+            };
+
             document.getElementById('themeToggle').onclick = () => {
                 const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', next);
@@ -458,18 +684,17 @@
             };
         }
 
-        // ==================== 4. وظائف العرض (Rendering) ====================
+        // ==================== RENDERING ====================
         function switchTab(id, updateHash = true) {
-    state.activeTab = id;
-    DOM.tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-    DOM.tabContents.forEach(c => c.classList.toggle('hidden', c.id !== id));
-    
-    // تحديث الهاش في الرابط باش المتصفح يعقل عليه
-    if (updateHash) {
-        const hashMap = { 'indexTab': '#/index', 'readTab': '#/read', 'listenTab': '#/listen' };
-        window.location.hash = hashMap[id] || '#/index';
-    }
-}
+            state.activeTab = id;
+            DOM.tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+            DOM.tabContents.forEach(c => c.classList.toggle('hidden', c.id !== id));
+
+            if (updateHash) {
+                const hashMap = { 'indexTab': '#/index', 'readTab': '#/read', 'listenTab': '#/listen' };
+                window.location.hash = hashMap[id] || '#/index';
+            }
+        }
 
         function renderSurahCards(f='') {
             DOM.surahsGrid.innerHTML = surahsData.filter(s => s.name.includes(f)).map(s => `
@@ -499,75 +724,6 @@
             DOM.recitersGrid.innerHTML = filtered.map(r => renderReciterCard(r)).join('');
         }
 
-        // ==================== 5. وظائف القراءة والاستماع ====================
-       function openSurahDetails(id) {
-    state.currentReadSurah = surahsData.find(x => x.id === id);
-    document.getElementById('detName').textContent = "سورة " + state.currentReadSurah.name;
-    document.getElementById('listView').classList.add('hidden');
-    document.getElementById('detailsView').classList.remove('hidden');
-    
-    // تحديث الرابط بدون إعادة تحميل الصفحة
-    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?surah=' + id;
-    window.history.pushState({path:newUrl}, '', newUrl);
-}
-
-        function backToIndex() {
-    document.getElementById('listView').classList.remove('hidden');
-    document.getElementById('detailsView').classList.add('hidden');
-    
-    // مسح رقم السورة من الرابط
-    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-    window.history.pushState({path:newUrl}, '', newUrl);
-}
-
-        async function showReadingMode() {
-    switchTab('readTab');
-    const s = state.currentReadSurah;
-    document.getElementById('readingTitle').textContent = "سورة " + s.name;
-    DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
-    
-    try {
-        // نطلب السورة بالتشكيل (quran-uthmani)
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}/quran-uthmani`);
-        const data = await res.json();
-
-        DOM.versesContainer.innerHTML = data.data.ayahs.map((a, index) => {
-            let verseText = a.text;
-            
-            // إذا كانت الآية الأولى (ما عدا الفاتحة والتوبة)
-            if (index === 0 && s.id !== 1 && s.id !== 9) {
-                // البسملة المشكلة اللي تجي من السيرفر العثماني
-                const bismillah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
-                
-                // نحذف البسملة إذا كانت في البداية
-                if (verseText.startsWith(bismillah)) {
-                    verseText = verseText.substring(bismillah.length).trim();
-                } else {
-                    // حل احتياطي: نحذف أي نص يجي قبل أول "ألف" أو "م" في الآيات المعروفة
-                    // أو نعتمد على الحذف اليدوي لأول 38 حرف تشكيل
-                    verseText = verseText.replace(/^.{38}/, "").trim();
-                }
-            }
-
-            return verseText + ` <span class="verse-num">(${toArabicNumber(a.numberInSurah)})</span>`;
-        }).join(' ');
-
-    } catch(e) { 
-        DOM.versesContainer.textContent = "خطأ في الاتصال بالسيرفر."; 
-    }
-}
-
-        function selectReciter(id, updateHash = true) {
-            state.currentReciter = recitersData.find(r => r.id === id);
-            if(!state.currentReciter) return;
-            document.getElementById('currentReciterNameLabel').textContent = "بصوت القارئ: " + state.currentReciter.name;
-            DOM.listenRecitersView.classList.add('hidden');
-            DOM.listenPlayerView.classList.remove('hidden');
-            renderListenSurahs();
-            if (updateHash) window.location.hash = `/reciter/${id}`;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
-
         function renderListenSurahs() {
             document.getElementById('listenSurahsGrid').innerHTML = surahsData.map(s => `
                 <button class="listen-surah-btn ${state.currentListenSurah?.id === s.id ? 'active' : ''}" onclick="playAudio(${s.id})">
@@ -575,30 +731,172 @@
                 </button>`).join('');
         }
 
-        function playAudio(id) {
+        function updateListenSurahButtons() {
+            document.querySelectorAll('.listen-surah-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.trim() === state.currentListenSurah?.name);
+            });
+        }
+
+        // ==================== READING ====================
+        function openSurahDetails(id) {
+            state.currentReadSurah = surahsData.find(x => x.id === id);
+            document.getElementById('detName').textContent = "سورة " + state.currentReadSurah.name;
+            document.getElementById('listView').classList.add('hidden');
+            document.getElementById('detailsView').classList.remove('hidden');
+
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?surah=' + id;
+            window.history.pushState({path:newUrl}, '', newUrl);
+        }
+
+        function backToIndex() {
+            document.getElementById('listView').classList.remove('hidden');
+            document.getElementById('detailsView').classList.add('hidden');
+
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({path:newUrl}, '', newUrl);
+        }
+
+        async function showReadingMode() {
+            switchTab('readTab');
+            const s = state.currentReadSurah;
+            document.getElementById('readingTitle').textContent = "سورة " + s.name;
+            DOM.versesContainer.innerHTML = "<p style='text-align:center;'>جاري تحميل الآيات...</p>";
+
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${s.id}/quran-uthmani`);
+                const data = await res.json();
+
+                DOM.versesContainer.innerHTML = data.data.ayahs.map((a, index) => {
+                    let verseText = a.text;
+
+                    if (index === 0 && s.id !== 1 && s.id !== 9) {
+                        const bismillah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+
+                        if (verseText.startsWith(bismillah)) {
+                            verseText = verseText.substring(bismillah.length).trim();
+                        } else {
+                            verseText = verseText.replace(/^.{38}/, "").trim();
+                        }
+                    }
+
+                    return verseText + ` <span class="verse-num">(${toArabicNumber(a.numberInSurah)})</span>`;
+                }).join(' ');
+
+            } catch(e) {
+                DOM.versesContainer.textContent = "خطأ في الاتصال بالسيرفر.";
+            }
+        }
+
+        function changeFontSize(v) {
+            state.fontSize += v;
+            DOM.versesContainer.style.fontSize = state.fontSize + 'rem';
+        }
+
+        function checkSurahDeepLink() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const surahId = urlParams.get('surah');
+            if (surahId) {
+                const s = surahsData.find(x => x.id == surahId);
+                if (s) {
+                    state.currentReadSurah = s;
+                    showReadingMode();
+                }
+            }
+        }
+
+        // ==================== AUDIO PLAYER ====================
+        function selectReciter(id, updateHash = true) {
+            state.currentReciter = recitersData.find(r => r.id === id);
+            if (!state.currentReciter) return;
+
+            DOM.currentReciterNameLabel.textContent = "بصوت القارئ: " + state.currentReciter.name;
+            DOM.listenRecitersView.classList.add('hidden');
+            DOM.listenPlayerView.classList.remove('hidden');
+
+            renderListenSurahs();
+            syncPlayerUI();
+
+            if (updateHash) window.location.hash = `/reciter/${id}`;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function playAudio(id, autoplay = true) {
+            if (!state.currentReciter) return;
+
             state.currentListenSurah = surahsData.find(s => s.id === id);
-            document.getElementById('audioSurahTitle').textContent = "سورة " + state.currentListenSurah.name;
-            document.querySelectorAll('.listen-surah-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === state.currentListenSurah.name));
-            DOM.audioPlayer.src = `${state.currentReciter.url}${String(id).padStart(3, '0')}.mp3`;
-            DOM.audioPlayer.play();
-            DOM.btnPlayPause.textContent = '⏸';
+            if (!state.currentListenSurah) return;
+
+            const src = `${state.currentReciter.url}${String(id).padStart(3, '0')}.mp3`;
+            DOM.audioPlayer.src = src;
+
+            DOM.audioSurahTitle.textContent = "سورة " + state.currentListenSurah.name;
+            updateListenSurahButtons();
+            showBottomPlayer();
+            syncPlayerUI();
+
+            if (autoplay) {
+                const playPromise = DOM.audioPlayer.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {
+                        DOM.btnPlayPause.textContent = '▶';
+                    });
+                }
+            }
         }
 
         function toggleAudio() {
-            if(!DOM.audioPlayer.src) return;
-            if(DOM.audioPlayer.paused) { DOM.audioPlayer.play(); DOM.btnPlayPause.textContent = '⏸'; }
-            else { DOM.audioPlayer.pause(); DOM.btnPlayPause.textContent = '▶'; }
+            if (!DOM.audioPlayer.src) return;
+
+            if (DOM.audioPlayer.paused) {
+                const playPromise = DOM.audioPlayer.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {});
+                }
+            } else {
+                DOM.audioPlayer.pause();
+            }
         }
 
-        function stopAudio() { 
-            DOM.audioPlayer.pause(); 
-            DOM.audioPlayer.currentTime = 0; 
-            DOM.btnPlayPause.textContent = '▶'; 
-            DOM.progressBar.style.width = '0%'; 
+        function playPreviousSurah() {
+            if (!state.currentReciter) return;
+            if (!state.currentListenSurah) {
+                playAudio(1);
+                return;
+            }
+
+            const currentIndex = surahsData.findIndex(s => s.id === state.currentListenSurah.id);
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : surahsData.length - 1;
+            playAudio(surahsData[prevIndex].id);
         }
-        
+
+        function playNextSurah() {
+            if (!state.currentReciter) return;
+            if (!state.currentListenSurah) {
+                playAudio(1);
+                return;
+            }
+
+            const currentIndex = surahsData.findIndex(s => s.id === state.currentListenSurah.id);
+            const nextIndex = currentIndex < surahsData.length - 1 ? currentIndex + 1 : 0;
+            playAudio(surahsData[nextIndex].id);
+        }
+
+        function handleAudioEnded() {
+            // autoplay next clip automatically
+            playNextSurah();
+        }
+
+        function stopAudio() {
+            DOM.audioPlayer.pause();
+            DOM.audioPlayer.currentTime = 0;
+            DOM.btnPlayPause.textContent = '▶';
+            DOM.progressBar.style.width = '0%';
+            DOM.currentTime.textContent = '00:00';
+            syncPlayerUI();
+        }
+
         function updateProgress() {
-            if(!DOM.audioPlayer.duration) return;
+            if (!DOM.audioPlayer.duration) return;
             const p = (DOM.audioPlayer.currentTime / DOM.audioPlayer.duration) * 100;
             DOM.progressBar.style.width = p + '%';
             DOM.currentTime.textContent = formatTime(DOM.audioPlayer.currentTime);
@@ -606,37 +904,46 @@
         }
 
         function setAudioProgress(e) {
-            const rect = document.getElementById('progressContainer').getBoundingClientRect();
+            if (!DOM.audioPlayer.duration) return;
+            const rect = DOM.progressContainer.getBoundingClientRect();
             const p = (e.clientX - rect.left) / rect.width;
-            DOM.audioPlayer.currentTime = p * DOM.audioPlayer.duration;
+            DOM.audioPlayer.currentTime = Math.max(0, Math.min(1, p)) * DOM.audioPlayer.duration;
         }
 
-        function changeFontSize(v) { 
-            state.fontSize += v; 
-            DOM.versesContainer.style.fontSize = state.fontSize + 'rem'; 
+        function showBottomPlayer() {
+            DOM.bottomPlayer.classList.remove('hidden-player');
         }
-        
-        function formatTime(s) { 
-            const m = Math.floor(s/60); 
-            const sec = Math.floor(s%60); 
-            return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; 
+
+        function syncPlayerUI() {
+            if (!state.currentReciter || !state.currentListenSurah) {
+                DOM.bottomPlayerTitle.textContent = 'لا يوجد تشغيل حالياً';
+                DOM.bottomPlayerSubtitle.textContent = 'اختر قارئاً ثم اختر سورة';
+                return;
+            }
+
+            DOM.bottomPlayerTitle.textContent = `سورة ${state.currentListenSurah.name}`;
+            DOM.bottomPlayerSubtitle.textContent = `بصوت القارئ: ${state.currentReciter.name}`;
+            DOM.audioSurahTitle.textContent = `سورة ${state.currentListenSurah.name}`;
+            DOM.currentReciterNameLabel.textContent = `بصوت القارئ: ${state.currentReciter.name}`;
+            showBottomPlayer();
+            updateListenSurahButtons();
+
+            DOM.btnPlayPause.textContent = DOM.audioPlayer.paused ? '▶' : '⏸';
         }
-        
-        function toArabicNumber(n) { 
-            const a=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩']; 
-            return String(n).split('').map(c=>a[c]||c).join(''); 
+
+        // ==================== HELPERS ====================
+        function formatTime(s) {
+            if (!isFinite(s)) return '00:00';
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
         }
-function checkSurahDeepLink() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const surahId = urlParams.get('surah');
-    if (surahId) {
-        const s = surahsData.find(x => x.id == surahId);
-        if (s) {
-            state.currentReadSurah = s;
-            showReadingMode();
+
+        function toArabicNumber(n) {
+            const a = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            return String(n).split('').map(c => a[c] || c).join('');
         }
-    }
-}
+
         // تشغيل كل شيء
         init();
     </script>
