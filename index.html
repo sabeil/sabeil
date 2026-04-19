@@ -136,12 +136,45 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
 
         .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
         [data-theme="dark"] .logo { color: var(--primary-gold); }
 
-        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .nav-actions { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem; 
+        }
+
+        .download-btn {
+            background-color: var(--primary-gold);
+            color: var(--primary-deep-green);
+            font-weight: 800;
+            padding: 0.65rem 1rem;
+            border-radius: var(--border-radius-sm);
+            border: 2px solid transparent;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.25);
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-deep-green);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .download-btn {
+            background-color: var(--primary-gold);
+            color: #0f172a;
+        }
+
+        [data-theme="dark"] .download-btn:hover {
+            background-color: #f59e0b;
+            color: #0f172a;
+        }
 
         .theme-toggle, .hamburger {
             background: transparent;
@@ -261,6 +294,21 @@
             .footer-content { flex-direction: row; justify-content: space-between; }
         }
 
+        @media (max-width: 768px) {
+            .header-content {
+                gap: 0.5rem;
+            }
+
+            .nav-actions {
+                gap: 0.5rem;
+            }
+
+            .download-btn {
+                padding: 0.55rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
         @media (min-width: 1024px) {
             .container { max-width: 1400px; padding: 0 2rem; }
             
@@ -281,7 +329,7 @@
 
             .hero-desc { font-size: 1.2rem; }
             .quote-text { font-size: 2.2rem; }
-            .btn-outline { margin: 0 auto; display: block; } /* Center the read more button */
+            .btn-outline { margin: 0 auto; display: block; }
         }
     </style>
 </head>
@@ -293,6 +341,7 @@
    <header>
         <div class="container header-content">
             <a href="index.html" class="logo">سبيل</a>
+
             <nav class="desktop-nav">
                 <ul>
                     <li><a href="masbaha.html">المسبحة</a></li>
@@ -305,7 +354,17 @@
                     <li><a href="azkar.html">الأذكار</a></li>
                 </ul>
             </nav>
+
             <div class="nav-actions">
+                <a 
+                    href="https://www.mediafire.com/file/s4um6sfq1gierze/sabeil.apk/file" 
+                    class="download-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="تحميل التطبيق"
+                >
+                    تحميل التطبيق ⬇️
+                </a>
                 <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
                 <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
             </div>
@@ -353,7 +412,6 @@
                 <div class="hero-desc">
                     <span id="heroText"></span><span class="cursor"></span>
                 </div>
-                
             </div>
 
             <div class="quote-section">
@@ -381,7 +439,7 @@
                 </div>
 
                 <div class="prayer-grid" id="prayerGrid">
-                    </div>
+                </div>
             </div>
         </aside>
 
@@ -417,9 +475,8 @@
         (function() {
             // ==================== CONFIGURATION ====================
             const ALADHAN_API = 'https://api.aladhan.com/v1/timings';
-            // Standard calculation method for Algeria (Umm Al-Qura is widely used, but we'll use 5 for compatibility)
-            const CALCULATION_METHOD = 5; // Egyptian General Authority of Survey (works well for Algeria & Arab world)
-            const ASR_METHOD = 0; // 0 = Standard (Shafi, Maliki, Hanbali) - not Hanafi (1)
+            const CALCULATION_METHOD = 5;
+            const ASR_METHOD = 0;
             
             // ==================== WILAYAS DATA ====================
             const wilayas = [
@@ -604,7 +661,6 @@
 
             function setCachedPrayerTimes(lat, lon, data) {
                 const key = getCacheKey(lat, lon);
-                // Keep only today's cache for simplicity (automatically expires)
                 localStorage.setItem(key, JSON.stringify(data));
             }
 
@@ -634,14 +690,12 @@
             }
 
             async function fetchAndProcessPrayerTimes(lat, lon, locationName) {
-                // 1. Try cache first
                 const cached = getCachedPrayerTimes(lat, lon);
                 if (cached) {
                     processPrayerData(cached, locationName);
                     return;
                 }
 
-                // 2. Fetch from API
                 try {
                     const timings = await fetchPrayerTimesFromAPI(lat, lon);
                     const transformed = transformTimings(timings);
@@ -649,8 +703,6 @@
                     processPrayerData(transformed, locationName);
                 } catch (error) {
                     console.warn('API fetch failed:', error);
-                    // Fallback: try to use any cached data for this lat/lon from previous days?
-                    // Not implemented for simplicity, but we show error
                     showError('تعذر جلب المواقيت من الشبكة. تأكد من اتصالك.');
                     locationDisplay.textContent = `فشل في تحديث مواقيت ${locationName}`;
                 }
@@ -660,7 +712,6 @@
                 currentPrayerData = data;
                 locationDisplay.textContent = `🕌 المواقيت في: ${locationName}`;
                 
-                // Render prayer grid
                 prayerGrid.innerHTML = PRAYERS.map(p => `
                     <div class="prayer-card" id="card-${p.key}">
                         <span class="prayer-name">${p.ar}</span>
@@ -712,14 +763,12 @@
                     targetDate.setDate(targetDate.getDate() + 1);
                 }
 
-                // Update active card
                 document.querySelectorAll('.prayer-card').forEach(c => c.classList.remove('active'));
                 const activeCard = document.getElementById(`card-${nextPrayer.key}`);
                 if(activeCard) activeCard.classList.add('active');
 
                 const diffMs = targetDate - now;
                 if (diffMs <= 0) {
-                    // Re-run if we missed the exact second
                     return highlightNextPrayer();
                 }
 
@@ -737,10 +786,8 @@
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 
-                // Reverse geocode for name (simple fallback: coordinates)
                 let locationName = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
                 try {
-                    // Simple reverse geocode using nominatim (optional, might fail)
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
                     const data = await res.json();
                     if (data && data.address) {
@@ -752,7 +799,6 @@
                     console.warn('Reverse geocode failed, using coordinates.');
                 }
 
-                // Save to localStorage
                 localStorage.setItem('sabeel_loc', JSON.stringify({ lat, lon, name: locationName, id: 'gps' }));
                 wilayaSelect.classList.remove('hidden');
                 
@@ -819,7 +865,6 @@
                     const loc = JSON.parse(cachedLoc);
                     wilayaSelect.classList.remove('hidden');
                     if (loc.id === 'gps') {
-                        // Use saved GPS coords
                         setLoading(true);
                         await fetchAndProcessPrayerTimes(loc.lat, loc.lon, loc.name || 'موقعك المحفوظ');
                     } else if (loc.id) {
@@ -844,7 +889,6 @@
                 locateBtn.addEventListener('click', requestLocation);
                 wilayaSelect.addEventListener('change', handleWilayaSelection);
                 
-                // Attempt to restore last known location
                 restorePreviousLocation();
             });
         })();
