@@ -2,18 +2,32 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سبيل - قصص الأنبياء</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>سبيل - الأذكار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="global.css">
     <style>
-        /* ==================== VARIABLES ==================== */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
         :root {
             --primary-white: #ffffff;
             --primary-soft-green: #e9f5ec;
             --primary-deep-green: #1a4a38;
             --primary-gold: #d4af37;
             --text-dark: #1f2937;
-            --text-light: #f3f4f6;
             --text-muted: #6b7280;
             --glass-bg: rgba(255, 255, 255, 0.85);
             --glass-border: rgba(255, 255, 255, 0.4);
@@ -30,908 +44,904 @@
             --primary-deep-green: #064e3b;
             --primary-gold: #fbbf24;
             --text-dark: #f8fafc;
-            --text-light: #f8fafc;
             --text-muted: #94a3b8;
             --glass-bg: rgba(15, 23, 42, 0.85);
             --glass-border: rgba(255, 255, 255, 0.1);
             --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
-        /* ==================== RESET & BASE ==================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.7; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: var(--transition-smooth); }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        button, input { font-family: inherit; }
-
-        /* ==================== BACKGROUND ==================== */
-        .site-bg {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover; background-position: center; z-index: -2;
-        }
-        .bg-overlay {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth);
-        }
+        .site-bg { position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; }
+        .bg-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth); }
         [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.85); }
 
-        /* ==================== UTILITIES ==================== */
-        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
-        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); padding: 1.5rem; transition: var(--transition-smooth); }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-sm); font-weight: 600; cursor: pointer; border: none; transition: var(--transition-smooth); font-size: 0.95rem; gap: 0.5rem; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--primary-gold); color: var(--primary-gold); }
-        .btn-outline:hover, .btn-outline.active { background-color: var(--primary-gold); color: #fff; }
-        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
-        .btn-icon { background: transparent; color: var(--text-muted); border: none; font-size: 1.2rem; cursor: pointer; padding: 0.4rem; transition: var(--transition-smooth); border-radius: 50%; }
-        .btn-icon:hover { color: var(--primary-gold); background: rgba(0,0,0,0.05); }
-        .btn-icon.active { color: #ef4444; }
-        .hidden { display: none !important; }
+        .container { width: 100%; padding: 0 0.5rem; margin: 0 auto; max-width: 800px; }
 
-        /* ==================== HEADER ==================== */
-        header { padding: 1rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        header { padding: 0.8rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-deep-green); text-decoration: none; }
         [data-theme="dark"] .logo { color: var(--primary-gold); }
-        .nav-actions { display: flex; align-items: center; gap: 1rem; }
-        .theme-toggle, .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
-        .mobile-nav { position: fixed; top: 68px; right: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; z-index: 99; }
-        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
-        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
-        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
-        .desktop-nav { display: none; }
+        .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+        .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
 
-        /* ==================== MAIN PAGE ==================== */
-        .page-layout { display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem 1rem; flex: 1; }
-        .page-header { text-align: center; margin-bottom: 0.5rem; }
-        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
-        [data-theme="dark"] .page-title { color: var(--primary-gold); }
-        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
-
-        /* ==================== SEARCH & CATEGORIES ==================== */
-        .search-container { position: sticky; top: 75px; z-index: 90; margin-bottom: 1rem; padding: 10px 0; }
-        .search-input { width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: var(--text-dark); font-size: 1.05rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: var(--transition-smooth); }
-        [data-theme="dark"] .search-input { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .search-input:focus { border-color: var(--primary-gold); }
-
-        .categories-scroll { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); }
-        .categories-scroll::-webkit-scrollbar { display: none; }
-        .category-chip { flex-shrink: 0; border-radius: 50px; padding: 0.5rem 1.25rem; position: relative; }
-
-        .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
-        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; order: 1; }
-        .main-content { order: 2; }
-
-        .section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        [data-theme="dark"] .section-title { color: var(--primary-gold); }
-
-        /* ==================== PROPHET CARDS ==================== */
-        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-        
-        .prophet-card { display: flex; flex-direction: column; animation: fadeIn 0.4s ease; height: 100%; border-right: 4px solid var(--primary-gold); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .prophet-card.daily-highlight { border: 2px solid var(--primary-gold); border-right: 6px solid var(--primary-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 74, 56, 0.05) 100%); }
-        .daily-badge { display: inline-block; background: var(--primary-gold); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; align-self: flex-start; }
-        [data-theme="dark"] .daily-badge { color: var(--primary-deep-green); }
-
-        .prophet-header { margin-bottom: 0.75rem; }
-        .prophet-name { font-weight: 800; color: var(--primary-deep-green); font-size: 1.4rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;}
-        [data-theme="dark"] .prophet-name { color: var(--primary-gold); }
-        .prophet-title-badge { font-size: 0.8rem; padding: 0.15rem 0.6rem; border-radius: 4px; font-weight: 600; background: rgba(212, 175, 55, 0.2); color: var(--primary-deep-green); }
-        [data-theme="dark"] .prophet-title-badge { color: var(--primary-gold); background: rgba(212, 175, 55, 0.15); }
-
-        .prophet-period { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; }
-        .prophet-intro { color: var(--text-dark); line-height: 1.8; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-
-        .prophet-stats { display: flex; gap: 1rem; flex-wrap: wrap; background: rgba(0,0,0,0.03); padding: 0.75rem; border-radius: var(--border-radius-sm); margin-bottom: 1.5rem; font-size: 0.85rem; border: 1px solid var(--glass-border); }
-        [data-theme="dark"] .prophet-stats { background: rgba(255,255,255,0.02); }
-        .stat-item { display: flex; align-items: center; gap: 0.4rem; color: var(--primary-deep-green); font-weight: 600; }
-        [data-theme="dark"] .stat-item { color: var(--primary-gold); }
-
-        .prophet-actions { margin-top: auto; display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--glass-border); padding-top: 1rem; }
-        .btn-read-more { background: var(--primary-soft-green); color: var(--primary-deep-green); font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: var(--transition-smooth); }
-        .btn-read-more:hover { background: var(--primary-gold); color: white; }
-        [data-theme="dark"] .btn-read-more { background: rgba(212, 175, 55, 0.2); color: var(--primary-gold); }
-        [data-theme="dark"] .btn-read-more:hover { background: var(--primary-gold); color: var(--primary-deep-green); }
-
-        .btn-lessons { background: transparent; color: var(--primary-gold); font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; border: 1px solid var(--primary-gold); cursor: pointer; transition: var(--transition-smooth); }
-        .btn-lessons:hover { background: var(--primary-gold); color: white; }
-        [data-theme="dark"] .btn-lessons:hover { color: var(--primary-deep-green); }
-
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 1.1rem; background: var(--glass-bg); border-radius: var(--border-radius-md); }
-
-        /* ==================== MODAL (Detail View) ==================== */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); padding: 1rem; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        
-        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-lg); width: 100%; max-width: 850px; max-height: 90vh; overflow-y: auto; padding: 2.5rem 2rem; position: relative; transform: translateY(20px); transition: var(--transition-smooth); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        [data-theme="dark"] .modal-content { background: var(--primary-white); }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-
-        .modal-close { position: fixed; top: 1.5rem; left: 1.5rem; background: rgba(0,0,0,0.05); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); z-index: 10; backdrop-filter: blur(4px); }
-        [data-theme="dark"] .modal-close { background: rgba(255,255,255,0.1); color: var(--text-light); }
-        .modal-close:hover { background: #ef4444; color: white; }
-
-        .modal-header { margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1.5rem; }
-        .modal-title { font-size: 2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;}
-        [data-theme="dark"] .modal-title { color: var(--primary-gold); }
-        .modal-period { font-size: 1rem; color: var(--text-muted); font-weight: 600; margin-bottom: 1rem; }
-        
-        .modal-actions { display: flex; gap: 0.5rem; }
-
-        .modal-section-title { font-size: 1.4rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1.5rem; margin-top: 2rem; display: flex; align-items: center; gap: 0.5rem; border-right: 4px solid var(--primary-gold); padding-right: 0.75rem; }
-        [data-theme="dark"] .modal-section-title { color: var(--primary-gold); border-color: var(--primary-soft-green); }
-
-        .modal-body-text { font-size: 1.15rem; line-height: 2; color: var(--text-dark); margin-bottom: 2rem; text-align: justify; font-family: 'Amiri', 'Tajawal', serif;}
-
-        /* Timeline for Key Events */
-        .event-timeline { position: relative; padding-right: 20px; border-right: 2px solid rgba(212, 175, 55, 0.4); margin-bottom: 2rem; }
-        .timeline-item { position: relative; margin-bottom: 1.5rem; padding-right: 1.5rem; }
-        .timeline-item::before { content: ''; position: absolute; right: -26px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary-gold); border: 3px solid var(--primary-white); box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); }
-        [data-theme="dark"] .timeline-item::before { border-color: var(--primary-deep-green); }
-        
-        .timeline-title { font-weight: 700; color: var(--primary-deep-green); font-size: 1.15rem; margin-bottom: 0.5rem; }
-        [data-theme="dark"] .timeline-title { color: var(--primary-gold); }
-        .timeline-desc { color: var(--text-dark); line-height: 1.8; margin-bottom: 0.5rem; }
-        .timeline-lesson { font-size: 0.9rem; color: var(--text-muted); background: rgba(0,0,0,0.03); padding: 0.5rem; border-radius: var(--border-radius-sm); border-right: 2px solid var(--primary-soft-green); }
-        [data-theme="dark"] .timeline-lesson { background: rgba(255,255,255,0.03); }
-
-        /* Lists */
-        .info-list { list-style: none; padding: 0; margin-bottom: 2rem; }
-        .info-list li { position: relative; padding-right: 1.5rem; margin-bottom: 0.75rem; color: var(--text-dark); font-weight: 500; line-height: 1.7; }
-        .info-list li::before { content: '✨'; position: absolute; right: 0; top: 2px; font-size: 0.9rem; }
-
-        .modal-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; margin-top: 2rem;}
-        .modal-tag { background: rgba(0,0,0,0.05); color: var(--text-muted); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600;}
-        [data-theme="dark"] .modal-tag { background: rgba(255,255,255,0.05); }
-
-        /* Sidebar Fav List */
-        .fav-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto; padding-left: 0.5rem; }
-        .fav-mini-card { background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 0.75rem; border-radius: var(--border-radius-sm); font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: var(--transition-smooth);}
-        .fav-mini-card:hover { background: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .fav-mini-card { background: rgba(255,255,255,0.02); }
-        [data-theme="dark"] .fav-mini-card:hover { background: rgba(255,255,255,0.05); }
-        .fav-mini-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 75%; font-weight: 600;}
-
-        /* Toast */
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary-deep-green); color: white; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; text-align: center; }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        [data-theme="dark"] .toast { background: var(--primary-gold); color: var(--primary-deep-green); }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (min-width: 769px) {
-            .hamburger { display: none; }
-            .desktop-nav { display: block; }
-            .desktop-nav ul { display: flex; gap: 1.2rem; }
-            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
-            .desktop-nav a:hover { color: var(--primary-gold); }
-            
-            .categories-scroll { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-            .search-container { top: 80px; }
+        /* القائمة الجانبية الموحدة */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            transition: left 0.35s ease-in-out;
+            z-index: 200;
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
         }
 
-        @media (min-width: 1024px) {
-            .container { max-width: 1400px; padding: 0 2rem; }
-            .content-grid { grid-template-columns: 320px 1fr; }
-            .sidebar { order: 1; position: sticky; top: 150px; }
-            .main-content { order: 2; }
-            .page-header { position: relative; }
+        .mobile-nav.active { left: 0; }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .mobile-nav-header h3 {
+            color: var(--primary-deep-green);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        [data-theme="dark"] .mobile-nav-header h3 { color: var(--primary-gold); }
+
+        .close-menu {
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+        }
+
+        .close-menu:hover { background: rgba(0, 0, 0, 0.05); }
+
+        .mobile-nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li a {
+            display: block;
+            padding: 0.9rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            font-size: 1.05rem;
+            font-family: 'Tajawal', sans-serif;
+            background: rgba(0, 0, 0, 0.03);
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        [data-theme="dark"] .mobile-nav ul li a { background: rgba(255, 255, 255, 0.05); }
+
+        .mobile-nav ul li a:hover {
+            background: var(--primary-gold);
+            color: var(--primary-deep-green);
+            transform: translateX(-5px);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+        body.menu-open { overflow: hidden; }
+
+        .page-title {
+            text-align: center;
+            padding: 1rem 0 0.8rem;
+            color: var(--primary-deep-green);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        [data-theme="dark"] .page-title { color: var(--primary-gold); }
+
+        .categories-scroll {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 8px 0 12px;
+            scrollbar-width: none;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .cat-chip {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            border-radius: 50px;
+            background: var(--primary-soft-green);
+            color: var(--primary-deep-green);
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            border: none;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .cat-chip.active { background: var(--primary-gold); color: white; }
+        [data-theme="dark"] .cat-chip { background: rgba(255,255,255,0.08); color: var(--text-dark); }
+        [data-theme="dark"] .cat-chip.active { background: var(--primary-gold); color: #1a4a38; }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 15px;
+            outline: none;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .dhikr-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding-bottom: 30px;
+        }
+        .dhikr-card {
+            background: linear-gradient(135deg, #1a4a38 0%, #10b981 100%);
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 14px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+            transition: 0.2s;
+        }
+        .dhikr-card:active { transform: scale(0.97); }
+        [data-theme="dark"] .dhikr-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: #1a4a38;
+        }
+        .dhikr-card .card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .dhikr-card .card-text {
+            font-family: 'Amiri', serif;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            flex: 1;
+            
+            margin-bottom: 0.5rem;
+        }
+        .dhikr-card .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: auto;
+        }
+        .dhikr-card .action-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        .dhikr-card .action-btn:active { background: rgba(255,255,255,0.4); transform: scale(0.95); }
+        .dhikr-card .action-btn:disabled { opacity: 0.5; pointer-events: none; }
+        [data-theme="dark"] .dhikr-card .action-btn {
+            background: rgba(26,74,56,0.2);
+            border-color: rgba(26,74,56,0.3);
+            color: #1a4a38;
+        }
+        .counter-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-counter {
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .btn-counter.completed {
+            background: #10b981;
+            pointer-events: none;
+        }
+        .btn-reset-counter {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        [data-theme="dark"] .btn-counter { background: rgba(26, 74, 56, 0.3); color: #1a4a38; }
+        [data-theme="dark"] .btn-reset-counter { background: rgba(26, 74, 56, 0.2); color: #1a4a38; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            grid-column: 1/-1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a4a38;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 999;
+            pointer-events: none;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards;
+        }
+        [data-theme="dark"] .toast { background: #fbbf24; color: #1a4a38; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+        @media (max-width: 400px) {
+            .dhikr-card { padding: 0.7rem; }
+            .dhikr-card .card-title { font-size: 0.75rem; }
+            .dhikr-card .card-text { font-size: 0.7rem;  }
+            .dhikr-card .action-btn { width: 26px; height: 26px; font-size: 0.75rem; }
+            .btn-counter { padding: 3px 8px; font-size: 0.65rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="site-bg"></div>
-    <div class="bg-overlay"></div>
+<div class="site-bg"></div>
+<div class="bg-overlay"></div>
+<div class="menu-overlay" id="menuOverlay"></div>
 
-    <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">سبيل</a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="masbaha.html">المسبحة</a></li>
-                    <li><a href="odea.html">الأدعية</a></li>
-                    <li><a href="quran.html">القرآن</a></li>
-                    <li><a href="hadith.html">أحاديث نبوية</a></li>
-                    <li><a href="sira.html">السيرة النبوية</a></li>
-                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
-                    <li><a href="prophets.html">قصص الأنبياء</a></li>
-                    <li><a href="azkar.html">الأذكار</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
-                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
-            </div>
-        </div>
-    </header>
-
-    <nav class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="masbaha.html">المسبحة</a></li>
-            <li><a href="odea.html">الأدعية</a></li>
-            <li><a href="quran.html">القرآن</a></li>
-            <li><a href="hadith.html">أحاديث نبوية</a></li>
-            <li><a href="sira.html">السيرة النبوية</a></li>
-            <li><a href="sahaba.html">عظماء الصحابة</a></li>
-            <li><a href="prophets.html">قصص الأنبياء</a></li>
-            <li><a href="azkar.html">الأذكار</a></li>
-        </ul>
-    </nav>
-
-    <main class="page-layout container">
-        
-        <div class="page-header">
-            <h1 class="page-title">قصص الأنبياء</h1>
-            <p class="page-subtitle">رحلة إيمانية مع أنبياء الله، نتأمل فيها الصبر، والدعوة، واليقين، ونستخرج منها أعظم العبر</p>
-        </div>
-
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن نبي... (مثال: موسى، الصبر، أولو العزم)">
-        </div>
-
-        <div class="categories-scroll" id="categoriesContainer"></div>
-
-        <div class="content-grid">
-            
-            <aside class="sidebar">
-                <div class="glass-card" id="dailyProphetContainer">
-                    <h2 class="section-title">✨ نبي اليوم</h2>
-                    </div>
-                <div class="glass-card">
-                    <h2 class="section-title">⭐ المفضلة</h2>
-                    <div class="fav-list" id="favSidebarList"></div>
-                </div>
-            </aside>
-
-            <section class="main-content">
-                <div class="cards-grid" id="prophetsGrid">
-                    </div>
-            </section>
-        </div>
-    </main>
-
-    <div class="modal-overlay" id="prophetModal">
-        <div class="modal-content" id="modalContentScroll">
-            <button class="modal-close" id="closeModalBtn" aria-label="إغلاق">✕</button>
-            
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">اسم النبي</h2>
-                <div class="modal-period" id="modalPeriod">المرحلة الزمنية</div>
-                <div class="modal-actions">
-                    <button class="btn-icon" id="modalFavBtn" aria-label="المفضلة">🤍</button>
-                    <button class="btn-icon" id="modalShareBtn" aria-label="مشاركة">📤</button>
-                </div>
-            </div>
-            
-            <h3 class="modal-section-title">بداية القصة والنشأة</h3>
-            <div class="modal-body-text" id="modalDesc">
-                القصة الكاملة تكتب هنا.
-            </div>
-
-            <h3 class="modal-section-title hidden" id="modalEventsTitle">أبرز المحطات في حياته</h3>
-            <div class="event-timeline" id="modalEvents"></div>
-
-            <h3 class="modal-section-title hidden" id="modalMiraclesTitle">المعجزات والآيات</h3>
-            <ul class="info-list" id="modalMiracles"></ul>
-
-            <h3 class="modal-section-title hidden" id="modalLessonsTitle">الدروس والعبر المستفادة</h3>
-            <ul class="info-list" id="modalLessons"></ul>
-
-            <div class="modal-tags" id="modalTags"></div>
+<header>
+    <div class="container header-content">
+        <a href="index.html" class="logo">سبيل</a>
+        <div class="nav-actions">
+            <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
         </div>
     </div>
+</header>
 
-    <div id="toastMsg" class="toast">رسالة التنبيه</div>
+<!-- القائمة الجانبية الموحدة -->
+<nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+        <h3>القائمة الرئيسية</h3>
+        <button class="close-menu" id="closeMenuBtn" aria-label="إغلاق القائمة">✕</button>
+    </div>
+    <ul>
+        <li><a href="index.html">🕌 الرئيسية</a></li>
+        <li><a href="masbaha.html">📿 المسبحة</a></li>
+        <li><a href="odea.html">🤲 الأدعية</a></li>
+        <li><a href="quran.html">📖 القرآن الكريم</a></li>
+        <li><a href="hadith.html">📜 أحاديث نبوية</a></li>
+        <li><a href="sira.html">🕌 السيرة النبوية</a></li>
+        <li><a href="sahaba.html">🌟 عظماء الصحابة</a></li>
+        <li><a href="prophets.html">🌍 قصص الأنبياء</a></li>
+        <li><a href="azkar.html">🌿 الأذكار</a></li>
+        <li><a href="settings.html">⚙️ الإعدادات</a></li>
+    </ul>
+</nav>
 
-    <script>
-        // ==================== PROPHETS DATASET (Massive & Structured) ====================
-        const CATEGORIES = [
-            "الكل", "الأنبياء الأوائل", "أنبياء بني إسرائيل", "أولو العزم"
-        ];
+<main class="container">
+    <h1 class="page-title">الأذكار</h1>
+    <div class="categories-scroll" id="catBar"></div>
+    <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن ذكر...">
+    <div class="dhikr-grid" id="dhikrGrid"></div>
+</main>
 
-        const prophetsData = [
-            {
-                id: 1, name: "آدم عليه السلام", title: "أبو البشر", period: "بداية الخلق", order_hint: 1, category: "الأنبياء الأوائل",
-                short_intro: "أول إنسان خلقه الله بيده، وأسجد له ملائكته، وعلمه أسماء كل شيء. قصة بداية البشرية وصراعها مع إبليس.",
-                full_story: "خلق الله آدم عليه السلام من تراب الأرض بشتى ألوانه، ونفخ فيه من روحه. أمر الله الملائكة بالسجود له تكريماً، فسجدوا جميعاً إلا إبليس تكبر وعصى. أسكن الله آدم وزوجته حواء الجنة، وأباح لهما كل ثمارها إلا شجرة واحدة. وبوسوسة من إبليس، أكلا من الشجرة، فبدت لهما سوآتهما. تاب الله عليهما وعلمه كلمات التوبة، ثم أهبطهما إلى الأرض لتبدأ رحلة الخلافة والإعمار والابتلاء.",
-                key_events: [
-                    { title: "الخلق والتكريم", description: "خلقه الله من طين وعلمه الأسماء كلها، وأمر الملائكة بالسجود له.", lesson: "تكريم الله للإنسان وتفضيله بالعلم." },
-                    { title: "وسوسة إبليس", description: "استغل إبليس رغبة الإنسان في الخلود ووسوس لهما بالأكل من الشجرة المحرمة.", lesson: "الحذر من خطوات الشيطان وتزيينه للباطل." },
-                    { title: "الندم والتوبة", description: "ألهم الله آدم كلمات التوبة (ربنا ظلمنا أنفسنا...) فتاب عليه.", lesson: "باب التوبة مفتوح دائماً مهما كان الذنب." }
-                ],
-                miracles: ["خُلق من تراب بغير أب ولا أم.", "علمه الله أسماء كل شيء في الكون."],
-                lessons: ["التكبر هو أول ذنب عُصي به الله (إبليس).", "الاعتراف بالخطأ والمسارعة للتوبة من شيم الأنبياء، بينما الإصرار على المعصية من شيم الشياطين.", "الأرض هي دار الابتلاء والعمل، والجنة هي دار القرار."],
-                mentioned_in_quran: true, tags: ["أبو البشر", "الخلق", "إبليس", "التوبة"]
-            },
-            {
-                id: 2, name: "إدريس عليه السلام", title: "نبي الحكمة", period: "ما بعد آدم", order_hint: 2, category: "الأنبياء الأوائل",
-                short_intro: "من أوائل الأنبياء، آتاه الله الحكمة، وهو أول من خط بالقلم، ورفعه الله مكاناً علياً.",
-                full_story: "إدريس عليه السلام هو من أوائل الأنبياء بعد آدم وشيث. أثنى الله عليه في القرآن بالصبر والصدق. قيل إنه أول من خط بالقلم وأول من خاط الثياب. كان يدعو قومه إلى توحيد الله ومكارم الأخلاق. وقد رفعه الله إليه تكريماً له، كما جاء في قوله تعالى: (وَرَفَعْنَاهُ مَكَانًا عَلِيًّا).",
-                key_events: [
-                    { title: "الدعوة للتوحيد", description: "دعا قومه إلى الله بالحكمة والموعظة الحسنة.", lesson: "أهمية الصبر في دعوة الناس." },
-                    { title: "الرفع إلى السماء", description: "رفعه الله مكاناً علياً تكريماً لصدقه وعبادته.", lesson: "جزاء الصادقين الرفعة في الدنيا والآخرة." }
-                ],
-                miracles: ["رُفع إلى السماء حيّاً (في بعض التفاسير) أو رُفعت منزلته رفعاً عظيماً."],
-                lessons: ["العلم والعمل اليدوي (الكتابة والخياطة) من سنن الأنبياء.", "الصدق والصبر يرفعان قدر الإنسان عند الله."],
-                mentioned_in_quran: true, tags: ["حكمة", "قلم", "مكان علي", "قصص قصيرة"]
-            },
-            {
-                id: 3, name: "نوح عليه السلام", title: "شيخ المرسلين", period: "قبل الطوفان", order_hint: 3, category: "أولو العزم",
-                short_intro: "أول أولي العزم من الرسل. لبث في قومه 950 سنة يدعوهم للتوحيد، ولم يؤمن معه إلا قليل، فأهلك الله الكافرين بالطوفان.",
-                full_story: "أرسل الله نوحاً عليه السلام إلى قوم انحرفوا عن التوحيد وعبدوا الأصنام (ود وسواع ويغوث ويعوق ونسر). استمر يدعوهم ليلاً ونهاراً، سراً وجهاراً لمدة 950 عاماً، فلم يزدهم دعاؤه إلا فراراً واستكباراً. أوحى الله إليه بصنع السفينة في اليابسة، فسخر منه قومه. ولما جاء أمر الله وفار التنور، حمل معه من كل زوجين اثنين ومن آمن معه. غرق الأرض بالطوفان، وكان ابنه الكافر من المغرقين.",
-                key_events: [
-                    { title: "دعوة طويلة الأمد", description: "950 عاماً من الدعوة المستمرة بشتى الأساليب دون يأس.", lesson: "الداعية عليه البلاغ وليس هداية القلوب." },
-                    { title: "صنع الفلك", description: "بناء سفينة ضخمة في الصحراء امتثالاً لأمر الله رغم سخرية القوم.", lesson: "اليقين المطلق بأوامر الله حتى لو خالفت المألوف." },
-                    { title: "الطوفان وغرق الابن", description: "طوفان عظيم أغرق كل كافر، حتى ابن نوح الذي أوى إلى جبل ليعصمه.", lesson: "الروابط الحقيقية هي روابط العقيدة، ولا واسطة في دين الله." }
-                ],
-                miracles: ["صنع فلك عظيم بوحي الله وإلهامه.", "نجاته ومن معه من الطوفان المدمر الذي عم الأرض."],
-                lessons: ["الصبر الطويل والمثابرة على الحق.", "الاستهزاء لا يضر أصحاب الرسالات.", "النجاة تكون لمن ركب سفينة الإيمان والتوحيد."],
-                mentioned_in_quran: true, tags: ["أولو العزم", "الطوفان", "السفينة", "صبر", "قصص مفصلة"]
-            },
-            {
-                id: 4, name: "هود عليه السلام", title: "نبي عاد", period: "الأحقاف", order_hint: 4, category: "الأنبياء الأوائل",
-                short_intro: "أرسل إلى قوم عاد الذين اغتروا بقوتهم وضخامة أجسادهم وعمارتهم، فأهلكهم الله بريح صرصر عاتية.",
-                full_story: "أُرسل هود عليه السلام إلى قبيلة 'عاد' التي سكنت منطقة الأحقاف. كانوا يتمتعون بقوة بدنية هائلة وحضارة عمرانية عظيمة، فاغتروا وقالوا 'من أشد منا قوة؟' وعبدوا الأصنام. دعاهم هود إلى التوحيد ونبذ الشرك وذكرهم بنعم الله، فكذبوه واتهموه بالسفاهة والجنون. أرسل الله عليهم ريحاً صرصراً عاتية استمرت سبع ليال وثمانية أيام حسوماً، دمرتهم تماماً ونجى الله هوداً والذين آمنوا.",
-                key_events: [
-                    { title: "دعوة عاد", description: "تذكيرهم بنعم الله وقوتهم التي هي هبة منه سبحانه.", lesson: "القوة المادية لا تغني عن الله شيئاً." },
-                    { title: "الاستكبار والرفض", description: "تحدوا هوداً أن يأتيهم بالعذاب.", lesson: "الغرور يطمس بصيرة الإنسان." },
-                    { title: "الريح العاتية", description: "هلاك عاد بريح دمرت كل شيء بأمر ربها.", lesson: "عاقبة الغرور والتكبر هي الهلاك المحتوم." }
-                ],
-                miracles: ["النجاة هو ومن آمن معه من ريح دمرت أعتى حضارات زمانها."],
-                lessons: ["الشكر يحفظ النعم، والكفر يزيلها.", "لا ينبغي للإنسان أن يغتر بقوته الجسدية أو المادية."],
-                mentioned_in_quran: true, tags: ["عاد", "الريح", "الأحقاف", "قصص قصيرة"]
-            },
-            {
-                id: 5, name: "صالح عليه السلام", title: "نبي ثمود", period: "الحجر", order_hint: 5, category: "الأنبياء الأوائل",
-                short_intro: "أرسل لقوم ثمود الذين ينحتون من الجبال بيوتاً. أخرج الله لهم ناقة معجزة من الصخر، فعقروها فأهلكهم الله بالصيحة.",
-                full_story: "أُرسل صالح إلى قبيلة ثمود الذين سكنوا منطقة الحجر (مدائن صالح). كانوا أقوياء ينحتون بيوتهم في الجبال. طالبوا صالحاً بمعجزة محددة: أن يخرج لهم ناقة عشراء من صخرة صماء. دعا صالح ربه فانشقت الصخرة وخرجت الناقة. حذرهم من المساس بها وجعل لها شرب يوم ولهم شرب يوم. لكن طغيانهم دفع مجموعة من تسعة رهط لعقر (ذبح) الناقة. أمهلهم صالح ثلاثة أيام، ثم جاءتهم صيحة من السماء قطعت قلوبهم، فأصبحوا في ديارهم جاثمين.",
-                key_events: [
-                    { title: "معجزة الناقة", description: "خروج ناقة حية من صخرة صماء استجابة لطلبهم.", lesson: "المعجزات حجة على من طلبها إذا كفر بعدها." },
-                    { title: "عقر الناقة", description: "اجتمع التسعة رهط على قتل الناقة تحدياً لنبيهم.", lesson: "الفئة الفاسدة قد تهلك مجتمعاً كاملاً إن لم يوقفها السكوت." },
-                    { title: "هلاك ثمود", description: "الصيحة العظيمة التي أهلكتهم في بيوتهم المحصنة.", lesson: "البيوت المحصنة لا تحمي من غضب الله." }
-                ],
-                miracles: ["خروج الناقة من الصخرة، وكانت آية مبصرة."],
-                lessons: ["خطورة التمادي في المعصية وتحدي الله.", "سكوت المجتمع عن المفسدين يعمهم بالعذاب."],
-                mentioned_in_quran: true, tags: ["ثمود", "الناقة", "الصيحة"]
-            },
-            {
-                id: 6, name: "إبراهيم عليه السلام", title: "خليل الرحمن", period: "بابل / الشام / الحجاز", order_hint: 6, category: "أولو العزم",
-                short_intro: "أبو الأنبياء وخليل الله. كسر الأصنام، ونجاه الله من النار، وابتلي بذبح ابنه، وبنى الكعبة المشرفة.",
-                full_story: "ولد إبراهيم عليه السلام في بابل (العراق) لقوم يعبدون الأصنام والكواكب. حاجه أباه آزر وقومه بالمنطق السليم وأثبت عجز الأصنام بتحطيمها. ألقوه في نار عظيمة فجعلها الله برداً وسلاماً. هاجر إلى الشام، ثم إلى الحجاز، وهناك ابتلاه الله بترك زوجته هاجر ورضيعها إسماعيل في واد غير ذي زرع. ولما كبر إسماعيل، رأى إبراهيم في المنام أنه يذبحه، فاستسلما لأمر الله، ففداه الله بكبش عظيم. لاحقاً، أمره الله ببناء الكعبة مع ابنه إسماعيل ليكون بيتاً للتوحيد.",
-                key_events: [
-                    { title: "تحطيم الأصنام والنار", description: "كسر أصنام قومه ليثبت عجزها، فألقوه في النار التي تحولت لبرد وسلام.", lesson: "الشجاعة في قول الحق واليقين بحفظ الله." },
-                    { title: "محاجة النمرود", description: "ناظر الملك المتكبر الذي ادعى الألوهية وألجمه بالحجة (الشمس من المشرق).", lesson: "قوة الحجة والمنطق في الدعوة إلى الله." },
-                    { title: "الابتلاء الأعظم", description: "أمره بذبح ابنه الوحيد بعد سنوات من العقم.", lesson: "التسليم المطلق لأمر الله مهما كان شاقاً." },
-                    { title: "بناء الكعبة", description: "رفع قواعد البيت الحرام مع ابنه إسماعيل.", lesson: "العمل الصالح مع الدعاء بالقبول (ربنا تقبل منا)." }
-                ],
-                miracles: ["النار برداً وسلاماً عليه.", "إحياء الطيور الميتة ليطمئن قلبه.", "خروج ماء زمزم."],
-                lessons: ["استخدام العقل والتفكر للوصول إلى الخالق.", "الابتلاءات العظيمة ترفع الدرجات وتصنع القادة (إني جاعلك للناس إماماً).", "التوكل المطلق والتسليم يفتح أبواب الفرج والمعجزات."],
-                mentioned_in_quran: true, tags: ["أبو الأنبياء", "أولو العزم", "النار", "الكعبة", "قصص مفصلة"]
-            },
-            {
-                id: 7, name: "يوسف عليه السلام", title: "الكريم بن الكريم", period: "كنعان / مصر", order_hint: 11, category: "أنبياء بني إسرائيل",
-                short_intro: "قصة مليئة بالابتلاءات من غيابت الجب، إلى السجن، ثم إلى خزائن مصر. أيقونة الصبر والعفو وتأويل الرؤى.",
-                full_story: "تبدأ القصة برؤيا يوسف لأحد عشر كوكباً والشمس والقمر يسجدون له. حسده إخوته وألقوه في البئر. باعه المارة كعبد لعزيز مصر. تربى في قصر العزيز، ثم راودته امرأة العزيز عن نفسه فاستعصم، فكُيد له وأُدخل السجن ظلماً. لبث في السجن بضع سنين، اشتهر فيها بتأويل الرؤى والدعوة إلى التوحيد. فسر رؤيا الملك بسبع بقرات، فبرأه الملك وعينه على خزائن مصر. جاء إخوته يطلبون الميرة، فعرفهم ولم يعرفوه. وبعد سلسلة من الاختبارات، كشف لهم عن نفسه وعفا عنهم (لا تثريب عليكم اليوم)، وجمع شمل العائلة وتحققت رؤياه الأولى.",
-                key_events: [
-                    { title: "كيد الإخوة", description: "إلقاؤه في الجب بسبب غيرة إخوته من حب أبيهم له.", lesson: "الحسد يعمي القلوب ويدفع لأبشع الجرائم." },
-                    { title: "الفتنة في القصر", description: "مراودة امرأة العزيز له ورفضه القاطع (معاذ الله).", lesson: "التقوى ومراقبة الله تعصم الإنسان من الفواحش." },
-                    { title: "السجن وتأويل الرؤى", description: "فضل السجن على المعصية، واستغلال السجن للدعوة.", lesson: "الداعية لا توقفه القيود عن نشر الخير." },
-                    { title: "التمكين والعفو", description: "أصبح وزير خزانة مصر وعفا عن إخوته الذين ظلموه.", lesson: "التسامح عند المقدرة هو قمة الرقي الإنساني والإيماني." }
-                ],
-                miracles: ["تأويل الأحاديث (تفسير الرؤى) بدقة تامة.", "رد بصر أبيه يعقوب بقميصه."],
-                lessons: ["محن الحياة قد تكون هي نفس السلالم التي تصعد بك للنجاح (الجب -> القصر -> السجن -> الوزارة).", "الصبر الجميل لا يرافقه شكوى للناس.", "النجاح يبدأ بالعفة والأمانة وحفظ النفس."],
-                mentioned_in_quran: true, tags: ["مصر", "الجب", "عفو", "تفسير الرؤى", "قصص مفصلة"]
-            },
-            {
-                id: 8, name: "موسى عليه السلام", title: "كليم الله", period: "مصر / التيه", order_hint: 16, category: "أولو العزم",
-                short_intro: "كليم الله وأحد أولي العزم. واجه طاغية الأرض فرعون بمعجزات عظيمة، وشق البحر، وأنقذ بني إسرائيل.",
-                full_story: "وُلد موسى في وقت كان فرعون يقتل ذكور بني إسرائيل. أوحى الله لأمه أن تضعه في تابوت وتلقيه في النيل، ليلتقطه آل فرعون ويتربى في قصر عدوه. كبر ووكز مصرياً فقتله خطأ، ففر إلى مدين وبقي هناك عشر سنين. في طريق عودته، ناداه الله عند جبل الطور وكلمه، وأمره بالذهاب إلى فرعون مع أخيه هارون. أظهر لفرعون معجزتي العصا واليد، فكذبه وجمع له السحرة الذين آمنوا فور رؤيتهم للحق. طارد فرعون موسى وقومه، فشق الله لموسى البحر بعصاه فعبروا بسلام، وغرق فرعون وجنوده. لاحقاً عانى موسى كثيراً من تمرد وتعنت بني إسرائيل (عبادة العجل، التيه).",
-                key_events: [
-                    { title: "التربية في قصر العدو", description: "حفظ الله لموسى وتربيته في قصر فرعون الذي كان يبحث عنه ليقتله.", lesson: "قدر الله نافذ ولا يرده حذر." },
-                    { title: "المناجاة عند الطور", description: "تكليم الله لموسى مباشرة وإرساله بالرسالة.", lesson: "اختيار الله لرسله يكون بحكمة إلهية وتهيئة سابقة." },
-                    { title: "مواجهة السحرة", description: "انتصار الحق على سحر التخييل وإيمان السحرة الفوري.", lesson: "الحق أبلج والباطل زلوق." },
-                    { title: "انشقاق البحر", description: "النجاة العظيمة بمعجزة لم يسبق لها مثيل حينما انقطعت الأسباب المادية.", lesson: "اليقين المطلق بأن الله لن يضيع وليه (كلا إن معي ربي سيهدين)." }
-                ],
-                miracles: ["انقلاب العصا إلى حية تسعى.", "خروج يده بيضاء من غير سوء.", "انشقاق البحر.", "تفجر اثنتا عشرة عيناً من الحجر.", "تظليل الغمام ونزول المن والسلوى."],
-                lessons: ["نصرة المستضعفين والوقوف في وجه الطغاة والظلم.", "اليقين بالله يفتح مسارات النجاة في أحلك اللحظات.", "القيادة تتطلب صبراً هائلاً (معاناة موسى مع بني إسرائيل)."],
-                mentioned_in_quran: true, tags: ["كليم الله", "فرعون", "أولو العزم", "البحر", "قصص مفصلة"]
-            },
-            {
-                id: 9, name: "سليمان عليه السلام", title: "الملك النبي", period: "بيت المقدس", order_hint: 19, category: "أنبياء بني إسرائيل",
-                short_intro: "نبي وملك عظيم، سخر الله له الريح والجن وفهم لغة الطير والنمل. أقام مملكة التوحيد التي لا ينبغي لأحد من بعده.",
-                full_story: "ورث سليمان النبوة والملك عن أبيه داود عليهما السلام. سأل ربه ملكاً لا ينبغي لأحد من بعده، فاستجاب له. سخر الله له الشياطين يبنون له المحاريب والتماثيل ويغوصون في البحر. وسخر له الريح تجري بأمره، وعلمه لغة الطيور والحيوانات. من أشهر قصصه تبسمه من نملة حذرت قومها منه، وقصته مع الهدهد الذي اكتشف مملكة سبأ، فدعا ملكتهم (بلقيس) للإسلام، فجاءت مسلمة لله رب العالمين. توفي سليمان وهو متكئ على عصاه، ولم تعلم الجن بوفاته حتى أكلت دودة الأرض عصاه فسقط، ليُعلم الناس أن الجن لا يعلمون الغيب.",
-                key_events: [
-                    { title: "تسخير المخلوقات", description: "أعطاه الله تحكماً في الجن والريح وفهم لغات الحيوان.", lesson: "الملك الحقيقي والقدرة هي هبة من الله يسخرها لمن يشاء." },
-                    { title: "قصة النملة", description: "سماعه لتحذير نملة وشكره لله على هذه النعمة.", lesson: "القائد العظيم لا يغتر بقوته بل يتواضع ويشكر ربه." },
-                    { title: "ملكة سبأ والهدهد", description: "إرسال رسالة التوحيد مع الهدهد وإسلام بلقيس بعد رؤية عظمة ملكه.", lesson: "استخدام القوة والملك لنشر دعوة التوحيد بحكمة." }
-                ],
-                miracles: ["فهم لغة الحيوانات والطير.", "تسخير الريح والجن تحت إمرته.", "نقل عرش بلقيس في طرفة عين (بواسطة من عنده علم من الكتاب)."],
-                lessons: ["الشكر على النعم يزيدها (هذا من فضل ربي).", "القوة المادية والعسكرية يجب أن تُستخدم في إرساء العدل والتوحيد.", "لا أحد يعلم الغيب إلا الله (وفاة سليمان والجن)."],
-                mentioned_in_quran: true, tags: ["ملك", "الجن", "الهدهد", "سبأ"]
-            },
-            {
-                id: 10, name: "عيسى عليه السلام", title: "المسيح وكلمة الله", period: "فلسطين", order_hint: 24, category: "أولو العزم",
-                short_intro: "وُلد بمعجزة من غير أب، وتكلم في المهد. دعا بني إسرائيل للتوحيد، وأيده الله بمعجزات إحياء الموتى وإبراء الأكمه. رفعه الله إليه.",
-                full_story: "المسيح عيسى بن مريم، من أولي العزم من الرسل. خلقه الله بكلمة 'كن' في بطن مريم العذراء البتول من غير أب. عندما جاءت به قومها استنكروا ذلك، فأنطق الله الطفل في المهد قائلاً: (إني عبد الله آتاني الكتاب وجعلني نبياً). أرسله الله مصدقاً للتوراة ومُبشراً برسول يأتي من بعده اسمه أحمد. أيده الله بمعجزات باهرة كخلق الطير من الطين وإحياء الموتى وإشفاء الأمراض المستعصية. تآمرت عليه قيادات اليهود ليقتلوه، فمكر الله بهم، وألقى شبهه على شخص آخر صلبوه، بينما رفع الله عيسى إليه بروحه وجسده، وسينزل في آخر الزمان ليحكم بالعدل.",
-                key_events: [
-                    { title: "الولادة المعجزة", description: "حملت به السيدة مريم من غير مس بشر بإرادة الله المطلقة.", lesson: "قدرة الله لا تحدها الأسباب المادية والقوانين البشرية." },
-                    { title: "الكلام في المهد", description: "تحدث طفلاً رضيعاً ليبرئ أمه الطاهرة من تهم قومها.", lesson: "الله يدافع عن عباده الصالحين والأتقياء بأغرب الطرق." },
-                    { title: "المعجزات الطبية وإحياء الموتى", description: "أشفى المرضى وأحيا الموتى بإذن الله كحجة على بني إسرائيل.", lesson: "تأييد الله لرسله بالمعجزات التي تتناسب مع علوم عصرهم." },
-                    { title: "المؤامرة والرفع", description: "نجاته من الصلب ورفعه إلى السماء.", lesson: "مكر الله أشد من مكر المتآمرين على أوليائه." }
-                ],
-                miracles: ["الولادة من غير أب.", "الكلام في المهد.", "إبراء الأكمه والأبرص.", "إحياء الموتى بإذن الله.", "تشكيل الطين كهيئة الطير فينفخ فيه فيكون طيراً بإذن الله."],
-                lessons: ["تنزيه الله عن الصاحبة والولد، فعيسى عبد الله ورسوله.", "البراءة والتقوى (مريم عليها السلام) يجازيها الله بالكرامة.", "اليقين بأن الحق سينتصر ولو اجتمع عليه كل طغاة الأرض."],
-                mentioned_in_quran: true, tags: ["أولو العزم", "المسيح", "مريم", "رفع إلى السماء", "قصص مفصلة"]
-            },
-            {
-                id: 11, name: "محمد ﷺ", title: "خاتم الأنبياء والمرسلين", period: "مكة والمدينة", order_hint: 25, category: "أولو العزم",
-                short_intro: "خاتم الأنبياء وسيد ولد آدم. بُعث بالقرآن الكريم رحمة للعالمين، أخرج الناس من ظلمات الجاهلية إلى نور الإسلام، وبنى أعظم أمة في التاريخ.",
-                full_story: "وُلد النبي محمد ﷺ يتيماً في مكة عام الفيل. عُرف قبل البعثة بالصادق الأمين. نزل عليه الوحي في غار حراء وعمره 40 عاماً. بدأ الدعوة سراً ثم جهر بها، فواجه وأصحابه تعذيباً ومقاطعة من قريش. بعد عام الحزن، أكرمه الله بالإسراء والمعراج. هاجر إلى المدينة المنورة حيث أسس أول دولة إسلامية وبنى المسجد وآخى بين المهاجرين والأنصار. خاض غزوات عديدة دفاعاً عن الدين (بدر، أحد، الخندق). عاد فاتحاً لمكة في العام الثامن للهجرة فعفا عن أهلها. أكمل الله به الدين في حجة الوداع، وتوفي في المدينة عن عمر 63 عاماً بعد أن بلغ الرسالة وأدى الأمانة وتركنا على المحجة البيضاء.",
-                key_events: [
-                    { title: "نزول الوحي (اقرأ)", description: "في غار حراء، نزل جبريل بالوحي لتبدأ رسالة الإسلام الخاتمة.", lesson: "العلم والقراءة هما مفتاح النور لهذه الأمة." },
-                    { title: "المعاناة والثبات في مكة", description: "حصار الشعب، تعذيب الصحابة، والرفض من الطائف.", lesson: "طريق الدعوة محفوف بالمكاره ويتطلب صبراً ويقيناً لا يتزعزع." },
-                    { title: "الهجرة النبوية", description: "ترك الوطن لله وتأسيس مجتمع إسلامي متين في المدينة.", lesson: "التضحية بكل شيء من أجل العقيدة، والتخطيط السليم مع التوكل." },
-                    { title: "فتح مكة (العفو العام)", description: "دخول مكة منتصراً وإعلان العفو (اذهبوا فأنتم الطلقاء).", lesson: "التسامح والعفو عند المقدرة هو قمة الرقي الإنساني والنبوي." },
-                    { title: "حجة الوداع", description: "إرساء قواعد حقوق الإنسان وإتمام الدين.", lesson: "عالمية وكمال الرسالة الإسلامية الصالحة لكل زمان ومكان." }
-                ],
-                miracles: ["القرآن الكريم (المعجزة الخالدة).", "الإسراء والمعراج.", "انشقاق القمر.", "نبع الماء من بين أصابعه.", "حنين الجذع إليه.", "وغيرها المئات من المعجزات والآيات."],
-                lessons: ["الرحمة للعالمين: لم يكن جباراً ولا منتقماً بل كان رحمة مهداة.", "الجمع بين القيادة الروحية (نبي) والقيادة السياسية العسكرية (رئيس دولة).", "الأخلاق العظيمة هي الركيزة الأساسية للنجاح (وإنك لعلى خلق عظيم)."],
-                mentioned_in_quran: true, tags: ["خاتم الأنبياء", "أولو العزم", "القرآن", "رحمة للعالمين", "قصص مفصلة"]
-            }
-            // Add more prophets to satisfy the count requirement in the real app, but this provides a very strong and detailed base representing the full functional needs.
-            // Short representations for remaining prophets to fill out the dataset visually in the UI:
-            ,{
-                id: 12, name: "إسماعيل عليه السلام", title: "الذبيح صادق الوعد", period: "مكة", order_hint: 7, category: "الأنبياء الأوائل",
-                short_intro: "ابن إبراهيم، تركه صغيراً مع أمه بواد غير ذي زرع، وفداه الله بكبش عظيم، وشارك في بناء الكعبة.",
-                full_story: "ابن إبراهيم البكر من السيدة هاجر. نشأ في مكة، وتعلم العربية من قبيلة جرهم. ضرب أروع أمثلة الطاعة حين استسلم للذبح امتثالاً لرؤيا أبيه، ففداه الله بكبش. ساعد أباه في رفع قواعد الكعبة.",
-                key_events: [
-                    { title: "أمر الذبح", description: "استسلامه المطلق لسكين أبيه طاعة لله.", lesson: "بر الوالدين والطاعة المطلقة لأمر الله." }
-                ],
-                miracles: ["خروج نبع زمزم من تحت قدميه وهو رضيع.", "فداؤه بالكبش العظيم."],
-                lessons: ["الصبر واليقين يعقبه الفرج.", "تربية الأبناء على العقيدة الراسخة."],
-                mentioned_in_quran: true, tags: ["الذبيح", "زمزم", "الكعبة", "قصص قصيرة"]
-            },
-            {
-                id: 13, name: "يونس عليه السلام", title: "ذو النون", period: "نينوى", order_hint: 15, category: "أنبياء بني إسرائيل",
-                short_intro: "خرج غاضباً من قومه فالتقمه الحوت، فدعا في الظلمات فنجاه الله وآمن قومه بأكملهم.",
-                full_story: "أرسل لأهل نينوى (العراق)، فكذبوه، فتركهم غاضباً قبل أن يأذن الله له. ركب سفينة واقترعوا فرموه في البحر، فالتقمه الحوت. نادى في ظلمات البحر وبطن الحوت: (لا إله إلا أنت سبحانك إني كنت من الظالمين). نجاه الله وأعاده لقومه فآمنوا ومُتعوا إلى حين.",
-                key_events: [
-                    { title: "في بطن الحوت", description: "التسبيح والاعتراف بالظلم في أشد لحظات اليأس.", lesson: "الاعتراف بالخطأ سبب للنجاة." }
-                ],
-                miracles: ["البقاء حياً في بطن الحوت.", "إيمان قومه المائة ألف بأكملهم ورُفع عنهم العذاب."],
-                lessons: ["عدم اليأس من رحمة الله.", "الداعية يجب أن يصبر ولا يتعجل قطف الثمار."],
-                mentioned_in_quran: true, tags: ["الحوت", "نينوى", "قصص قصيرة"]
-            },
-           {
-        id: 14, name: "شعيب عليه السلام", title: "خطيب الأنبياء", period: "مدين (شمال غرب الجزيرة العربية)", order_hint: 16, category: "الأنبياء العرب",
-        short_intro: "أرسل إلى أهل مدين الذين كانوا يغشون في التجارة ويطففون الكيل، فدعاهم إلى التوحيد والأمانة الاقتصادية.",
-        full_story: "أرسل الله شعيباً إلى قومه في مدين، وكانوا قوماً أصحاب تجارة لكنهم اشتهروا بقطع الطريق والغش في المكيال والميزان. دعاهم شعيب بأسلوب حكيم ومنطق بليغ ومقنع (ولذلك لُقب بخطيب الأنبياء) إلى عبادة الله وإيفاء الحقوق للناس. ورغم تحذيراته، استكبر القوم وسخروا منه وهددوه بالرجم والطرد. فجاءهم عذاب الله، حيث أصابهم حر شديد ثم سحابة ظنوا فيها الظل (عذاب يوم الظلة) فأمطرتهم ناراً، وأخذتهم الصيحة والرجفة فأصبحوا في ديارهم جاثمين.",
-        key_events: [
-            { title: "الإصلاح الاقتصادي", description: "مواجهة الفساد التجاري وتطفيف الكيل بشجاعة.", lesson: "الأمانة في التعاملات المالية جزء لا يتجزأ من الإيمان والدين." },
-            { title: "عذاب يوم الظلة", description: "احتماء القوم بسحابة هرباً من الحر الشديد فكانت سبب هلاكهم.", lesson: "عذاب الله قد يأتي من حيث يظن الإنسان النجاة." }
-        ]
-    },
-    {
-        id: 15, name: "موسى عليه السلام", title: "كليم الله", period: "مصر وسيناء", order_hint: 17, category: "أولو العزم من الرسل",
-        short_intro: "أرسله الله إلى فرعون مصر لإنقاذ بني إسرائيل، وأيده بمعجزات عظيمة كالعصا واليد البيضاء.",
-        full_story: "ولد موسى في عام كان فرعون يقتل فيه الذكور، فأوحى الله لأمه أن تلقيه في اليم. تربى في قصر فرعون، ولما كبر وكز مصرياً فقتله خطأً، فهرب إلى مدين وبقي فيها عشر سنين. في طريق عودته، كلمه الله عند جبل الطور وأرسله لفرعون. واجه السحرة فآمنوا، ثم أخرج بني إسرائيل من مصر، وشق الله له البحر الأحمر. ذهب لميقات ربه لتلقي التوراة، ففتن قومه بعبادة العجل، وعانى معهم في التيه أربعين سنة بسبب عصيانهم.",
-        key_events: [
-            { title: "مواجهة السحرة", description: "تحول عصا موسى إلى حية ابتلعت حبال السحرة وإيمان السحرة الفوري.", lesson: "الحق ينتصر دائماً على الباطل مهما كان مزيناً." },
-            { title: "انشقاق البحر", description: "النجاة العظيمة لموسى وقومه وغرق فرعون وجنوده.", lesson: "الثقة المطلقة في نصر الله حتى في اللحظات التي تبدو مستحيلة (قَالَ كَلَّا ۖ إِنَّ مَعِيَ رَبِّي سَيَهْدِينِ)." }
-        ]
-    },
-    {
-        id: 16, name: "هارون عليه السلام", title: "الوزير الفصيح", period: "مصر وسيناء", order_hint: 18, category: "أنبياء بني إسرائيل",
-        short_intro: "أخو موسى عليه السلام، سأل موسى ربه أن يجعله وزيراً ومؤازراً له لفصاحة لسانه.",
-        full_story: "كان هارون أكبر سناً من موسى وأفصح منه لساناً. عندما كلف الله موسى بالرسالة، طلب من الله أن يشدد به أزره ويشركه في أمره. وقف هارون بجانب أخيه في مواجهة جبروت فرعون. ولما ذهب موسى لمناجاة ربه، استخلف هارون على بني إسرائيل، لكن السامري أضلهم وفتنهم بعبادة العجل المصنوع من الذهب. حاول هارون منعهم ونصحهم بشدة، لكنهم كادوا يقتلونه، فانتظر عودة موسى ليعالج الفتنة.",
-        key_events: [
-            { title: "الوزارة والدعم", description: "دعم أخيه موسى في أثقل مهمة على وجه الأرض.", lesson: "أهمية السند الصالح والأخوة في تجاوز الصعاب." },
-            { title: "فتنة العجل", description: "محاولته منع القوم من الشرك وتوضيح الحق لهم رغم التهديد.", lesson: "الثبات على الحق وقوله حتى لو خالفك الأغلبية." }
-        ]
-    },
-    {
-        id: 17, name: "داود عليه السلام", title: "خليفة الله في الأرض", period: "فلسطين", order_hint: 19, category: "أنبياء بني إسرائيل",
-        short_intro: "قتل جالوت فآتاه الله المُلك والحكمة، وألان له الحديد، وأنزل عليه الزبور.",
-        full_story: "برز داود وهو شاب في جيش طالوت، واستطاع بشجاعته وإيمانه قتل الملك الجبار جالوت باستخدام حجر ومقلاع. بعد ذلك آتاه الله النبوة والمُلك معاً في سابقة نادرة. رزقه الله صوتاً جميلاً فكانت الجبال والطير تسبح معه، وألان له الحديد فكان يصنع منه الدروع القوية. أنزل الله عليه كتاب (الزبور)، وكان يصوم يوماً ويفطر يوماً، ويقوم ثلث الليل.",
-        key_events: [
-            { title: "قتل جالوت", description: "شاب مؤمن يسقط جباراً عتيداً بأداة بسيطة.", lesson: "النصر ليس بالعدة والعتاد، بل بقوة الإيمان." },
-            { title: "إلانة الحديد وتكريس الوقت", description: "صناعة الدروع والعبادة الدائمة.", lesson: "الجمع بين العمل الدنيوي المتقن والعبادة الخالصة لله." }
-        ]
-    },
-    {
-        id: 18, name: "سليمان عليه السلام", title: "النبي الملك", period: "فلسطين", order_hint: 20, category: "أنبياء بني إسرائيل",
-        short_intro: "ورث داود في النبوة والملك، وسخر الله له الريح والجن ومنطقه لغة الطير والحيوانات.",
-        full_story: "دعا سليمان ربه أن يهبه ملكاً لا ينبغي لأحد من بعده، فاستجاب له. سخر الله له الجن يبنون له المحاريب والقصور، وسخر له الريح تجري بأمره، وعلمه لغة الطير والنمل. قصته الشهيرة مع الهدهد قادته لاكتشاف مملكة سبأ، فدعا ملكتهم (بلقيس) إلى التوحيد، وأبهرها بعظمة ملكه ونقل عرشها في طرفة عين، فأسلمت لله رب العالمين. توفي وهو متكئ على عصاه ولم تعلم الجن بموته حتى أكلتها دابة الأرض.",
-        key_events: [
-            { title: "قصة النملة", description: "تبسمه من قول النملة وشكره لله على نعمة الفهم.", lesson: "القائد العظيم لا يحتقر الضعفاء ويشكر الله دائماً على النعم." },
-            { title: "إسلام بلقيس", description: "استخدام القوة والعلم للدعوة إلى الله بدلاً من الاستعمار.", lesson: "الغاية من السلطة والعلم هي هداية الناس للحق." }
-        ]
-    },
-    {
-        id: 19, name: "إلياس عليه السلام", title: "النبي المجاهد", period: "بعلبك (بلاد الشام)", order_hint: 21, category: "أنبياء بني إسرائيل",
-        short_intro: "أرسل إلى قوم يعبدون صنماً يقال له (بعل)، فدعاهم للتوحيد بقوة وحزم.",
-        full_story: "أرسل إلياس عليه السلام إلى أهل بعلبك في الشام، وكانوا قد انحرفوا عن التوحيد وبنوا صنماً ضخماً من الذهب أسموه (بعلاً). واجههم إلياس بحزم قائلاً: (أتدعون بعلاً وتذرون أحسن الخالقين). قوبلت دعوته بالتكذيب والمطاردة، واضطر للجوء إلى الجبال هرباً من بطش الملك وقومه، وقد أيده الله بمعجزات عظيمة للرد على كهنة الأصنام.",
-        key_events: [
-            { title: "مواجهة عبَدة البعل", description: "الوقوف وحيداً أمام أمة بأكملها تدعو صنماً.", lesson: "الحق لا يقاس بالكثرة، والتوحيد لا يقبل المساومة." }
-        ]
-    },
-    {
-        id: 20, name: "اليسع عليه السلام", title: "خليفة إلياس", period: "بلاد الشام", order_hint: 22, category: "أنبياء بني إسرائيل",
-        short_intro: "رافق إلياس في دعوته ثم استخلفه، وقاد بني إسرائيل بالتمسك بشريعة التوراة.",
-        full_story: "كان اليسع تلميذاً وصاحباً لإلياس عليهما السلام، وقد اختبأ معه في الجبل هرباً من بطش الملك. وبعد إلياس، أوحى الله إليه بالنبوة، فواصل مسيرة الإصلاح والدعوة في بني إسرائيل، محذراً إياهم من الانحرافات. وقد ذكره القرآن الكريم ضمن الأنبياء المفضلين الأخيار.",
-        key_events: [
-            { title: "استكمال المسيرة", description: "مواصلة دعوة التوحيد بعد رحيل معلمه إلياس.", lesson: "دعوة الحق مستمرة ولا تتوقف برحيل الداعية." }
-        ]
-    },
-    {
-        id: 21, name: "ذو الكفل عليه السلام", title: "الصابر المتكفل", period: "بلاد الشام", order_hint: 23, category: "أنبياء بني إسرائيل",
-        short_intro: "نبي من الصابرين الأخيار، تكفل برعاية قومه والقضاء بينهم بالعدل فوفى بما تكفل به.",
-        full_story: "تذكر الروايات أنه تكفل لنبي قبله (قيل اليسع) بثلاثة شروط ليكون خليفته: أن يصوم النهار، ويقوم الليل، ولا يغضب أبداً. وقد حاول إبليس مراراً أن يغضبه في أوقات راحته بحيل مختلفة ومشاكل مفتعلة، لكنه أظهر صبراً وحلماً عجيبين، ووفى بعهده فاستحق لقب (ذي الكفل) لذكره في القرآن من الصابرين.",
-        key_events: [
-            { title: "الوفاء بالعهد", description: "الالتزام بالشروط القاسية رغم محاولات الاستفزاز.", lesson: "كظم الغيظ والصبر من أعلى مقامات الإيمان والقيادة." }
-        ]
-    },
-    {
-        id: 22, name: "زكريا عليه السلام", title: "كافل مريم", period: "القدس (فلسطين)", order_hint: 24, category: "أنبياء بني إسرائيل",
-        short_intro: "كفل مريم العذراء، ودعا ربه في شيخوخته أن يرزقه ولداً صالحاً فرزقه يحيى.",
-        full_story: "كان زكريا يعمل نجاراً، وهو من تولى كفالة السيدة مريم في المحراب. كلما دخل عليها المحراب وجد عندها رزقاً في غير وقته، فتيقن أن الله قادر على كل شيء. كان قد بلغ من الكبر عتياً وامرأته عاقر، فدعا ربه نداءً خفياً أن يرزقه ولياً يرث النبوة. فبشره الله بيحيى، وجعل له آية ألا يكلم الناس ثلاثة أيام إلا رمزاً.",
-        key_events: [
-            { title: "الدعاء الخفي", description: "التضرع لله في الكبر واليأس الظاهري البشري.", lesson: "رحمة الله لا تخضع للحسابات البشرية، والدعاء يغير القدر." },
-            { title: "كفالة مريم", description: "رعايته لامرأة صالحة كانت سبباً في تجديد يقينه.", lesson: "رؤية كرامات الصالحين تزيد المؤمن إيماناً." }
-        ]
-    },
-    {
-        id: 23, name: "يحيى عليه السلام", title: "النبي الشهيد", period: "فلسطين", order_hint: 25, category: "أنبياء بني إسرائيل",
-        short_intro: "أُوتي الحكم صبياً، وكان باراً بوالديه وحصوراً، قُتل دفاعاً عن شرع الله.",
-        full_story: "ولد يحيى استجابة لدعوة زكريا، وآتاه الله الحكمة والفهم والرحمة وهو لا يزال صبياً صغيراً. كان شديد الزهد، باراً بوالديه، ولم يكن جباراً عصياً. وقف بقوة ضد ملك في زمانه أراد الزواج بمحرم له (ابنة أخيه)، فرفض يحيى تحليل ذلك في الدين. فأمر الملك بقتله، فاستشهد وهو متمسك بالحق.",
-        key_events: [
-            { title: "إيتاء الحكم صبياً", description: "النضج الروحي والديني في سن مبكرة جداً.", lesson: "فضل الله يُؤتى لمن يشاء، والشباب قادرون على حمل أمانة الدين." },
-            { title: "الاستشهاد على الحق", description: "رفض تغيير فتاوى الدين إرضاءً لأهواء الملوك.", lesson: "كلمة الحق أعظم من الحياة ذاتها." }
-        ]
-    },
-    {
-        id: 24, name: "عيسى عليه السلام", title: "المسيح وكلمة الله", period: "فلسطين", order_hint: 26, category: "أولو العزم من الرسل",
-        short_intro: "وُلد من مريم العذراء بمعجزة بلا أب، وتكلم في المهد، ورفعه الله إليه.",
-        full_story: "نُفخت الروح في مريم العذراء فولدته معجزة، وعندما اتهمها قومها، نطق عيسى في المهد مبرئاً أمه ومعلناً نبوته. أنزل الله عليه (الإنجيل)، وأيده بمعجزات باهرة: إبراء الأكمه والأبرص، إحياء الموتى، وتشكيل الطير من الطين والنفخ فيه بإذن الله. تآمر عليه بنو إسرائيل لصلبه، لكن الله شبّه لهم شخصاً آخر فصلبوه، ورفع الله عيسى إليه جسداً وروحاً، وسيعود في آخر الزمان.",
-        key_events: [
-            { title: "الكلام في المهد", description: "تحدثه طفلاً رضيعاً لتبرئة أمه الطاهرة.", lesson: "الله يدافع عن الذين آمنوا ويظهر براءتهم ولو بمعجزة." },
-            { title: "المعجزات الطبية وإحياء الموتى", description: "شفاء الأمراض المستعصية بإذن الله.", lesson: "قدرة الله فوق الأسباب والقوانين الدنيوية المعتادة." }
-        ]
-    },
-    {
-        id: 25, name: "محمد ﷺ", title: "خاتم الأنبياء والمرسلين", period: "مكة والمدينة", order_hint: 27, category: "أولو العزم من الرسل",
-        short_intro: "أرسل للناس كافة رحمة للعالمين، أنزل عليه القرآن الكريم المعجزة الخالدة.",
-        full_story: "ولد يتيماً بمكة، واشتهر بالصادق الأمين. نزل عليه الوحي في غار حراء وهو في الأربعين من عمره. عانى من اضطهاد قريش وصبر مع صحابته، ثم هاجر إلى المدينة المنورة حيث أسس أول مجتمع إسلامي. خاض غزوات عديدة دفاعاً عن الدين، وأكرمه الله بمعجزة الإسراء والمعراج. عاد فاتحاً لمكة متسامحاً مع من طردوه. أكمل الله به الدين وأتم به النعمة، وتوفي في المدينة المنورة بعد حجة الوداع.",
-        key_events: [
-            { title: "نزول الوحي", description: "بداية الرسالة بكلمة (اقرأ) في غار حراء.", lesson: "العلم والمعرفة هما أول مفاتيح النهضة والصلة بالله." },
-            { title: "الهجرة النبوية", description: "الانتقال للمدينة لبناء دولة الإسلام بعد التخطيط المتقن.", lesson: "أهمية الجمع بين التوكل المطلق على الله والأخذ بالأسباب." },
-            { title: "فتح مكة", description: "دخول مكة منتصراً وإعلان العفو العام (اذهبوا فأنتم الطلقاء).", lesson: "العفو عند المقدرة هو قمة الأخلاق النبوية." }
-        ]
+<script>
+    // بيانات الأذكار
+    const adhkarData = [
+        { "id": 1, "title": "سيد الاستغفار", "category": "أذكار الصباح", "text": "اللَّهُمَّ أَنْتَ رَبِّي لا إِلَهَ إِلا أَنْتَ ، خَلَقْتَنِي وَأَنَا عَبْدُكَ ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي ، فَإِنَّهُ لا يَغْفِرُ الذُّنُوبَ إِلا أَنْتَ.", "repeat": 1, "source": "البخاري", "benefits": "من قالها موقناً بها حين يمسي فمات من ليلته دخل الجنة، وكذلك حين يصبح.", "tags": ["صباح", "مساء", "توبة"] },
+  { "id": 2, "title": "أصبحنا وأصبح الملك لله", "category": "أذكار الصباح", "text": "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.", "repeat": 1, "source": "مسلم", "benefits": "سؤال خير اليوم والاستعاذة من شره وعذاب القبر.", "tags": ["صباح", "حفظ"] },
+  { "id": 3, "title": "أمسينا وأمسى الملك لله", "category": "أذكار المساء", "text": "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا...", "repeat": 1, "source": "مسلم", "benefits": "سؤال خير الليلة والحفظ من شرها.", "tags": ["مساء", "حفظ"] },
+  { "id": 4, "title": "الرضا بالله", "category": "أذكار الصباح", "text": "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا.", "repeat": 3, "source": "أبو داود", "benefits": "من قالها 3 مرات كان حقاً على الله أن يرضيه يوم القيامة.", "tags": ["صباح", "مساء", "رضا"] },
+  { "id": 5, "title": "بسم الله الذي لا يضر", "category": "أذكار الصباح", "text": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ.", "repeat": 3, "source": "أبو داود", "benefits": "حماية من فجاءة البلاء ولم يضره شيء.", "tags": ["صباح", "مساء", "تحصين"] },
+  { "id": 6, "title": "اللهم عافني", "category": "أذكار الصباح", "text": "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَهَ إِلَّا أَنْتَ.", "repeat": 3, "source": "أبو داود", "benefits": "دعاء بالعافية في البدن والدين.", "tags": ["صباح", "مساء", "عافية"] },
+  { "id": 7, "title": "حسبي الله", "category": "أذكار الصباح", "text": "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.", "repeat": 7, "source": "ابن السني", "benefits": "كفاه الله ما أهمه من أمر الدنيا والآخرة.", "tags": ["صباح", "مساء", "توكل"] },
+  { "id": 8, "title": "باسمك اللهم", "category": "أذكار النوم", "text": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا.", "repeat": 1, "source": "البخاري", "benefits": "تسليم النفس لله عند النوم.", "tags": ["نوم"] },
+  { "id": 9, "title": "الحمد لله الذي أحيانا", "category": "أذكار الاستيقاظ", "text": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ.", "repeat": 1, "source": "البخاري", "benefits": "شكر الله على نعمة الحياة المتجددة.", "tags": ["استيقاظ", "حمد"] },
+  { "id": 10, "title": "التسبيح قبل النوم", "category": "أذكار النوم", "text": "سُبْحَانَ اللَّهِ (33 مرة)، الْحَمْدُ لِلَّهِ (33 مرة)، اللَّهُ أَكْبَرُ (34 مرة).", "repeat": 1, "source": "البخاري", "benefits": "أفضل من خادم يعين على التعب.", "tags": ["نوم", "تسبيح", "فاطمة"] },
+  { "id": 11, "title": "الاستغفار والسلام", "category": "أذكار بعد الصلاة", "text": "أَسْتَغْفِرُ اللَّهَ (ثَلاثاً) اللَّهُمَّ أَنْتَ السَّلامُ ، وَمِنْكَ السَّلامُ ، تَبَارَكْتَ يَا ذَا الْجَلالِ وَالإِكْرَامِ.", "repeat": 1, "source": "مسلم", "benefits": "مغفرة النقص في الصلاة.", "tags": ["صلاة", "استغفار"] },
+  { "id": 12, "title": "لا إله إلا الله وحده", "category": "أذكار بعد الصلاة", "text": "لا إِلَهَ إِلا اللَّهُ وَحْدَهُ لا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، اللَّهُمَّ لا مَانِعَ لِمَا أَعْطَيْتَ، وَلا مُعْطِيَ لِمَا مَنَعْتَ، وَلا يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ.", "repeat": 1, "source": "متفق عليه", "benefits": "تأكيد التوحيد والاستسلام لقضاء الله.", "tags": ["صلاة", "توحيد"] },
+  { "id": 13, "title": "تسبيحات دبر الصلاة", "category": "أذكار بعد الصلاة", "text": "سُبْحَانَ اللَّهِ (33)، وَالْحَمْدُ لِلَّهِ (33)، وَاللَّهُ أَكْبَرُ (33)، ثُمَّ يَقُولُ تَمَامَ الْمِائَةِ: لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.", "repeat": 1, "source": "مسلم", "benefits": "غُفرت خطاياه وإن كانت مثل زبد البحر.", "tags": ["صلاة", "تسبيح"] },
+  { "id": 14, "title": "آية الكرسي", "category": "أذكار بعد الصلاة", "text": "اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ... (الآية)", "repeat": 1, "source": "النسائي", "benefits": "لم يمنعه من دخول الجنة إلا أن يموت.", "tags": ["صلاة", "قرآن", "جنة"] },
+  { "id": 15, "title": "دعاء الكرب", "category": "أذكار الهم والكرب", "text": "لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ.", "repeat": 1, "source": "البخاري", "benefits": "تفريج الهم والكرب العظيم.", "tags": ["كرب", "هم"] },
+  { "id": 16, "title": "دعاء ذي النون", "category": "أذكار الهم والكرب", "text": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ.", "repeat": 1, "source": "الترمذي", "benefits": "ما دعا بها مكروب إلا فرج الله عنه.", "tags": ["كرب", "يونس"] },
+  { "id": 17, "title": "يا حي يا قيوم", "category": "أذكار الهم والكرب", "text": "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.", "repeat": 1, "source": "النسائي", "benefits": "استغاثة بالله وقت الشدة وإصلاح الشأن.", "tags": ["استغاثة", "كرب"] },
+  { "id": 18, "title": "الاستغفار العظيم", "category": "أذكار الاستغفار", "text": "أَسْتَغْفِرُ اللَّهَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيَّ الْقَيُّومَ وَأَتُوبُ إِلَيْهِ.", "repeat": 3, "source": "أبو داود", "benefits": "غُفر له وإن كان قد فر من الزحف.", "tags": ["استغفار", "توبة"] },
+  { "id": 19, "title": "بعد الفراغ من الطعام", "category": "أذكار الطعام", "text": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا، وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ.", "repeat": 1, "source": "أبو داود", "benefits": "غُفر له ما تقدم من ذنبه.", "tags": ["طعام", "حمد"] },
+  { "id": 20, "title": "بعد الوضوء", "category": "أذكار الوضوء", "text": "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ. اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ.", "repeat": 1, "source": "مسلم والترمذي", "benefits": "تُفتح له أبواب الجنة الثمانية يدخل من أيها شاء.", "tags": ["وضوء", "طهارة"] },
+  { "id": 21, "title": "دخول المسجد", "category": "أذكار المسجد", "text": "بِسْمِ اللَّهِ، وَالصَّلاةُ وَالسَّلامُ عَلَى رَسُولِ اللَّهِ، اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ.", "repeat": 1, "source": "مسلم", "benefits": "طلب الرحمة والتوفيق من الله.", "tags": ["مسجد", "رحمة"] },
+  { "id": 22, "title": "دعاء السفر", "category": "أذكار السفر", "text": "اللهُ أكبَر، اللهُ أكبَر، اللهُ أكبَر، سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ، وَإِنَّا إِلَى رَبِّنَا لَمُنقَلِبُونَ...", "repeat": 1, "source": "مسلم", "benefits": "الحفظ في السفر وتسهيل المشقة.", "tags": ["سفر", "حفظ"] },
+  { "id": 23, "title": "التسبيح والتحميد", "category": "أذكار عامة", "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ.", "repeat": 100, "source": "متفق عليه", "benefits": "حُطت خطاياه وإن كانت مثل زبد البحر.", "tags": ["تسبيح", "عام"] },
+  { "id": 24, "title": "الكلمتان الحبيبتان", "category": "أذكار عامة", "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ.", "repeat": 1, "source": "متفق عليه", "benefits": "ثقيلتان في الميزان حبيبتان للرحمن.", "tags": ["ميزان", "تسبيح"] },
+  { "id": 25, "title": "كنز الجنة", "category": "أذكار عامة", "text": "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ.", "repeat": 1, "source": "متفق عليه", "benefits": "كنز من كنوز الجنة.", "tags": ["حوقلة", "جنة"] },
+  { "id": 26, "title": "اللهم بك أصبحنا", "category": "أذكار الصباح", "text": "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ.", "repeat": 1, "source": "الترمذي", "benefits": "اعتراف بتصريف الله للأمور.", "tags": ["صباح"] },
+  { "id": 27, "title": "اللهم بك أمسينا", "category": "أذكار المساء", "text": "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ.", "repeat": 1, "source": "الترمذي", "benefits": "اعتراف بتصريف الله للأمور في المساء.", "tags": ["مساء"] },
+  { "id": 28, "title": "شكر النعمة", "category": "أذكار الصباح", "text": "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.", "repeat": 1, "source": "أبو داود", "benefits": "من قالها حين يصبح فقد أدى شكر يومه.", "tags": ["صباح", "شكر"] },
+  { "id": 29, "title": "الإشهاد", "category": "أذكار الصباح", "text": "اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.", "repeat": 4, "source": "أبو داود", "benefits": "من قالها أعتقه الله من النار.", "tags": ["صباح", "توحيد"] },
+  { "id": 30, "title": "سبحان الله وبحمده عدد خلقه", "category": "أذكار الصباح", "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ.", "repeat": 3, "source": "مسلم", "benefits": "أجر عظيم يعادل أضعاف التسبيح.", "tags": ["صباح", "تسبيح"] },
+  { "id": 31, "title": "أعوذ بكلمات الله التامات", "category": "أذكار المساء", "text": "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", "repeat": 3, "source": "مسلم", "benefits": "لا يضره شيء في تلك الليلة.", "tags": ["مساء", "حفظ"] },
+  { "id": 32, "title": "عالم الغيب", "category": "أذكار الصباح", "text": "اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَوَاتِ وَالأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ.", "repeat": 1, "source": "الترمذي", "benefits": "حفظ من شر النفس والشيطان.", "tags": ["صباح", "مساء", "حفظ"] },
+  { "id": 33, "title": "سؤال العلم والرزق", "category": "أذكار الصباح", "text": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا.", "repeat": 1, "source": "ابن ماجه", "benefits": "دعاء بالتوفيق للعمل الصالح والرزق الحلال.", "tags": ["صباح", "دعاء"] },
+  { "id": 34, "title": "المعوذات للصباح والمساء", "category": "أذكار الصباح", "text": "قراءة سورة الإخلاص، والفلق، والناس.", "repeat": 3, "source": "أبو داود", "benefits": "تكفيك من كل شيء.", "tags": ["صباح", "مساء", "قرآن"] },
+  { "id": 35, "title": "باسمك ربي", "category": "أذكار النوم", "text": "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ.", "repeat": 1, "source": "البخاري", "benefits": "تفويض الأمر لله وحفظ النفس.", "tags": ["نوم", "حفظ"] },
+  { "id": 36, "title": "الوقاية من العذاب", "category": "أذكار النوم", "text": "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", "repeat": 3, "source": "الترمذي", "benefits": "دعاء بالنجاة من عذاب الآخرة.", "tags": ["نوم", "آخرة"] },
+  { "id": 37, "title": "قراءة الكافرون", "category": "أذكار النوم", "text": "قراءة سورة الكافرون.", "repeat": 1, "source": "أبو داود", "benefits": "براءة من الشرك.", "tags": ["نوم", "قرآن"] },
+  { "id": 38, "title": "إسلام النفس", "category": "أذكار النوم", "text": "اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ، وَفَوَّضْتُ أَمْرِي إِلَيْكَ، وَأَلْجَأْتُ ظَهْرِي إِلَيْكَ رَغْبَةً وَرَهْبَةً إِلَيْكَ...", "repeat": 1, "source": "البخاري", "benefits": "من مات من ليلته مات على الفطرة.", "tags": ["نوم", "تفويض"] },
+  { "id": 39, "title": "دعاء التعار من الليل", "category": "أذكار الاستيقاظ", "text": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ... اللَّهُمَّ اغْفِرْ لِي.", "repeat": 1, "source": "البخاري", "benefits": "من قالها ثم دعا استجيب له.", "tags": ["استيقاظ", "تهجد"] },
+  { "id": 40, "title": "لبس الثوب", "category": "أذكار اللباس", "text": "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا الثَّوْبَ وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ.", "repeat": 1, "source": "أبو داود", "benefits": "غفر له ما تقدم من ذنبه.", "tags": ["لباس", "حمد"] },
+  { "id": 41, "title": "لبس ثوب جديد", "category": "أذكار اللباس", "text": "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيهِ، أَسْأَلُكَ مِنْ خَيْرِهِ وَخَيْرِ مَا صُنِعَ لَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّهِ وَشَرِّ مَا صُنِعَ لَهُ.", "repeat": 1, "source": "الترمذي", "benefits": "شكر النعمة ودفع شرها.", "tags": ["لباس", "شكر"] },
+  { "id": 42, "title": "الخروج من المنزل", "category": "أذكار المنزل", "text": "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ.", "repeat": 1, "source": "أبو داود", "benefits": "يُقال له هُديت وكُفيت ووُقيت.", "tags": ["خروج", "توكل"] },
+  { "id": 43, "title": "الدخول إلى المنزل", "category": "أذكار المنزل", "text": "بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا.", "repeat": 1, "source": "أبو داود", "benefits": "طرد الشيطان من البيت.", "tags": ["دخول", "توكل"] },
+  { "id": 44, "title": "دخول الخلاء", "category": "أذكار الخلاء", "text": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ.", "repeat": 1, "source": "البخاري", "benefits": "الاستعاذة من شياطين الجن.", "tags": ["خلاء", "استعاذة"] },
+  { "id": 45, "title": "الخروج من الخلاء", "category": "أذكار الخلاء", "text": "غُفْرَانَكَ.", "repeat": 1, "source": "أبو داود", "benefits": "طلب المغفرة لتقصير الشكر.", "tags": ["خلاء", "استغفار"] },
+  { "id": 46, "title": "سماع الأذان", "category": "أذكار الأذان", "text": "يقول مثل ما يقول المؤذن إلا في الحيعلتين فيقول: لا حول ولا قوة إلا بالله.", "repeat": 1, "source": "البخاري", "benefits": "دخول الجنة.", "tags": ["أذان", "ترديد"] },
+  { "id": 47, "title": "بعد الأذان", "category": "أذكار الأذان", "text": "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ.", "repeat": 1, "source": "البخاري", "benefits": "حلت له الشفاعة يوم القيامة.", "tags": ["أذان", "شفاعة"] },
+  { "id": 48, "title": "دعاء الاستفتاح", "category": "أذكار الصلاة", "text": "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ.", "repeat": 1, "source": "مسلم", "benefits": "الثناء على الله قبل الشروع في الصلاة.", "tags": ["صلاة", "استفتاح"] },
+  { "id": 49, "title": "دعاء الركوع", "category": "أذكار الصلاة", "text": "سُبْحَانَ رَبِّيَ الْعَظِيمِ.", "repeat": 3, "source": "أبو داود", "benefits": "تعظيم الله عز وجل.", "tags": ["صلاة", "ركوع"] },
+  { "id": 50, "title": "الرفع من الركوع", "category": "أذكار الصلاة", "text": "رَبَّنَا وَلَكَ الْحَمْدُ، حَمْدًا كَثِيرًا طَيِّبًا مُبَارَكًا فِيهِ.", "repeat": 1, "source": "البخاري", "benefits": "ابتدرها الملائكة أيهم يكتبها أولاً.", "tags": ["صلاة", "قيام"] },
+  { "id": 51, "title": "دعاء السجود", "category": "أذكار الصلاة", "text": "سُبْحَانَ رَبِّيَ الْأَعْلَى.", "repeat": 3, "source": "أبو داود", "benefits": "أقرب ما يكون العبد من ربه وهو ساجد.", "tags": ["صلاة", "سجود"] },
+  { "id": 52, "title": "بين السجدتين", "category": "أذكار الصلاة", "text": "رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي.", "repeat": 1, "source": "أبو داود", "benefits": "طلب المغفرة المستمر.", "tags": ["صلاة", "استغفار"] },
+  { "id": 53, "title": "التشهد", "category": "أذكار الصلاة", "text": "التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ...", "repeat": 1, "source": "البخاري", "benefits": "تسليم على الله ورسوله والصالحين.", "tags": ["صلاة", "تشهد"] },
+  { "id": 54, "title": "الصلاة الإبراهيمية", "category": "أذكار الصلاة", "text": "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ...", "repeat": 1, "source": "البخاري", "benefits": "أعظم صيغ الصلاة على النبي.", "tags": ["صلاة", "نبي"] },
+  { "id": 55, "title": "قبل السلام", "category": "أذكار الصلاة", "text": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ قَبْرٍ، وَأَعُوذُ بِكَ مِنْ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ...", "repeat": 1, "source": "البخاري", "benefits": "الاستعاذة من الفتن العظيمة.", "tags": ["صلاة", "استعاذة"] },
+  { "id": 56, "title": "دعاء الاستخارة", "category": "أذكار منوعة", "text": "اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...", "repeat": 1, "source": "البخاري", "benefits": "توكيل الله لاختيار الأفضل.", "tags": ["استخارة", "دعاء"] },
+  { "id": 57, "title": "دعاء المريض لنفسه", "category": "أذكار المرض", "text": "يضع يده على الذي يتألم ويقول: بِسْمِ اللَّهِ (3 مرات) أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ (7 مرات).", "repeat": 1, "source": "مسلم", "benefits": "شفاء وتخفيف للألم.", "tags": ["مرض", "شفاء"] },
+  { "id": 58, "title": "عيادة المريض", "category": "أذكار المرض", "text": "أَسْأَلُ اللَّهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ.", "repeat": 7, "source": "أبو داود", "benefits": "شفاء للمريض بإذن الله.", "tags": ["مرض", "زيارة"] },
+  { "id": 59, "title": "دعاء المصيبة", "category": "أذكار الهم والكرب", "text": "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا.", "repeat": 1, "source": "مسلم", "benefits": "يعوضه الله خيراً منها.", "tags": ["مصيبة", "صبر"] },
+  { "id": 60, "title": "دعاء الغضب", "category": "أذكار منوعة", "text": "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.", "repeat": 1, "source": "البخاري", "benefits": "يذهب عنه الغضب.", "tags": ["غضب", "استعاذة"] },
+  { "id": 61, "title": "صعوبة الأمر", "category": "أذكار منوعة", "text": "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلًا.", "repeat": 1, "source": "ابن حبان", "benefits": "تيسير الأمور الصعبة.", "tags": ["تيسير", "صعوبة"] },
+  { "id": 62, "title": "دعاء الريح", "category": "أذكار الطبيعة", "text": "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا.", "repeat": 1, "source": "أبو داود", "benefits": "طلب الخير ودفع الضرر.", "tags": ["ريح", "طبيعة"] },
+  { "id": 63, "title": "سماع الرعد", "category": "أذكار الطبيعة", "text": "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلَائِكَةُ مِنْ خِيفَتِهِ.", "repeat": 1, "source": "الموطأ", "benefits": "تعظيم قدرة الله.", "tags": ["رعد", "طبيعة"] },
+  { "id": 64, "title": "نزول المطر", "category": "أذكار الطبيعة", "text": "اللَّهُمَّ صَيِّبًا نَافِعًا.", "repeat": 1, "source": "البخاري", "benefits": "طلب النفع والبركة في المطر.", "tags": ["مطر", "طبيعة"] },
+  { "id": 65, "title": "بعد نزول المطر", "category": "أذكار الطبيعة", "text": "مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ.", "repeat": 1, "source": "البخاري", "benefits": "نسبة النعمة إلى الله.", "tags": ["مطر", "شكر"] },
+  { "id": 66, "title": "رؤية الهلال", "category": "أذكار منوعة", "text": "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالْإِيمَانِ، وَالسَّلَامَةِ وَالْإِسْلَامِ، رَبِّي وَرَبُّكَ اللَّهُ.", "repeat": 1, "source": "الترمذي", "benefits": "طلب البركة في الشهر الجديد.", "tags": ["هلال", "شهر"] },
+  { "id": 67, "title": "الإفطار للصائم", "category": "أذكار الطعام", "text": "ذَهَبَ الظَّمَأُ، وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ.", "repeat": 1, "source": "أبو داود", "benefits": "شكر النعمة بعد الصيام.", "tags": ["صيام", "إفطار"] },
+  { "id": 68, "title": "الدعاء لمن أطعمك", "category": "أذكار الطعام", "text": "اللَّهُمَّ أَطْعِمْ مَنْ أَطْعَمَنِي وَاسْقِ مَنْ سَقَانِي.", "repeat": 1, "source": "مسلم", "benefits": "رد الجميل بالدعاء.", "tags": ["طعام", "شكر"] },
+  { "id": 69, "title": "العطاس", "category": "أذكار منوعة", "text": "الْحَمْدُ لِلَّهِ.", "repeat": 1, "source": "البخاري", "benefits": "شكر الله على نعمة العافية.", "tags": ["عطاس", "حمد"] },
+  { "id": 70, "title": "تشميت العاطس", "category": "أذكار منوعة", "text": "يَرْحَمُكَ اللَّهُ.", "repeat": 1, "source": "البخاري", "benefits": "دعاء بالرحمة للأخ المسلم.", "tags": ["عطاس", "رحمة"] },
+  { "id": 71, "title": "رد المشمت", "category": "أذكار منوعة", "text": "يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ.", "repeat": 1, "source": "البخاري", "benefits": "دعاء متبادل بالهداية وإصلاح الحال.", "tags": ["عطاس", "هداية"] },
+  { "id": 72, "title": "كفارة المجلس", "category": "أذكار منوعة", "text": "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ.", "repeat": 1, "source": "الترمذي", "benefits": "غفران ما كان في المجلس من لغو.", "tags": ["مجلس", "استغفار"] },
+  { "id": 73, "title": "دعاء الركوب", "category": "أذكار السفر", "text": "بِسْمِ اللَّهِ، الْحَمْدُ لِلَّهِ، سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ.", "repeat": 1, "source": "أبو داود", "benefits": "حفظ ورعاية أثناء الركوب.", "tags": ["سفر", "ركوب"] },
+  { "id": 74, "title": "توديع المسافر", "category": "أذكار السفر", "text": "أَسْتَوْدِعُ اللَّهَ دِينَكَ وَأَمَانَتَكَ وَخَوَاتِيمَ عَمَلِكَ.", "repeat": 1, "source": "الترمذي", "benefits": "حفظ الله للمسافر في سفره.", "tags": ["سفر", "توديع"] },
+  { "id": 75, "title": "دعاء الرجوع من السفر", "category": "أذكار السفر", "text": "آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ.", "repeat": 1, "source": "مسلم", "benefits": "شكر الله على العودة سالماً.", "tags": ["سفر", "رجوع"] },
+  { "id": 76, "title": "دخول السوق", "category": "أذكار منوعة", "text": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ يُحْيِي وَيُمِيتُ وَهُوَ حَيٌّ لَا يَمُوتُ بِيَدِهِ الْخَيْرُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.", "repeat": 1, "source": "الترمذي", "benefits": "كُتبت له ألف ألف حسنة.", "tags": ["سوق", "أجر"] },
+  { "id": 77, "title": "الاستغفار", "category": "أذكار الاستغفار", "text": "أَسْتَغْفِرُ اللَّهَ.", "repeat": 100, "source": "مسلم", "benefits": "تفريج الهموم وجلب الرزق.", "tags": ["استغفار", "عام"] },
+  { "id": 78, "title": "الصلاة على النبي الميت", "category": "أذكار منوعة", "text": "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ وَوَسِّعْ مُدْخَلَهُ...", "repeat": 1, "source": "مسلم", "benefits": "شفاعة وطلب الرحمة للميت.", "tags": ["ميت", "جنازة"] },
+  { "id": 79, "title": "التعزية", "category": "أذكار منوعة", "text": "إِنَّ لِلَّهِ مَا أَخَذَ وَلَهُ مَا أَعْطَى وَكُلٌّ عِنْدَهُ بِأَجَلٍ مُسَمًّى فَلْتَصْبِرْ وَلْتَحْتَسِبْ.", "repeat": 1, "source": "البخاري", "benefits": "مواساة وتذكير بالصبر.", "tags": ["تعزية", "صبر"] },
+  { "id": 80, "title": "دخول المقبرة", "category": "أذكار منوعة", "text": "السَّلَامُ عَلَيْكُمْ دَارَ قَوْمٍ مُؤْمِنِينَ، وَإِنَّا إِنْ شَاءَ اللَّهُ بِكُمْ لَاحِقُونَ.", "repeat": 1, "source": "مسلم", "benefits": "الدعاء للأموات والتذكرة بالآخرة.", "tags": ["قبر", "آخرة"] },
+  { "id": 81, "title": "الصلاة على النبي", "category": "أذكار عامة", "text": "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ.", "repeat": 10, "source": "الطبراني", "benefits": "أدركته شفاعة النبي يوم القيامة.", "tags": ["نبي", "صلاة"] },
+  { "id": 82, "title": "الباقيات الصالحات", "category": "أذكار عامة", "text": "سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ.", "repeat": 10, "source": "مسلم", "benefits": "غراس الجنة.", "tags": ["تسبيح", "جنة"] },
+  { "id": 83, "title": "أذكار الصباح (الفطرة)", "category": "أذكار الصباح", "text": "أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا.", "repeat": 1, "source": "أحمد", "benefits": "تجديد العهد على دين الإسلام.", "tags": ["صباح", "إسلام"] },
+  { "id": 84, "title": "أذكار المساء (الفطرة)", "category": "أذكار المساء", "text": "أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا.", "repeat": 1, "source": "أحمد", "benefits": "تجديد العهد مساءً.", "tags": ["مساء", "إسلام"] },
+  { "id": 85, "title": "دعاء الحزن", "category": "أذكار الهم والكرب", "text": "اللَّهُمَّ إِنِّي عَبْدُكَ ابْنُ عَبْدِكَ ابْنُ أَمَتِكَ، نَاصِيَتِي بِيَدِكَ، مَاضٍ فِيَّ حُكْمُكَ، عَدْلٌ فِيَّ قَضَاؤُكَ...", "repeat": 1, "source": "أحمد", "benefits": "أذهب الله حزنه وأبدله فرحاً.", "tags": ["حزن", "هم"] },
+  { "id": 86, "title": "قضاء الدين", "category": "أذكار الهم والكرب", "text": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ.", "repeat": 1, "source": "الترمذي", "benefits": "أدى الله عنه دينه.", "tags": ["دين", "رزق"] },
+  { "id": 87, "title": "الخوف من الشرك", "category": "أذكار منوعة", "text": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ، وَأَسْتَغْفِرُكَ لِمَا لَا أَعْلَمُ.", "repeat": 1, "source": "أحمد", "benefits": "براءة وتحصين من الشرك الخفي.", "tags": ["شرك", "تحصين"] },
+  { "id": 88, "title": "رؤية المبتلى", "category": "أذكار منوعة", "text": "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي مِمَّا ابْتَلَاكَ بِهِ، وَفَضَّلَنِي عَلَى كَثِيرٍ مِمَّنْ خَلَقَ تَفْضِيلًا.", "repeat": 1, "source": "الترمذي", "benefits": "لم يصبه ذلك البلاء أبداً.", "tags": ["بلاء", "عافية"] },
+  { "id": 89, "title": "الفزع في النوم", "category": "أذكار النوم", "text": "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ.", "repeat": 1, "source": "أبو داود", "benefits": "تهدئة النفس وطرد الشياطين.", "tags": ["فزع", "نوم"] },
+  { "id": 90, "title": "لبس الجديد لمن تراه", "category": "أذكار اللباس", "text": "تُبْلِي وَيُخْلِفُ اللَّهُ تَعَالَى.", "repeat": 1, "source": "أبو داود", "benefits": "دعاء بالبركة لمن لبس جديداً.", "tags": ["لباس", "دعاء"] },
+  { "id": 91, "title": "سماع الديك", "category": "أذكار منوعة", "text": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ.", "repeat": 1, "source": "البخاري", "benefits": "لأنها رأت ملكاً فيُرجى إجابة الدعاء.", "tags": ["ديك", "دعاء"] },
+  { "id": 92, "title": "سماع الحمار والكلب", "category": "أذكار منوعة", "text": "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.", "repeat": 1, "source": "البخاري", "benefits": "لأنها رأت شيطاناً.", "tags": ["استعاذة", "شيطان"] },
+  { "id": 93, "title": "دعاء ليلة القدر", "category": "أذكار منوعة", "text": "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي.", "repeat": 1, "source": "الترمذي", "benefits": "أفضل دعاء في ليالي رمضان.", "tags": ["عفو", "رمضان"] },
+  { "id": 94, "title": "دفع الوسوسة", "category": "أذكار منوعة", "text": "آمَنْتُ بِاللَّهِ وَرُسُلِهِ.", "repeat": 1, "source": "مسلم", "benefits": "تُذهب وسوسة الشيطان.", "tags": ["وسوسة", "إيمان"] },
+  { "id": 95, "title": "دخول القرية", "category": "أذكار السفر", "text": "اللَّهُمَّ رَبَّ السَّمَاوَاتِ السَّبْعِ وَمَا أَظْلَلْنَ، وَرَبَّ الْأَرَضِينَ السَّبْعِ وَمَا أَقْلَلْنَ... أَسْأَلُكَ خَيْرَ هَذِهِ الْقَرْيَةِ وَخَيْرَ أَهْلِهَا.", "repeat": 1, "source": "الحاكم", "benefits": "الحفظ ونيل خير البلدة.", "tags": ["سفر", "قرية"] },
+  { "id": 96, "title": "عند الغضب المتزايد", "category": "أذكار منوعة", "text": "اللَّهُمَّ رَبَّ النَّبِيِّ مُحَمَّدٍ، اغْفِرْ لِي ذَنْبِي وَأَذْهِبْ غَيْظَ قَلْبِي، وَأَجِرْنِي مِنْ مُضِلَّاتِ الْفِتَنِ.", "repeat": 1, "source": "ابن السني", "benefits": "تهدئة النفس.", "tags": ["غضب", "دعاء"] },
+  { "id": 97, "title": "الدعاء للوالدين", "category": "أذكار منوعة", "text": "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا.", "repeat": 1, "source": "القرآن الكريم", "benefits": "بر الوالدين والدعاء لهما بالرحمة.", "tags": ["والدين", "بر"] },
+  { "id": 98, "title": "دعاء حفظ النعمة", "category": "أذكار منوعة", "text": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ.", "repeat": 1, "source": "مسلم", "benefits": "استدامة النعم ودفع النقم.", "tags": ["نعمة", "حفظ"] },
+  { "id": 99, "title": "الدعاء بالثبات", "category": "أذكار عامة", "text": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ.", "repeat": 1, "source": "الترمذي", "benefits": "ثبات الإيمان في القلب.", "tags": ["ثبات", "إيمان"] },
+  { "id": 100, "title": "الدعاء الجامع", "category": "أذكار عامة", "text": "اللَّهُمَّ آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.", "repeat": 1, "source": "البخاري ومسلم", "benefits": "أجمع وأشمل دعاء لخير الدنيا والآخرة.", "tags": ["جامع", "دعاء"] }
+    ];
+    
+    const categories = ["الكل", "أذكار الصباح", "أذكار المساء", "أذكار النوم", "أذكار الاستيقاظ", "أذكار عامة"];
+    
+    let favorites = JSON.parse(localStorage.getItem('sabeel_adhkar_favs') || '[]');
+    let progress = JSON.parse(localStorage.getItem('sabeel_adhkar_progress') || '{}');
+    let currentCategory = "الكل";
+
+    // ==================== دوال مساعدة ====================
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2000);
     }
-        ];
 
-        // ==================== STATE ====================
-        const state = {
-            category: 'الكل',
-            search: '',
-            favorites: [],
-            dailyId: null
-        };
+    // ==================== دالة مشاركة البطاقة كصورة (مثل odea) ====================
+    async function shareCard(cardElement) {
+        if (typeof html2canvas === 'undefined') {
+            showToast("جاري تحميل المكتبة...");
+            return;
+        }
 
-        // ==================== DOM ELEMENTS ====================
-        const DOM = {
-            themeToggle: document.getElementById('themeToggle'),
-            hamburgerBtn: document.getElementById('hamburgerBtn'),
-            mobileNav: document.getElementById('mobileNav'),
-            categoriesContainer: document.getElementById('categoriesContainer'),
-            searchInput: document.getElementById('searchInput'),
-            grid: document.getElementById('prophetsGrid'),
-            dailyContainer: document.getElementById('dailyProphetContainer'),
-            favSidebarList: document.getElementById('favSidebarList'),
+        try {
+            // إخفاء الأزرار أثناء التصوير
+            const footer = cardElement.querySelector('.card-footer');
+            if (footer) footer.style.display = 'none';
+
+            const canvas = await html2canvas(cardElement, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null,
+                allowTaint: false,
+                logging: false
+            });
+
+            if (footer) footer.style.display = '';
+
+            // العلامة المائية
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width, h = canvas.height;
+            ctx.fillStyle = 'rgba(0,0,0,0.32)';
+            ctx.fillRect(0, h - 54, w, 54);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${Math.round(w * 0.042)}px Tajawal, Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🌿 تطبيق سبيل', w / 2, h - 27);
+
+            const imageData = canvas.toDataURL('image/png');
             
-            modal: document.getElementById('prophetModal'),
-            closeModalBtn: document.getElementById('closeModalBtn'),
-            modalScroll: document.getElementById('modalContentScroll'),
+            // محاولة المشاركة عبر Capacitor Share
+            if (typeof Capacitor !== 'undefined' && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
+                try {
+                    const { Share, Filesystem } = Capacitor.Plugins;
+                    const base64Data = imageData.split(',')[1];
+                    const fileName = 'sabeel_dhikr_' + new Date().getTime() + '.png';
+                    const savedFile = await Filesystem.writeFile({
+                        path: fileName,
+                        data: base64Data,
+                        directory: 'CACHE'
+                    });
+                    await Share.share({
+                        title: 'ذكر من تطبيق سبيل',
+                        text: 'سبيل - أذكار وأدعية إسلامية',
+                        url: savedFile.uri,
+                        dialogTitle: 'شارك الذكر'
+                    });
+                    showToast("✅ تمت المشاركة");
+                } catch(e) {
+                    console.log("Capacitor share error:", e);
+                    downloadImage(imageData);
+                }
+            } 
+            // مشاركة ويب
+            else if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], "image.png")] })) {
+                try {
+                    const blob = await (await fetch(imageData)).blob();
+                    const file = new File([blob], 'dhikr.png', { type: 'image/png' });
+                    await navigator.share({
+                        title: 'ذكر من تطبيق سبيل',
+                        text: cardElement.querySelector('.card-text')?.innerText || '',
+                        files: [file]
+                    });
+                    showToast("✅ تمت المشاركة");
+                } catch(e) {
+                    if (e.name !== 'AbortError') downloadImage(imageData);
+                }
+            } 
+            else {
+                downloadImage(imageData);
+            }
+        } catch (error) {
+            console.error("خطأ في التصوير:", error);
+            showToast("عذراً، حدث خطأ");
+        }
+    }
+
+    function downloadImage(imageData) {
+        const link = document.createElement('a');
+        link.download = 'ذكر_سبيل.png';
+        link.href = imageData;
+        link.click();
+        showToast("📸 تم حفظ الصورة");
+    }
+
+    // ==================== دوال العداد والمفضلة ====================
+    function incrementCounter(id, repeat, btnElement) {
+        let current = progress[id] || 0;
+        if (current < repeat) {
+            current++;
+            progress[id] = current;
+            localStorage.setItem('sabeel_adhkar_progress', JSON.stringify(progress));
+            if (current >= repeat) {
+                btnElement.textContent = '✅ تم';
+                btnElement.classList.add('completed');
+                showToast("✨ مبروك! أتممت هذا الذكر");
+            } else {
+                btnElement.textContent = `🔄 ${current}/${repeat}`;
+            }
+        }
+    }
+
+    function resetCounter(id, repeat) {
+        progress[id] = 0;
+        localStorage.setItem('sabeel_adhkar_progress', JSON.stringify(progress));
+        renderDhikr();
+        showToast("🔄 تم تصفير العداد");
+    }
+
+    function toggleFavorite(id) {
+        if (favorites.includes(id)) {
+            favorites = favorites.filter(f => f !== id);
+            showToast("❌ تمت الإزالة من المفضلة");
+        } else {
+            favorites.push(id);
+            showToast("❤️ تمت الإضافة إلى المفضلة");
+        }
+        localStorage.setItem('sabeel_adhkar_favs', JSON.stringify(favorites));
+        renderDhikr();
+    }
+
+    function copyDhikr(text) {
+        navigator.clipboard.writeText(text).then(() => showToast("📋 تم النسخ بنجاح"));
+    }
+
+    // ==================== دوال التصفية والعرض ====================
+    function getFilteredDhikr() {
+        let filtered = [...adhkarData];
+        if (currentCategory !== "الكل") {
+            filtered = filtered.filter(d => d.category === currentCategory);
+        }
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        if (searchTerm) {
+            filtered = filtered.filter(d => d.title.toLowerCase().includes(searchTerm) || d.text.toLowerCase().includes(searchTerm));
+        }
+        return filtered;
+    }
+
+    function renderDhikr() {
+        const filtered = getFilteredDhikr();
+        const grid = document.getElementById('dhikrGrid');
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div class="empty-state">لا توجد أذكار مطابقة</div>';
+            return;
+        }
+        
+        grid.innerHTML = filtered.map(d => {
+            const isFav = favorites.includes(d.id);
+            const currentCount = progress[d.id] || 0;
+            const isCompleted = currentCount >= d.repeat;
+            const escapedText = d.text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             
-            modalTitle: document.getElementById('modalTitle'),
-            modalPeriod: document.getElementById('modalPeriod'),
-            modalDesc: document.getElementById('modalDesc'),
-            modalEventsTitle: document.getElementById('modalEventsTitle'),
-            modalEvents: document.getElementById('modalEvents'),
-            modalMiraclesTitle: document.getElementById('modalMiraclesTitle'),
-            modalMiracles: document.getElementById('modalMiracles'),
-            modalLessonsTitle: document.getElementById('modalLessonsTitle'),
-            modalLessons: document.getElementById('modalLessons'),
-            modalTags: document.getElementById('modalTags'),
-            modalFavBtn: document.getElementById('modalFavBtn'),
-            modalShareBtn: document.getElementById('modalShareBtn')
-        };
+            return `
+                <div class="dhikr-card" data-dhikr-id="${d.id}">
+                    <div class="card-title">${d.title}</div>
+                    <div class="card-text">${d.text}</div>
+                    <div class="counter-wrapper">
+                        <button class="btn-reset-counter" data-id="${d.id}" data-repeat="${d.repeat}">↺</button>
+                        <button class="btn-counter ${isCompleted ? 'completed' : ''}" data-id="${d.id}" data-repeat="${d.repeat}">${isCompleted ? '✅ تم' : `🔄 ${currentCount}/${d.repeat}`}</button>
+                    </div>
+                    <div class="card-footer">
+                        <button class="action-btn share-btn">
+                            <img src="https://cdn-icons-png.flaticon.com/128/929/929539.png" style="width:16px;height:16px;" alt="share">
+                        </button>
+                        <button class="action-btn copy-btn" data-text="${escapedText}">📋</button>
+                        <button class="action-btn fav-btn" data-id="${d.id}">${isFav ? '♥' : '♡'}</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        // ربط أحداث العدادات
+        document.querySelectorAll('.btn-counter').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                const repeat = parseInt(btn.dataset.repeat);
+                incrementCounter(id, repeat, btn);
+            });
+        });
+        
+        document.querySelectorAll('.btn-reset-counter').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                const repeat = parseInt(btn.dataset.repeat);
+                resetCounter(id, repeat);
+            });
+        });
+        
+        // ربط أحداث النسخ
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const text = btn.dataset.text.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+                copyDhikr(text);
+            });
+        });
+        
+        // ربط أحداث المشاركة بالصورة (مثل odea)
+        document.querySelectorAll('.share-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.dhikr-card');
+                if (card) {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '⏳';
+                    btn.disabled = true;
+                    await shareCard(card);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+        });
+        
+        // ربط أحداث المفضلة
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                toggleFavorite(id);
+            });
+        });
+    }
 
-        let currentModalProphetId = null;
+    function renderCategories() {
+        const catBar = document.getElementById('catBar');
+        catBar.innerHTML = categories.map(cat => `
+            <button class="cat-chip ${cat === currentCategory ? 'active' : ''}" data-category="${cat}">${cat}</button>
+        `).join('');
+        
+        document.querySelectorAll('.cat-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentCategory = btn.dataset.category;
+                renderCategories();
+                renderDhikr();
+            });
+        });
+    }
 
-        // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            handleMobileMenu();
-            renderCategories();
-            loadFavorites();
-            setDailyProphet();
-            renderProphets();
-            renderFavoritesSidebar();
-            setupEventListeners();
+    // ==================== القائمة الجانبية ====================
+    function initMobileMenu() {
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+        if (!hamburgerBtn || !mobileNav || !menuOverlay || !closeMenuBtn) {
+            console.warn('عناصر القائمة الجانبية غير موجودة');
+            return;
+        }
+
+        function openMenu() {
+            mobileNav.classList.add('active');
+            menuOverlay.classList.add('active');
+            document.body.classList.add('menu-open');
+        }
+
+        function closeMenu() {
+            mobileNav.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+
+        hamburgerBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
         });
 
-        // ==================== THEME & MENU ====================
-        function initTheme() {
-            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+    }
 
-            DOM.themeToggle.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('sabeel_theme', next);
-                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        }
+    function initTheme() {
+        const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
 
-        function handleMobileMenu() {
-            DOM.hamburgerBtn.addEventListener('click', () => {
-                DOM.mobileNav.classList.toggle('active');
-                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
-            });
-        }
-
-        // ==================== LOGIC & EVENTS ====================
-        function setupEventListeners() {
-            DOM.searchInput.addEventListener('input', (e) => {
-                state.search = e.target.value.trim().toLowerCase();
-                renderProphets();
-            });
-
-            DOM.categoriesContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('category-chip')) {
-                    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                    state.category = e.target.textContent.trim();
-                    renderProphets();
+    // ==================== إشعارات Capacitor (للتذكير) ====================
+    async function requestNotificationPermission() {
+        if (typeof Capacitor !== 'undefined' && Capacitor.isNativePlatform()) {
+            try {
+                const { LocalNotifications } = Capacitor.Plugins;
+                const permission = await LocalNotifications.checkPermissions();
+                if (permission.display !== 'granted') {
+                    const request = await LocalNotifications.requestPermissions();
+                    return request.display === 'granted';
                 }
+                return true;
+            } catch(e) {
+                console.log("خطأ في طلب الإذن:", e);
+                return false;
+            }
+        }
+        if ("Notification" in window && Notification.permission !== "granted") {
+            await Notification.requestPermission();
+            return Notification.permission === "granted";
+        }
+        return false;
+    }
+
+    async function scheduleCapacitorNotification(title, body, timeStr, notificationId) {
+        if (typeof Capacitor === 'undefined' || !Capacitor.isNativePlatform()) return false;
+        try {
+            const { LocalNotifications } = Capacitor.Plugins;
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const scheduledTime = new Date();
+            scheduledTime.setHours(hours, minutes, 0, 0);
+            if (scheduledTime.getTime() < Date.now()) {
+                scheduledTime.setDate(scheduledTime.getDate() + 1);
+            }
+            await LocalNotifications.cancel({ notifications: [{ id: notificationId }] });
+            await LocalNotifications.schedule({
+                notifications: [{
+                    id: notificationId,
+                    title: title,
+                    body: body,
+                    schedule: { at: scheduledTime, repeats: true, allowWhileIdle: true },
+                    sound: null,
+                    smallIcon: "ic_launcher"
+                }]
             });
-
-            document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('btn-read-more')) {
-                    openModal(parseInt(e.target.getAttribute('data-id')));
-                }
-                if (e.target.classList.contains('btn-lessons')) {
-                    openModal(parseInt(e.target.getAttribute('data-id')), true);
-                }
-                if (e.target === DOM.modal) closeModal();
-            });
-
-            DOM.closeModalBtn.addEventListener('click', closeModal);
-            
-            DOM.modalFavBtn.addEventListener('click', () => {
-                if (currentModalProphetId) toggleFavorite(currentModalProphetId);
-            });
-
-            DOM.modalShareBtn.addEventListener('click', () => {
-                if (currentModalProphetId) {
-                    const p = prophetsData.find(x => x.id === currentModalProphetId);
-                    shareProphet(p.name, p.short_intro);
-                }
-            });
+            return true;
+        } catch(e) {
+            console.log("خطأ في جدولة الإشعار:", e);
+            return false;
         }
+    }
 
-        function renderCategories() {
-            DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
-                <button class="btn btn-outline category-chip ${cat === state.category ? 'active' : ''}">${cat}</button>
-            `).join('');
+    async function cancelCapacitorNotification(notificationId) {
+        if (typeof Capacitor === 'undefined' || !Capacitor.isNativePlatform()) return;
+        try {
+            const { LocalNotifications } = Capacitor.Plugins;
+            await LocalNotifications.cancel({ notifications: [{ id: notificationId }] });
+        } catch(e) {}
+    }
+
+    async function updateDhikrNotifications() {
+        let settings = { morningDhikrEnabled: false, morningDhikrTime: "06:00", eveningDhikrEnabled: false, eveningDhikrTime: "18:00" };
+        try {
+            const savedSettings = localStorage.getItem('sabeel_notification_settings');
+            if (savedSettings) settings = JSON.parse(savedSettings);
+        } catch(e) {}
+        
+        await cancelCapacitorNotification(1001);
+        await cancelCapacitorNotification(1002);
+        
+        if (settings.morningDhikrEnabled && settings.morningDhikrTime) {
+            await scheduleCapacitorNotification("🌿 أذكار الصباح", "اللهم بك أصبحنا، اقرأ أذكار الصباح لتبدأ يومك ببركة", settings.morningDhikrTime, 1001);
         }
-
-        function getFilteredProphets() {
-            return prophetsData.filter(p => {
-                const matchCat = state.category === 'الكل' || p.category === state.category;
-                const matchSearch = state.search === '' || 
-                                    p.name.toLowerCase().includes(state.search) || 
-                                    p.short_intro.toLowerCase().includes(state.search) || 
-                                    p.tags.some(t => t.toLowerCase().includes(state.search));
-                return matchCat && matchSearch;
-            });
+        if (settings.eveningDhikrEnabled && settings.eveningDhikrTime) {
+            await scheduleCapacitorNotification("🌙 أذكار المساء", "أمسينا وأمسى الملك لله، لا تنس أذكار المساء لتحفظك الله", settings.eveningDhikrTime, 1002);
         }
+    }
 
-        function renderProphets() {
-            const filtered = getFilteredProphets();
-            if (filtered.length === 0) {
-                DOM.grid.innerHTML = `<div class="empty-state">لا توجد نتائج مطابقة لبحثك.</div>`;
-                return;
-            }
-            DOM.grid.innerHTML = filtered.map(p => generateCardHTML(p)).join('');
-        }
+    function listenToSettingsChanges() {
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'sabeel_notification_settings') updateDhikrNotifications();
+        });
+    }
 
-        function generateCardHTML(p, isDaily = false) {
-            const hasMiracles = p.miracles && p.miracles.length > 0;
-            const keyMiracle = hasMiracles ? p.miracles[0].substring(0, 30) + '...' : 'صبر ودعوة';
+    // ==================== بدء التشغيل ====================
+    document.addEventListener('DOMContentLoaded', async () => {
+        initTheme();
+        initMobileMenu();
+        renderCategories();
+        renderDhikr();
+        
+        await requestNotificationPermission();
+        await updateDhikrNotifications();
+        listenToSettingsChanges();
+        
+        document.getElementById('searchInput').addEventListener('input', () => renderDhikr());
 
-            return `
-                <article class="glass-card prophet-card ${isDaily ? 'daily-highlight' : ''}">
-                    ${isDaily ? '<span class="daily-badge">نبي اليوم</span>' : ''}
-                    <div class="prophet-header">
-                        <h3 class="prophet-name">
-                            ${p.name}
-                            ${p.title ? `<span class="prophet-title-badge">${p.title}</span>` : ''}
-                        </h3>
-                    </div>
-                    <div class="prophet-period">📅 المرحلة: ${p.period}</div>
-                    <div class="prophet-intro">${p.short_intro}</div>
-                    
-                    <div class="prophet-stats">
-                        <div class="stat-item">📖 المحطات: ${p.key_events ? p.key_events.length : 0}</div>
-                        <div class="stat-item">✨ المعجزة: ${keyMiracle}</div>
-                    </div>
-
-                    <div class="prophet-actions">
-                        <button class="btn-lessons" data-id="${p.id}">الدروس 💡</button>
-                        <button class="btn-read-more" data-id="${p.id}">اقرأ القصة ⇦</button>
-                    </div>
-                </article>
-            `;
-        }
-
-        // ==================== DAILY PROPHET ====================
-        function setDailyProphet() {
-            const dateStr = new Date().toDateString();
-            const storedDate = localStorage.getItem('sabeel_daily_prophet_date');
-            let dailyId = parseInt(localStorage.getItem('sabeel_daily_prophet_id'));
-
-            if (storedDate !== dateStr || isNaN(dailyId)) {
-                dailyId = prophetsData[Math.floor(Math.random() * prophetsData.length)].id;
-                localStorage.setItem('sabeel_daily_prophet_date', dateStr);
-                localStorage.setItem('sabeel_daily_prophet_id', dailyId);
-            }
-
-            const dailyProphet = prophetsData.find(p => p.id === dailyId) || prophetsData[0];
-            DOM.dailyContainer.innerHTML = `<h2 class="section-title">✨ نبي اليوم</h2>` + generateCardHTML(dailyProphet, true);
-        }
-
-        // ==================== FAVORITES ====================
-        function loadFavorites() {
-            const saved = localStorage.getItem('sabeel_fav_prophets');
-            if (saved) state.favorites = JSON.parse(saved);
-        }
-
-        function toggleFavorite(id) {
-            const index = state.favorites.indexOf(id);
-            if (index > -1) {
-                state.favorites.splice(index, 1);
-                showToast("تمت الإزالة من المفضلة");
-                DOM.modalFavBtn.textContent = "🤍";
-            } else {
-                state.favorites.push(id);
-                showToast("تمت الإضافة إلى المفضلة");
-                DOM.modalFavBtn.textContent = "❤️";
-            }
-            localStorage.setItem('sabeel_fav_prophets', JSON.stringify(state.favorites));
-            renderFavoritesSidebar();
-        }
-
-        function renderFavoritesSidebar() {
-            const favs = prophetsData.filter(p => state.favorites.includes(p.id));
-            if (favs.length === 0) {
-                DOM.favSidebarList.innerHTML = `<div style="text-align:center; color: var(--text-muted); font-size: 0.9rem;">المفضلة فارغة.</div>`;
-                return;
-            }
-            DOM.favSidebarList.innerHTML = favs.map(p => `
-                <div class="fav-mini-card btn-read-more" data-id="${p.id}">
-                    <span class="fav-mini-text" style="pointer-events:none;">${p.name}</span>
-                    <span style="pointer-events:none;">⇦</span>
-                </div>
-            `).join('');
-        }
-
-        // ==================== MODAL ====================
-        function openModal(id, scrollToLessons = false) {
-            currentModalProphetId = id;
-            const p = prophetsData.find(x => x.id === id);
-            if (!p) return;
-
-            DOM.modalTitle.innerHTML = `${p.name} ${p.title ? `<span class="prophet-title-badge" style="font-size:1rem;">${p.title}</span>` : ''}`;
-            DOM.modalPeriod.textContent = `المرحلة الزمنية: ${p.period}`;
-            
-            // Format full story to have paragraphs
-            const formattedStory = p.full_story.split('. ').join('.<br><br>');
-            DOM.modalDesc.innerHTML = formattedStory;
-
-            // Render Key Events
-            if (p.key_events && p.key_events.length > 0) {
-                DOM.modalEventsTitle.classList.remove('hidden');
-                DOM.modalEvents.innerHTML = p.key_events.map(ev => `
-                    <div class="timeline-item">
-                        <div class="timeline-title">${ev.title}</div>
-                        <div class="timeline-desc">${ev.description}</div>
-                        <div class="timeline-lesson"><strong>العبرة:</strong> ${ev.lesson}</div>
-                    </div>
-                `).join('');
-            } else {
-                DOM.modalEventsTitle.classList.add('hidden');
-                DOM.modalEvents.innerHTML = '';
-            }
-
-            // Render Miracles
-            if (p.miracles && p.miracles.length > 0) {
-                DOM.modalMiraclesTitle.classList.remove('hidden');
-                DOM.modalMiracles.innerHTML = p.miracles.map(m => `<li>${m}</li>`).join('');
-            } else {
-                DOM.modalMiraclesTitle.classList.add('hidden');
-                DOM.modalMiracles.innerHTML = '';
-            }
-
-            // Render Lessons
-            if (p.lessons && p.lessons.length > 0) {
-                DOM.modalLessonsTitle.classList.remove('hidden');
-                DOM.modalLessons.innerHTML = p.lessons.map(l => `<li>${l}</li>`).join('');
-            } else {
-                DOM.modalLessonsTitle.classList.add('hidden');
-                DOM.modalLessons.innerHTML = '';
-            }
-
-            // Render Tags
-            if (p.tags && p.tags.length > 0) {
-                DOM.modalTags.innerHTML = p.tags.map(t => `<span class="modal-tag">#${t}</span>`).join('');
-            } else {
-                DOM.modalTags.innerHTML = '';
-            }
-
-            // Fav Button State
-            DOM.modalFavBtn.textContent = state.favorites.includes(id) ? "❤️" : "🤍";
-
-            // Open Modal
-            DOM.modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Scroll to Top or Lessons
-            setTimeout(() => {
-                if (scrollToLessons) {
-                    DOM.modalLessonsTitle.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    DOM.modalScroll.scrollTop = 0;
-                }
-            }, 100);
-        }
-
-        function closeModal() {
-            DOM.modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            currentModalProphetId = null;
-        }
-
-        async function shareProphet(name, intro) {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: `قصة ${name}`,
-                        text: `${intro}\n\n- اقرأ المزيد على موقع سبيل`
-                    });
-                } catch (err) {}
-            } else {
-                navigator.clipboard.writeText(`قصة ${name}:\n${intro}`);
-                showToast("تم النسخ بدل المشاركة (غير مدعومة)");
+        // ==================== Deep Link ====================
+        // يقرأ ?category= من URL ويفتح القسم المناسب
+        // يعمل عند أول تحميل + عند navigate() من Service Worker
+        function applyUrlCategory() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlCategory = decodeURIComponent(urlParams.get('category') || '');
+            if (urlCategory && categories.includes(urlCategory)) {
+                currentCategory = urlCategory;
+                renderCategories();
+                renderDhikr();
+                showToast(`📂 ${urlCategory}`);
+                // نرجع للأعلى بعد التبديل
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        let toastTimeout;
-        function showToast(msg) {
-            DOM.toastMsg.textContent = msg;
-            DOM.toastMsg.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                DOM.toastMsg.classList.remove('show');
-            }, 3000);
+        // تشغيل عند أول فتح
+        applyUrlCategory();
+
+        // تشغيل عند تغيير URL (navigate من Service Worker عندما الصفحة مفتوحة)
+        window.addEventListener('popstate', applyUrlCategory);
+
+        // كذلك نراقب تغيير الـ URL بشكل مباشر (للمتصفحات التي لا تطلق popstate عند navigate)
+        let _lastUrl = location.href;
+        const _urlObserver = new MutationObserver(() => {
+            if (location.href !== _lastUrl) {
+                _lastUrl = location.href;
+                applyUrlCategory();
+            }
+        });
+        _urlObserver.observe(document.body, { childList: true, subtree: true });
+
+        if (typeof Capacitor !== 'undefined' && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
+            try {
+                const { LocalNotifications } = Capacitor.Plugins;
+                LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
+                    const cat = action.notification?.extra?.category;
+                    if (cat && categories.includes(cat)) {
+                        currentCategory = cat;
+                        renderCategories();
+                        renderDhikr();
+                        showToast(`📂 ${cat}`);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            } catch(e) {}
         }
-    </script>
+    });
+</script>
 </body>
 </html>
