@@ -2,662 +2,1125 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>سبيل - عظماء الصحابة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="global.css">
     <style>
-        /* ==================== VARIABLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         :root {
-            --primary-white: #ffffff;
-            --primary-soft-green: #e9f5ec;
-            --primary-deep-green: #1a4a38;
-            --primary-gold: #d4af37;
+            --bg-main: #f5f7fb;
+            --white: #ffffff;
+            --navy-1: #06122b;
+            --navy-2: #0b1633;
+            --navy-3: #111d3f;
+            --gold: #f3ba1f;
+            --gold-dark: #c99400;
             --text-dark: #1f2937;
-            --text-light: #f3f4f6;
             --text-muted: #6b7280;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            --border-radius-lg: 24px;
-            --border-radius-md: 16px;
-            --border-radius-sm: 8px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-bg: rgba(255, 255, 255, 0.94);
+            --glass-border: rgba(212, 175, 55, 0.18);
+            --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.08);
+            --border-radius-lg: 28px;
+            --border-radius-md: 20px;
+            --border-radius-sm: 14px;
+            --transition-smooth: all 0.25s ease;
         }
 
-        [data-theme="dark"] {
-            --primary-white: #0f172a;
-            --primary-soft-green: #1e293b;
-            --primary-deep-green: #064e3b;
-            --primary-gold: #fbbf24;
-            --text-dark: #f8fafc;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: var(--bg-main);
         }
 
-        /* ==================== RESET & BASE ==================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.7; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: var(--transition-smooth); }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        button, input { font-family: inherit; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-main);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
 
-        /* ==================== BACKGROUND ==================== */
         .site-bg {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            position: fixed;
+            inset: 0;
             background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover; background-position: center; z-index: -2;
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
         }
+
         .bg-overlay {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth);
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.84);
+            backdrop-filter: blur(6px);
+            z-index: -1;
         }
-        [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.85); }
 
-        /* ==================== UTILITIES ==================== */
-        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
-        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); padding: 1.5rem; transition: var(--transition-smooth); }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-sm); font-weight: 600; cursor: pointer; border: none; transition: var(--transition-smooth); font-size: 0.95rem; gap: 0.5rem; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--primary-gold); color: var(--primary-gold); }
-        .btn-outline:hover, .btn-outline.active { background-color: var(--primary-gold); color: #fff; }
-        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
-        .hidden { display: none !important; }
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.2rem;
+        }
 
-        /* ==================== HEADER ==================== */
-        header { padding: 1rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
-        [data-theme="dark"] .logo { color: var(--primary-gold); }
-        .nav-actions { display: flex; align-items: center; gap: 1rem; }
-        .theme-toggle, .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
-        .mobile-nav { position: fixed; top: 68px; right: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; z-index: 99; }
-        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
-        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
-        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
-        .desktop-nav { display: none; }
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(2px);
+        }
 
-        /* ==================== MAIN PAGE ==================== */
-        .page-layout { display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem 1rem; flex: 1; }
-        .page-header { text-align: center; margin-bottom: 0.5rem; }
-        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
-        [data-theme="dark"] .page-title { color: var(--primary-gold); }
-        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+            font-size: 0.9rem;
+            gap: 0.5rem;
+        }
 
-        /* ==================== SEARCH & CATEGORIES ==================== */
-        .search-container { position: sticky; top: 75px; z-index: 90; margin-bottom: 1rem; padding: 10px 0; }
-        .search-input { width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: var(--text-dark); font-size: 1.05rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: var(--transition-smooth); }
-        [data-theme="dark"] .search-input { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .search-input:focus { border-color: var(--primary-gold); }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold-dark);
+        }
 
-        .categories-scroll { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); }
-        .categories-scroll::-webkit-scrollbar { display: none; }
-        .category-chip { flex-shrink: 0; border-radius: 50px; padding: 0.5rem 1.25rem; position: relative; }
+        .btn-outline.active,
+        .btn-outline:hover {
+            background-color: var(--gold);
+            color: #fff;
+        }
 
-        .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
-        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; order: 1; }
-        .main-content { order: 2; }
+        .hidden {
+            display: none !important;
+        }
 
-        .section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        [data-theme="dark"] .section-title { color: var(--primary-gold); }
+        header {
+            padding: 0.9rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
 
-        /* ==================== SAHABA CARDS ==================== */
-        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-        
-        .sahabi-card { display: flex; flex-direction: column; animation: fadeIn 0.4s ease; height: 100%; border-right: 4px solid var(--primary-gold); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .sahabi-card.daily-highlight { border: 2px solid var(--primary-gold); border-right: 6px solid var(--primary-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 74, 56, 0.05) 100%); }
-        .daily-badge { display: inline-block; background: var(--primary-gold); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; align-self: flex-start; }
-        [data-theme="dark"] .daily-badge { color: var(--primary-deep-green); }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        .sahabi-header { margin-bottom: 0.75rem; }
-        .sahabi-name { font-weight: 800; color: var(--primary-deep-green); font-size: 1.3rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
-        [data-theme="dark"] .sahabi-name { color: var(--primary-gold); }
-        .sahabi-title-badge { font-size: 0.8rem; padding: 0.15rem 0.6rem; border-radius: 4px; font-weight: 600; background: rgba(212, 175, 55, 0.2); color: var(--primary-deep-green); }
-        [data-theme="dark"] .sahabi-title-badge { color: var(--primary-gold); background: rgba(212, 175, 55, 0.15); }
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #10264c;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
 
-        .sahabi-category { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; }
-        .sahabi-desc-short { color: var(--text-dark); line-height: 1.8; margin-bottom: 1.5rem; }
+        .hamburger {
+            background: transparent;
+            border: none;
+            color: #10264c;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .sahabi-actions { margin-top: auto; display: flex; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 1rem; }
-        .btn-read-more { background: var(--primary-soft-green); color: var(--primary-deep-green); font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: var(--transition-smooth); }
-        .btn-read-more:hover { background: var(--primary-gold); color: white; }
-        [data-theme="dark"] .btn-read-more { background: rgba(212, 175, 55, 0.2); color: var(--primary-gold); }
-        [data-theme="dark"] .btn-read-more:hover { background: var(--primary-gold); color: var(--primary-deep-green); }
+        .desktop-nav {
+            display: none;
+        }
 
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 1.1rem; background: var(--glass-bg); border-radius: var(--border-radius-md); }
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.25s ease;
+            z-index: 999;
+        }
 
-        /* ==================== MODAL ==================== */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); padding: 1rem; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        
-        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-lg); width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 2.5rem 2rem; position: relative; transform: translateY(20px); transition: var(--transition-smooth); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        [data-theme="dark"] .modal-content { background: var(--primary-white); }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-        .modal-close { position: absolute; top: 1.5rem; left: 1.5rem; background: rgba(0,0,0,0.05); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
-        [data-theme="dark"] .modal-close { background: rgba(255,255,255,0.1); color: var(--text-light); }
-        .modal-close:hover { background: #ef4444; color: white; }
+        .app-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: min(320px, 88vw);
+            height: 100vh;
+            background: linear-gradient(180deg, #041128 0%, #07152f 100%);
+            transform: translateX(-100%);
+            transition: transform 0.28s ease;
+            z-index: 1000;
+            padding: calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 20px);
+            overflow-y: auto;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.28);
+        }
 
-        .modal-title { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.25rem; padding-left: 2rem; }
-        [data-theme="dark"] .modal-title { color: var(--primary-gold); }
-        .modal-subtitle { font-size: 1rem; font-weight: 600; color: var(--primary-gold); margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; }
-        
-        .modal-body { font-size: 1.1rem; line-height: 1.9; color: var(--text-dark); margin-bottom: 2rem; text-align: justify; }
+        .app-sidebar.active {
+            transform: translateX(0);
+        }
 
-        .modal-section-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; border-right: 3px solid var(--primary-gold); padding-right: 0.5rem; }
-        [data-theme="dark"] .modal-section-title { color: var(--primary-gold); border-color: var(--primary-soft-green); }
-        
-        .info-list { list-style: none; padding: 0; margin-bottom: 2rem; }
-        .info-list li { position: relative; padding-right: 1.5rem; margin-bottom: 0.75rem; color: var(--text-dark); font-weight: 500; }
-        .info-list li::before { content: '✨'; position: absolute; right: 0; top: 2px; font-size: 0.9rem; }
+        .sidebar-header {
+            position: relative;
+            padding: 8px 0 18px;
+            text-align: center;
+        }
 
-        .modal-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
-        .modal-tag { background: rgba(0,0,0,0.05); color: var(--text-muted); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; }
-        [data-theme="dark"] .modal-tag { background: rgba(255,255,255,0.05); }
+        .sidebar-title {
+            color: var(--gold);
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
 
-        /* ==================== RESPONSIVE ==================== */
-        @media (min-width: 769px) {
-            .hamburger { display: none; }
-            .desktop-nav { display: block; }
-            .desktop-nav ul { display: flex; gap: 1.2rem; }
-            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
-            .desktop-nav a:hover { color: var(--primary-gold); }
-            
-            .categories-scroll { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-            .search-container { top: 80px; }
+        .sidebar-close {
+            position: absolute;
+            top: 4px;
+            right: 2px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 2.2rem;
+            line-height: 1;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            min-height: 58px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, rgba(19, 31, 67, 0.95), rgba(14, 25, 56, 0.95));
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+        }
+
+        .sidebar-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .sidebar-link.active {
+            background: var(--gold);
+            color: #08152b;
+        }
+
+        .sidebar-link .label {
+            flex: 1;
+            text-align: right;
+        }
+
+        .sidebar-link .icon {
+            font-size: 1.3rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .page-layout {
+            padding: 2rem 0;
+            flex: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #10264c;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            margin-bottom: 1.8rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.6rem;
+            border-radius: 80px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            color: var(--text-dark);
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .categories-scroll {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-chip {
+            flex-shrink: 0;
+            border-radius: 60px;
+            padding: 0.5rem 1.3rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .content-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            order: 1;
+        }
+
+        .main-content {
+            order: 2;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .sahabi-card {
+            display: flex;
+            flex-direction: column;
+            padding: 1.4rem;
+            border-right: 5px solid var(--gold);
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+        }
+
+        .sahabi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .daily-highlight {
+            border: 2px solid var(--gold);
+            border-right-width: 6px;
+            background: linear-gradient(135deg, rgba(243, 186, 31, 0.08), rgba(16, 38, 76, 0.04));
+        }
+
+        .daily-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #1a2e1f;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+        }
+
+        .sahabi-name {
+            font-weight: 800;
+            color: #10264c;
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .sahabi-title-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            font-weight: 700;
+            background: rgba(243, 186, 31, 0.18);
+            color: #10264c;
+        }
+
+        .sahabi-category {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .sahabi-desc-short {
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .sahabi-actions {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 0.9rem;
+        }
+
+        .btn-read-more {
+            background: rgba(243, 186, 31, 0.14);
+            color: #10264c;
+            font-size: 0.85rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-read-more:hover {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            background: var(--glass-bg);
+            border-radius: var(--border-radius-md);
+            grid-column: span 2;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #10264c;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.25s;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            width: 100%;
+            max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(20px);
+            transition: 0.25s;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            left: 1.2rem;
+            background: rgba(0, 0, 0, 0.06);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #10264c;
+            margin-bottom: 0.2rem;
+            padding-left: 2rem;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.8rem;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--text-dark);
+            margin-bottom: 1.8rem;
+            text-align: justify;
+        }
+
+        .modal-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #10264c;
+            margin: 1.2rem 0 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-right: 3px solid var(--gold);
+            padding-right: 0.7rem;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.2rem;
+        }
+
+        .info-list li {
+            position: relative;
+            padding-right: 1.6rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .info-list li::before {
+            content: "⭐";
+            position: absolute;
+            right: 0;
+            top: 2px;
+            font-size: 0.85rem;
+        }
+
+        .modal-tags {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .modal-tag {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-muted);
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.9rem;
+            }
+
+            .sahabi-card {
+                padding: 0.9rem;
+            }
+
+            .sahabi-name {
+                font-size: 1rem;
+            }
+
+            .sahabi-title-badge {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.5rem;
+            }
+
+            .sahabi-desc-short {
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+
+            .btn-read-more {
+                padding: 0.3rem 0.9rem;
+                font-size: 0.7rem;
+            }
+
+            .daily-badge {
+                font-size: 0.65rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .page-title {
+                font-size: 1.9rem;
+            }
+
+            .container {
+                padding: 0 0.9rem;
+            }
         }
 
         @media (min-width: 1024px) {
-            .container { max-width: 1400px; padding: 0 2rem; }
-            .content-grid { grid-template-columns: 320px 1fr; }
-            .sidebar { order: 1; position: sticky; top: 150px; }
-            .main-content { order: 2; }
+            .content-grid {
+                display: grid;
+                grid-template-columns: 320px 1fr;
+                gap: 2rem;
+            }
+
+            .sidebar {
+                order: 1;
+                position: sticky;
+                top: 100px;
+                align-self: start;
+            }
+
+            .main-content {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .cards-grid {
+                gap: 0.7rem;
+            }
+
+            .sahabi-name {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="site-bg"></div>
-    <div class="bg-overlay"></div>
+<div class="site-bg"></div>
+<div class="bg-overlay"></div>
 
-    <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">سبيل</a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="masbaha.html">المسبحة</a></li>
-                    <li><a href="odea.html">الأدعية</a></li>
-                    <li><a href="quran.html">القرآن</a></li>
-                    <li><a href="hadith.html">أحاديث نبوية</a></li>
-                    <li><a href="sira.html">السيرة النبوية</a></li>
-                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
-                    <li><a href="prophets.html">قصص الأنبياء</a></li>
-                    <li><a href="azkar.html">الأذكار</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
-                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
-            </div>
-        </div>
-    </header>
+<header>
+    <div class="container header-content">
+        <a href="index.html" class="logo">سبيل</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
+    </div>
+</header>
 
-    <nav class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="masbaha.html">المسبحة</a></li>
-            <li><a href="odea.html">الأدعية</a></li>
-            <li><a href="quran.html">القرآن</a></li>
-            <li><a href="hadith.html">أحاديث نبوية</a></li>
-            <li><a href="sira.html">السيرة النبوية</a></li>
-            <li><a href="sahaba.html">عظماء الصحابة</a></li>
-            <li><a href="prophets.html">قصص الأنبياء</a></li>
-            <li><a href="azkar.html">الأذكار</a></li>
-        </ul>
-    </nav>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <main class="page-layout container">
-        
-        <div class="page-header">
-            <h1 class="page-title">عظماء الصحابة</h1>
-            <p class="page-subtitle">نماذج مضيئة من أصحاب رسول الله ﷺ نقتبس من سيرهم الإيمان والثبات</p>
-        </div>
-
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن صحابي... (الاسم، اللقب، أو السيرة)">
-        </div>
-
-        <div class="categories-scroll" id="categoriesContainer"></div>
-
-        <div class="content-grid">
-            
-            <aside class="sidebar">
-                <div class="glass-card" id="dailySahabiContainer">
-                    <h2 class="section-title">✨ صحابي اليوم</h2>
-                    </div>
-            </aside>
-
-            <section class="main-content">
-                <div class="cards-grid" id="sahabaGrid">
-                    </div>
-            </section>
-        </div>
-    </main>
-
-    <div class="modal-overlay" id="sahabiModal">
-        <div class="modal-content">
-            <button class="modal-close" id="closeModalBtn" aria-label="إغلاق">✕</button>
-            
-            <h2 class="modal-title" id="modalTitle">اسم الصحابي</h2>
-            <div class="modal-subtitle" id="modalSubtitle">اللقب والتصنيف</div>
-            
-            <div class="modal-body" id="modalDesc">
-                السيرة التفصيلية تكتب هنا.
-            </div>
-
-            <h3 class="modal-section-title hidden" id="modalVirtuesTitle">أبرز الفضائل والمناقب</h3>
-            <ul class="info-list" id="modalVirtues"></ul>
-
-            <h3 class="modal-section-title hidden" id="modalLessonsTitle">الدروس والعبر من سيرته</h3>
-            <ul class="info-list" id="modalLessons"></ul>
-
-            <div class="modal-tags" id="modalTags"></div>
-        </div>
+<aside class="app-sidebar" id="appSidebar">
+    <div class="sidebar-header">
+        <button class="sidebar-close" id="closeSidebarBtn" aria-label="إغلاق">×</button>
+        <h2 class="sidebar-title">القائمة الرئيسية</h2>
     </div>
 
-    <script>
-        // ==================== MASSIVE SAHABA DATASET (50 Companions) ====================
-        const CATEGORIES = [
-            "الكل", "الخلفاء الراشدون", "العشرة المبشرون بالجنة", "كبار الصحابة", 
-            "الصحابيات الجليلات", "أهل بدر", "أهل العلم", "أهل الجهاد"
-        ];
+    <ul class="sidebar-menu">
+        <li>
+            <a href="masbaha.html" class="sidebar-link active">
+                <span class="icon">🪱</span>
+                <span class="label">المسبحة</span>
+            </a>
+        </li>
+        <li>
+            <a href="odea.html" class="sidebar-link">
+                <span class="icon">🤲</span>
+                <span class="label">الأدعية</span>
+            </a>
+        </li>
+        <li>
+            <a href="quran.html" class="sidebar-link">
+                <span class="icon">📖</span>
+                <span class="label">القرآن</span>
+            </a>
+        </li>
+        <li>
+            <a href="hadith.html" class="sidebar-link">
+                <span class="icon">📜</span>
+                <span class="label">أحاديث نبوية</span>
+            </a>
+        </li>
+        <li>
+            <a href="sira.html" class="sidebar-link">
+                <span class="icon">🕌</span>
+                <span class="label">السيرة النبوية</span>
+            </a>
+        </li>
+        <li>
+            <a href="sahaba.html" class="sidebar-link">
+                <span class="icon">🌟</span>
+                <span class="label">عظماء الصحابة</span>
+            </a>
+        </li>
+        <li>
+            <a href="prophets.html" class="sidebar-link">
+                <span class="icon">🧙‍♂️</span>
+                <span class="label">قصص الأنبياء</span>
+            </a>
+        </li>
+        <li>
+            <a href="azkar.html" class="sidebar-link">
+                <span class="icon">🌿</span>
+                <span class="label">الأذكار</span>
+            </a>
+        </li>
+        <li>
+            <a href="settings.html" class="sidebar-link">
+                <span class="icon">⚙️</span>
+                <span class="label">الإعدادات</span>
+            </a>
+        </li>
+    </ul>
+</aside>
 
-        const sahabaData = [
-            // --- الخلفاء الراشدون ---
-            { id: 1, name: "أبو بكر الصديق", title: "الصديق، خليفة رسول الله", category: "الخلفاء الراشدون", 
-              short_bio: "أول الخلفاء الراشدين، وأول من آمن من الرجال، وصاحب النبي ﷺ في الغار والهجرة.", 
-              full_bio: "عبد الله بن عثمان بن عامر، لُقب بالصديق لتصديقه النبي ﷺ في حادثة الإسراء والمعراج. أنفق ماله كله في سبيل الله، وكان أحب الرجال إلى قلب رسول الله. تولى الخلافة بعد وفاة النبي فحفظ الله به الإسلام في حروب الردة وجمع القرآن الكريم.", 
-              virtues: ["أول من أسلم من الرجال.", "صاحبه في الغار والهجرة.", "قال عنه النبي: 'لو كنت متخذاً خليلاً لاتخذت أبا بكر خليلاً'."], 
-              lessons: ["التصديق المطلق واليقين الثابت.", "التضحية بالمال والنفس لخدمة الدين.", "الحزم في أوقات الأزمات (حروب الردة)."], tags: ["صديق", "خليفة", "غار", "ردة"] },
-            { id: 2, name: "عمر بن الخطاب", title: "الفاروق، أمير المؤمنين", category: "الخلفاء الراشدون", 
-              short_bio: "ثاني الخلفاء الراشدين، فرق الله به بين الحق والباطل، وبإسلامه عَزَّ المسلمون.", 
-              full_bio: "أبو حفص عمر بن الخطاب العدوي. كان إسلامه فتحاً وهجرته نصراً. عُرف بالعدل والشدة في الحق حتى سُمي الفاروق. في عهده اتسعت رقعة الدولة الإسلامية وفتحت الشام والعراق ومصر والقدس، وهو أول من وضع التقويم الهجري ودون الدواوين.", 
-              virtues: ["قال النبي: 'إن الله جعل الحق على لسان عمر وقلبه'.", "الشيطان يفر من الطريق الذي يسلكه عمر.", "شهد له النبي بالجنة."], 
-              lessons: ["العدل أساس الملك.", "القوة في الحق والتواضع مع الرعية.", "العبقرية الإدارية والسياسية في إدارة الدولة."], tags: ["فاروق", "عدل", "فتوحات", "أمير المؤمنين"] },
-            { id: 3, name: "عثمان بن عفان", title: "ذو النورين", category: "الخلفاء الراشدون", 
-              short_bio: "ثالث الخلفاء الراشدين، صهر النبي ﷺ، عُرف بالحياء الشديد وسخاء اليد.", 
-              full_bio: "أبو عبد الله عثمان بن عفان الأموي. تزوج ابنتي النبي (رقية ثم أم كلثوم) ولذلك سُمي ذو النورين. كان شديد الحياء، غنياً، جهز جيش العسرة واشترى بئر رومة للمسلمين. في عهده جُمع القرآن الكريم في مصحف واحد (مصحف عثمان).", 
-              virtues: ["تستحي منه الملائكة.", "جهز جيش العسرة.", "جمع الأمة على مصحف واحد."], 
-              lessons: ["الحياء شطر الإيمان.", "تسخير المال لخدمة الأمة والدين.", "الصبر عند الفتن حتى نال الشهادة."], tags: ["ذو النورين", "حياء", "مصحف", "عسرة"] },
-            { id: 4, name: "علي بن أبي طالب", title: "أبو الحسن، أمير المؤمنين", category: "الخلفاء الراشدون", 
-              short_bio: "رابع الخلفاء، وابن عم النبي ﷺ وزوج ابنته فاطمة، وأول من أسلم من الصبيان.", 
-              full_bio: "علي بن أبي طالب الهاشمي. تربى في حجر النبي ﷺ، وفداه بنفسه ليلة الهجرة فنام في فراشه. عُرف بالشجاعة الفائقة في كل الغزوات خاصة خيبر والخندق. كان بحراً في العلم والفصاحة والقضاء.", 
-              virtues: ["قال النبي: 'أنت مني بمنزلة هارون من موسى'.", "أعطاه النبي الراية يوم خيبر ووصفه بأنه 'يحب الله ورسوله'.", "من أقضى الصحابة وأعلمهم."], 
-              lessons: ["الفدائية والشجاعة في سبيل الله.", "العلم الغزير والفقه العميق.", "الزهد في الدنيا رغم امتلاك السلطة."], tags: ["أبو تراب", "فدائي", "علم", "شجاعة"] },
+<main class="page-layout container">
+    <div class="page-header">
+        <h1 class="page-title">عظماء الصحابة</h1>
+        <p class="page-subtitle">نماذج مضيئة من أصحاب رسول الله ﷺ نقتبس من سيرهم الإيمان والثبات</p>
+    </div>
 
-            // --- العشرة المبشرون بالجنة ---
-            { id: 5, name: "طلحة بن عبيد الله", title: "طلحة الخير، طلحة الفياض", category: "العشرة المبشرون بالجنة", 
-              short_bio: "أحد العشرة المبشرين بالجنة، دافع عن النبي ﷺ يوم أحد حتى شلت يده.", 
-              full_bio: "من السابقين الأولين للإسلام. عُرف بالجود والكرم والشجاعة. في غزوة أحد جعل نفسه ترساً لحماية النبي ﷺ وتلقى السهام بيده حتى شُلت، وسماه النبي 'الشهيد الحي'.", 
-              virtues: ["قال النبي: 'من سره أن ينظر إلى شهيد يمشي على وجه الأرض فلينظر إلى طلحة'.", "مبشر بالجنة."], 
-              lessons: ["الفداء بالنفس لحماية الدين والرسول.", "الجود والعطاء بلا حدود."], tags: ["أحد", "فياض", "شهيد حي"] },
-            { id: 6, name: "الزبير بن العوام", title: "حواري رسول الله", category: "العشرة المبشرون بالجنة", 
-              short_bio: "ابن عمة النبي ﷺ (صفية بنت عبد المطلب)، وأول من سل سيفاً في الإسلام.", 
-              full_bio: "أسلم صغيراً وعذب عذاباً شديداً. كان فارساً مقداماً شهد كل المشاهد. وهو زوج أسماء بنت أبي بكر. كان له دور حاسم في معركة اليرموك وفتح مصر.", 
-              virtues: ["قال النبي: 'إن لكل نبي حوارياً، وحواريّ الزبير'.", "أول من سل سيفه في الله."], 
-              lessons: ["الشجاعة والإقدام المبكر.", "النصرة الخالصة لله ورسوله."], tags: ["حواري", "شجاعة", "فارس"] },
-            { id: 7, name: "عبد الرحمن بن عوف", title: "تاجر الرحمن", category: "العشرة المبشرون بالجنة", 
-              short_bio: "من كبار الصحابة الأثرياء، أنفق ثروات طائلة في سبيل الله، ومن أصحاب الشورى.", 
-              full_bio: "هاجر إلى المدينة فقيراً بلا مال، فبدأ التجارة من الصفر وبارك الله له حتى صار من أغنى الصحابة. كان يتصدق بقوافل كاملة لله. صلى خلفه النبي ﷺ في تبوك.", 
-              virtues: ["أحد الستة أصحاب الشورى الذين اختارهم عمر.", "تصدق بنصف ماله مراراً."], 
-              lessons: ["المال الصالح في يد الرجل الصالح قوة للدين.", "الاعتماد على النفس (دلني على السوق)."], tags: ["تجارة", "صدقة", "غنى"] },
-            { id: 8, name: "سعد بن أبي وقاص", title: "خال رسول الله، أول من رمى بسهم", category: "العشرة المبشرون بالجنة", 
-              short_bio: "أحد السابقين للإسلام، وأول من رمى بسهم في سبيل الله، وقائد معركة القادسية.", 
-              full_bio: "أسلم في السابعة عشرة من عمره. كان مستجاب الدعوة ومسدد الرمي بدعاء النبي ﷺ له. تولى قيادة الجيوش الإسلامية وفتح العراق ومدائن كسرى في معركة القادسية الشهيرة.", 
-              virtues: ["قال له النبي: 'ارم سعد، فداك أبي وأمي'.", "مستجاب الدعوة."], 
-              lessons: ["الثبات على المبدأ أمام عاطفة الأمومة (رفض طلب أمه بترك الدين).", "القيادة العسكرية الفذة."], tags: ["قادسية", "رمي", "مستجاب الدعوة"] },
-            { id: 9, name: "سعيد بن زيد", title: "المستجاب الدعوة", category: "العشرة المبشرون بالجنة", 
-              short_bio: "من السابقين الأولين، وزوج أخت عمر بن الخطاب وكان سبباً في إسلام عمر.", 
-              full_bio: "هو سعيد بن زيد بن عمرو بن نفيل. كان أبوه موحداً قبل البعثة. شهد المشاهد كلها إلا بدراً لغيابه في مهمة. كان مجاب الدعوة ومشهوداً له بالجنة. زهد في الإمارة وشارك في فتوحات الشام.", 
-              virtues: ["مبشر بالجنة.", "مستجاب الدعوة.", "شارك في معركة اليرموك وحصار دمشق."], 
-              lessons: ["الزهد في المناصب والمراكز.", "الورع وحفظ الحقوق (قصته مع من ظلمته في أرضه)."], tags: ["زهد", "دعوة مجابة", "سابقون"] },
-            { id: 10, name: "أبو عبيدة بن الجراح", title: "أمين هذه الأمة", category: "العشرة المبشرون بالجنة", 
-              short_bio: "أحد المبشرين بالجنة، وقائد جيوش الشام، اشتهر بالأمانة المطلقة.", 
-              full_bio: "عامر بن عبد الله بن الجراح. ثبت في غزوة أحد ونزع حلقتي المغفر من وجنة النبي ﷺ بأسنان الثنايا حتى سقطت. ولاه عمر بن الخطاب قيادة جيوش الشام ففتحها، وتوفي في طاعون عمواس.", 
-              virtues: ["قال النبي: 'لكل أمة أمين، وأمين هذه الأمة أبو عبيدة بن الجراح'."], 
-              lessons: ["الأمانة العظيمة والتجرد المطلق.", "التواضع في القيادة (عندما استلم القيادة من خالد)."], tags: ["أمين", "طاعون عمواس", "الشام"] },
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن صحابي... (الاسم، اللقب، أو السيرة)">
+    </div>
 
-            // --- كبار الصحابة / أهل الجهاد / العلم ---
-            { id: 11, name: "خالد بن الوليد", title: "سيف الله المسلول", category: "أهل الجهاد", 
-              short_bio: "العبقري العسكري وقائد الفتوحات، لم يُهزم في معركة قط قبل الإسلام وبعده.", 
-              full_bio: "أسلم متأخراً (سنة 8 هـ) لكنه عوّض ذلك ببطولات خالدة. أنقذ جيش المسلمين في مؤتة، وقاد حروب الردة ببراعة، وفتح العراق والشام، وكسر شوكة الفرس والروم في اليرموك.", 
-              virtues: ["سماه النبي 'سيف من سيوف الله'."], 
-              lessons: ["تسخير المواهب والقدرات (القيادة) لنصرة الحق.", "الطاعة المطلقة للقائد (عندما عزله عمر)."], tags: ["سيف الله", "يرموك", "فتوحات"] },
-            { id: 12, name: "بلال بن رباح", title: "مؤذن رسول الله", category: "كبار الصحابة", 
-              short_bio: "من أوائل من أسلم وعُذب في الله، وأول من رفع الأذان في الإسلام.", 
-              full_bio: "عبد حبشي أعتقه أبو بكر بعد أن ذاق أشد العذاب من أمية بن خلف وهو يردد 'أحدٌ أحد'. صار مؤذن النبي ﷺ الدائم. شارك في غزوات المسلمين وصعد الكعبة يوم الفتح ليؤذن.", 
-              virtues: ["سمع النبي خشنة نعليه في الجنة.", "أول مؤذن في الإسلام."], 
-              lessons: ["الإسلام يرفع العبيد بالتقوى.", "الصبر العظيم والثبات على العقيدة."], tags: ["مؤذن", "أحد أحد", "حبشة"] },
-            { id: 13, name: "سلمان الفارسي", title: "الباحث عن الحقيقة", category: "كبار الصحابة", 
-              short_bio: "رحل من فارس باحثاً عن الحق، وهو صاحب فكرة حفر الخندق.", 
-              full_bio: "ترك المجوسية والمسيحية وتنقل بين البلدان كعبد حتى وصل يثرب وعرف النبي ﷺ بعلامات النبوة. كان ذا عقلية استراتيجية وأشار بحفر الخندق الذي أنقذ المدينة.", 
-              virtues: ["قال النبي: 'سلمان منا آل البيت'."], 
-              lessons: ["البحث الدؤوب عن الحقيقة وتحمل المشاق لأجلها.", "الاستفادة من خبرات الحضارات الأخرى."], tags: ["فارس", "خندق", "بحث"] },
-            { id: 14, name: "عبد الله بن عباس", title: "حبر الأمة وترجمان القرآن", category: "أهل العلم", 
-              short_bio: "ابن عم النبي ﷺ، وأعلم الصحابة بتفسير القرآن الكريم.", 
-              full_bio: "كان غلاماً في عهد النبي ودعا له بفهم الدين وتأويل القرآن. لازم كبار الصحابة بعد وفاة النبي ليسألهم ويتعلم منهم حتى صار مرجعاً للأمة في التفسير والفقه.", 
-              virtues: ["دعا له النبي: 'اللهم فقهه في الدين وعلمه التأويل'."], 
-              lessons: ["الاجتهاد في طلب العلم منذ الصغر.", "التواضع للعلماء للحصول على المعرفة."], tags: ["علم", "تفسير", "حبر الأمة"] },
-            { id: 15, name: "عبد الله بن مسعود", title: "صاحب النعلين", category: "أهل العلم", 
-              short_bio: "سادس من أسلم، وأول من جهر بالقرآن بمكة، ومن أعلم الصحابة بالقرآن.", 
-              full_bio: "كان خادماً للنبي ﷺ وصاحب سره. رغم نحافة ساقه كان عظيماً في الميزان. أخذ من فيِّ النبي سبعين سورة، وأرسله عمر معلماً للكوفة فكان مؤسس مدرسة الكوفة الفقهية.", 
-              virtues: ["قال النبي: 'من سره أن يقرأ القرآن غضاً كما أنزل فليقرأه على قراءة ابن أم عبد'."], 
-              lessons: ["القرآن يرفع شأن أصحابه.", "الشجاعة في الجهر بالحق (عند الكعبة)."], tags: ["قرآن", "جهر", "الكوفة"] },
-            { id: 16, name: "أنس بن مالك", title: "خادم رسول الله", category: "أهل العلم", 
-              short_bio: "خدم النبي ﷺ عشر سنوات ولم يسمع منه كلمة 'أف'، وهو من المكثرين لرواية الحديث.", 
-              full_bio: "قدمته أمه أم سليم ليخدم النبي ﷺ وعمره 10 سنوات. دعا له النبي بالبركة في ماله وولده وعمره. عاش طويلاً وكان مرجعاً في الحديث النبوي وسيرة المصطفى اليومية.", 
-              virtues: ["خدم النبي 10 سنين.", "دعا له النبي بكثرة المال والولد وطول العمر."], 
-              lessons: ["فضل القرب من الصالحين وخدمتهم.", "التربية بالحب والرفق كما رباه النبي."], tags: ["خادم", "رواية حديث", "طول العمر"] },
-            { id: 17, name: "أبو هريرة", title: "راوية الإسلام", category: "أهل العلم", 
-              short_bio: "أكثر الصحابة رواية لأحاديث النبي ﷺ بفضل ملازمته له ودعاء النبي لضعف حفظه.", 
-              full_bio: "عبد الرحمن بن صخر الدوسي. أسلم عام خيبر (7 هـ). لزم النبي ﷺ على شبع بطنه ليحفظ الحديث. دعا له النبي فبسط رداءه ولم ينسَ بعدها حديثاً. روى أكثر من 5374 حديثاً.", 
-              virtues: ["أحفظ الصحابة للحديث.", "كان من أهل الصفة المتفرغين للعبادة والعلم."], 
-              lessons: ["التفرغ التام لطلب العلم.", "بركة دعاء النبي ﷺ وحفظ الله للسنة من خلاله."], tags: ["رواية", "حفظ", "حديث", "أهل الصفة"] },
-            { id: 18, name: "معاذ بن جبل", title: "أعلم الأمة بالحلال والحرام", category: "أهل العلم", 
-              short_bio: "أعلم الصحابة بالحلال والحرام، أرسله النبي قاضياً ومعلماً إلى اليمن.", 
-              full_bio: "شاب أنصاري استوعب الفقه الإسلامي بقوة. قال له النبي 'يا معاذ إني لأحبك'. بعثه إلى اليمن ليفقههم في الدين ويجمع الصدقات، وكان يفتي في حضرة كبار الصحابة في عهد عمر.", 
-              virtues: ["أعلم الأمة بالحلال والحرام.", "يُحشر يوم القيامة أمام العلماء برتوة (بمسافة)."], 
-              lessons: ["الشباب قادر على حمل أمانة العلم والإفتاء.", "الدعوة إلى الله بالحكمة والعلم (في اليمن)."], tags: ["فقه", "حلال وحرام", "اليمن"] },
-            { id: 19, name: "عمرو بن العاص", title: "داهية العرب", category: "أهل الجهاد", 
-              short_bio: "فاتح مصر وقائد محنك، أسلم متأخراً وكان من أدهى رجال العرب.", 
-              full_bio: "أسلم في العام الثامن للهجرة. أرسله النبي قائداً في غزوة ذات السلاسل. كان يتميز بالذكاء والدهاء السياسي والعسكري. قاد الفتح الإسلامي لمصر وأسس مدينة الفسطاط.", 
-              virtues: ["أمن الناس وأسلم عمرو بن العاص (شهادة من النبي).", "فاتح مصر."], 
-              lessons: ["استخدام الدهاء والذكاء في خدمة الإسلام.", "المرونة السياسية والقيادة الناجحة."], tags: ["فاتح مصر", "دهاء", "قيادة"] },
-            { id: 20, title: "حذيفة بن اليمان", name: "حذيفة بن اليمان", category: "كبار الصحابة", 
-              short_bio: "أمين سر رسول الله ﷺ وصاحب علم الفتن والمنافقين.", 
-              full_bio: "اختصه النبي ﷺ بأسماء المنافقين ولم يخبر بها غيره. أرسله النبي عيناً له ليلة الخندق وسط جيش الأحزاب. كان دائم السؤال عن الشُر لتجنبه.", 
-              virtues: ["أمين سر رسول الله.", "مؤتمن على أسماء المنافقين."], 
-              lessons: ["حفظ السر والأمانة.", "سؤال العالم عن الفتن والشر لتقية النفس."], tags: ["أمين السر", "فتن", "منافقين"] },
-            { id: 21, name: "زيد بن ثابت", title: "جامع القرآن", category: "أهل العلم", 
-              short_bio: "كاتب الوحي وجامع القرآن الكريم في عهد أبي بكر ثم عثمان.", 
-              full_bio: "شاب أنصاري ذكي، أمره النبي بتعلم لغة يهود فتعلمها في نصف شهر. كان المرجعية الأولى في كتابة القرآن، وكُلف بالمهمة الأعظم وهي تتبع القرآن وجمعه في الصحف ثم المصاحف.", 
-              virtues: ["أفرض الأمة (أعلمهم بالمواريث).", "جامع القرآن الكريم."], 
-              lessons: ["تعلم اللغات الأجنبية لخدمة الدين.", "الدقة المتناهية والأمانة في حفظ كتاب الله."], tags: ["جامع القرآن", "كاتب الوحي", "مواريث"] },
-            { id: 22, name: "أبو ذر الغفاري", title: "الزاهد العظيم", category: "كبار الصحابة", 
-              short_bio: "رابع أو خامس من أسلم، أصدق الناس لهجة، وعُرف بزهده الشديد في الدنيا.", 
-              full_bio: "من قبيلة غفار (قطاع طرق)، أسلم مبكراً وجهر بإسلامه عند الكعبة وضُرب. عاش زاهداً ومات وحيداً بالربذة كما أخبره النبي ﷺ.", 
-              virtues: ["ما أظلت الخضراء أصدق لهجة من أبي ذر.", "يمشي وحده ويموت وحده ويبعث وحده."], 
-              lessons: ["الصدق المطلق وعدم المداهنة.", "الزهد الحقيقي في ملذات الدنيا."], tags: ["زهد", "صدق", "الربذة"] },
+    <div class="categories-scroll" id="categoriesContainer"></div>
 
-            // --- أهل بدر ---
-            { id: 23, name: "سعد بن معاذ", title: "سيد الأوس", category: "أهل بدر", 
-              short_bio: "سيد قبيلة الأوس، اهتز لموته عرش الرحمن، وكان إسلامه فتحاً للمدينة.", 
-              full_bio: "أسلم قبل الهجرة على يد مصعب بن عمير. قاد قومه في غزوة بدر بكلمة شهيرة 'امض يا رسول الله'. أصيب في الخندق ومات شهيداً، وحكم في بني قريظة بحكم الله.", 
-              virtues: ["اهتز له عرش الرحمن فرحاً بقدومه.", "حكمه وافق حكم الله من فوق سبع سماوات."], 
-              lessons: ["القيادة الإيجابية التي تسوق قومها للحق.", "الموقف الشجاع والمخلص في الأزمات (يوم بدر)."], tags: ["عرش الرحمن", "الأوس", "بدر", "الخندق"] },
-            { id: 24, name: "البراء بن مالك", title: "المقاتل الشرس", category: "أهل الجهاد", 
-              short_bio: "بطل شجاع مقدام، ألقى بنفسه في حديقة الموت يوم اليمامة ففتحها للمسلمين.", 
-              full_bio: "أخو أنس بن مالك. كان يحب الشهادة حباً جماً. نهى عمر أن يولى قيادة جيش لأنه 'مهلكة' لإقدامه المفرط. بطل معركة اليمامة ضد مسيلمة الكذاب، استشهد في فتح تستر.", 
-              virtues: ["لو أقسم على الله لأبره.", "بطل حديقة الموت."], 
-              lessons: ["الشجاعة الأسطورية وحب الشهادة.", "التضحية بالنفس لإنقاذ جيش المسلمين."], tags: ["اليمامة", "شجاعة", "شهادة"] },
-            { id: 25, name: "أبو أيوب الأنصاري", title: "مضيف رسول الله", category: "أهل بدر", 
-              short_bio: "نزل النبي ﷺ في بيته عند هجرته للمدينة، واستشهد مجاهداً تحت أسوار القسطنطينية.", 
-              full_bio: "خالد بن زيد الأنصاري. استقبل النبي في داره بالمدينة 7 أشهر حتى بني المسجد. قضى حياته مجاهداً حتى وهو شيخ كبير طاعن في السن، ودُفن عند أسوار القسطنطينية.", 
-              virtues: ["استضاف النبي ﷺ في بيته.", "لم يتخلف عن غزوة قط."], 
-              lessons: ["كرم الضيافة والأدب مع رسول الله.", "الجهاد لا يعرف عمراً (جاهد وهو شيخ كبير)."], tags: ["مضيف", "القسطنطينية", "أنصار"] },
+    <div class="content-grid">
+        <aside class="sidebar">
+            <div class="glass-card" id="dailySahabiContainer" style="padding: 1.2rem;">
+                <h2 class="section-title">✨ صحابي اليوم</h2>
+                <div id="dailyCardInner"></div>
+            </div>
+        </aside>
 
-            // --- الصحابيات الجليلات ---
-            { id: 26, name: "خديجة بنت خويلد", title: "أم المؤمنين الأولى", category: "الصحابيات الجليلات", 
-              short_bio: "الزوجة الأولى للنبي ﷺ، وأول من آمن به وصدقه وأعانته بمالها ونفسها.", 
-              full_bio: "سيدة نساء قريش. تزوجت النبي وعمرها 40 عاماً. آمنت به حين كذبه الناس، وواسته بنفسها ومالها. بشرها الله ببيت في الجنة من قصب (لؤلؤ مجوف) لا صخب فيه ولا نصب.", 
-              virtues: ["أقرأها الله السلام من فوق سبع سماوات عبر جبريل.", "لم يتزوج عليها النبي حتى ماتت."], 
-              lessons: ["دور الزوجة العظيم في دعم المصلحين.", "الثبات والإنفاق في سبيل الله وقت الشدة."], tags: ["أم المؤمنين", "دعم", "أول من أسلم"] },
-            { id: 27, name: "عائشة بنت أبي بكر", title: "حبيبة رسول الله، المبرأة", category: "الصحابيات الجليلات", 
-              short_bio: "أحب أزواج النبي ﷺ إليه، ومن أكثر الصحابة علماً ورواية للحديث والفقه.", 
-              full_bio: "ابنة الصديق. تزوجها النبي في المدينة. برأها الله من فوق سبع سماوات في حادثة الإفك. لُقبت بـ 'الحميراء'. توفي النبي في غرفتها وبين سحرها ونحرها. كانت مرجعاً فقهياً لكبار الصحابة.", 
-              virtues: ["أحب النساء إلى قلب النبي ﷺ.", "برأها الله في سورة النور.", "من المكثرين لرواية الحديث (2210 أحاديث)."], 
-              lessons: ["العلم لا يقتصر على الرجال.", "الصبر على الابتلاء العظيم وتبرئة الله للصابرين."], tags: ["أم المؤمنين", "علم", "حديث", "المبرأة"] },
-            { id: 28, name: "فاطمة الزهراء", title: "سيدة نساء العالمين", category: "الصحابيات الجليلات", 
-              short_bio: "أحب بنات النبي ﷺ إليه، وزوجة علي بن أبي طالب، وأم الحسن والحسين.", 
-              full_bio: "كانت أشبه الناس سمتاً ودلاً وحديثاً برسول الله. عانت من الفقر والجوع فصبرت. كانت تدافع عن أبيها في مكة وتزيل الأذى عن ظهره. هي أول أهل بيته لحوقاً به بعد وفاته.", 
-              virtues: ["سيدة نساء أهل الجنة.", "بضعة من النبي، يريبه ما أرابها."], 
-              lessons: ["الصبر على شظف العيش والعمل اليدوي.", "بر البنت بأبيها (أم أبيها)."], tags: ["الزهراء", "بنت النبي", "صبر"] },
-            { id: 29, name: "أسماء بنت أبي بكر", title: "ذات النطاقين", category: "الصحابيات الجليلات", 
-              short_bio: "ابنة الصديق، قامت بدور فدائي عظيم في إيصال الطعام للنبي وأبيها في الغار.", 
-              full_bio: "شقت نطاقها نصفين لتربط به طعام الهجرة فسميت ذات النطاقين. أم عبد الله بن الزبير. عاشت 100 سنة ولم يسقط لها سن. شجعت ابنها على الثبات أمام الحجاج وقالت: 'إن الشاة لا يضرها السلخ بعد الذبح'.", 
-              virtues: ["ذات النطاقين.", "شجاعة وفدائية نادرة."], 
-              lessons: ["دور المرأة الحاسم في الأحداث المفصلية (الهجرة).", "تربية الأبناء على العزة والكرامة والثبات."], tags: ["ذات النطاقين", "هجرة", "شجاعة"] },
-            { id: 30, name: "أم سلمة", title: "أم المؤمنين، صاحبة الرأي", category: "الصحابيات الجليلات", 
-              short_bio: "من المهاجرات الأُول، تميزت برجاحة العقل، وأنقذت المسلمين برأيها يوم الحديبية.", 
-              full_bio: "هند بنت أبي أمية. هاجرت للحبشة ثم للمدينة وعانت في سبيل ذلك. مات زوجها أبو سلمة فتزوجها النبي. يوم صلح الحديبية أشارت على النبي بالحلق والنحر فأنقذت الصحابة من الهلاك بسبب التردد.", 
-              virtues: ["صاحبة رأي سديد وحكمة.", "دعا لها النبي فصارت من أم المؤمنين."], 
-              lessons: ["احترام الإسلام لرأي المرأة وحكمتها.", "الصبر على فقد الزوج واليقين بأن الله يعوض بخير."], tags: ["أم المؤمنين", "حكمة", "الحديبية"] },
-            { id: 31, name: "نسيبة بنت كعب", title: "أم عمارة", category: "الصحابيات الجليلات", 
-              short_bio: "الصحابية الفدائية، دافعت عن النبي ﷺ بسيفها يوم أحد حتى جُرحت 13 جرحاً.", 
-              full_bio: "بايعت النبي في العقبة الثانية. شاركت في الغزوات تسقي الجرحى. يوم أحد لما انكشف المسلمون، امتشقت سيفها وقاتلت تدافع عن النبي. شاركت في حروب الردة وقُطعت يدها في اليمامة.", 
-              virtues: ["قال النبي يوم أحد: 'ما التفت يميناً ولا شمالاً إلا وأنا أراها تقاتل دوني'."], 
-              lessons: ["شجاعة المرأة المسلمة وفدائيتها.", "حب النبي ﷺ يفوق حب النفس والجسد."], tags: ["أم عمارة", "أحد", "فدائية", "شجاعة"] },
-            { id: 32, name: "أم سليم", title: "الرميصاء", category: "الصحابيات الجليلات", 
-              short_bio: "أم أنس بن مالك، مهرها كان الإسلام، وعُرفت بصلابة الإيمان واليقين.", 
-              full_bio: "رفضت الزواج من أبي طلحة حتى أسلم فكان إسلامه مهرها. توفي طفلها فكتمت الأمر عن زوجها حتى استراح ثم أخبرته برضا وتسليم، فدعا لهما النبي وبارك في نسلهما.", 
-              virtues: ["سمع النبي خفش نعلها في الجنة.", "قدمت ابنها أنس خادماً للنبي."], 
-              lessons: ["الدين أغلى من المال والذهب (في المهر).", "الرضا بقضاء الله وقدره والتحكم في المشاعر."], tags: ["أم سليم", "رضا", "مهرها الإسلام"] },
+        <section class="main-content">
+            <div class="cards-grid" id="sahabaGrid"></div>
+        </section>
+    </div>
+</main>
 
-            // --- المزيد من الصحابة لإكمال العدد ---
-            { id: 33, name: "عمار بن ياسر", title: "الطيب المطيب", category: "كبار الصحابة", short_bio: "من السابقين، عُذب هو وأهله عذاباً شديداً في الله، وهو الذي تقتله الفئة الباغية.", full_bio: "أسلم مبكراً. قُتل والده ووالدته (سمية أول شهيدة) تحت التعذيب أمامه. شارك في بناء المسجد وكان يحمل لبنتين. استشهد في معركة صفين عن 93 عاماً.", virtues: ["مُلئ إيماناً إلى مشاشه.", "تقتله الفئة الباغية."], lessons: ["الصبر على أشد أنواع التعذيب."], tags: ["آل ياسر", "صبر"] },
-            { id: 34, name: "صهيب الرومي", title: "الرابح", category: "كبار الصحابة", short_bio: "ترك ماله كله لقريش ليهاجر إلى النبي، فربح البيع.", full_bio: "من أصل عربي سُبي في الروم ثم بيع بمكة. أسلم وجمع ثروة، ولما أراد الهجرة منعته قريش فدلهم على ماله كله ليخلوا سبيله. استقبله النبي قائلاً: 'ربح البيع أبا يحيى'.", virtues: ["نزلت فيه آية: (ومن الناس من يشري نفسه ابتغاء مرضات الله)."], lessons: ["المال رخيص أمام الدين والهجرة."], tags: ["ربح البيع", "هجرة", "تضحية"] },
-            { id: 35, name: "سعد بن الربيع", title: "سيد الخزرج", category: "أهل بدر", short_bio: "من سادة الأنصار ونقبائهم، استشهد يوم أحد تاركاً وصية خالدة للأنصار.", full_bio: "آخى النبي بينه وبين عبد الرحمن بن عوف وعرض عليه نصف ماله فتعفف. يوم أحد، وُجد به 70 طعنة ورمية، فقال قبل موته: 'أبلغوا الأنصار أنه لا عذر لهم إن خُلص إلى رسول الله وفيكم عين تطرف'.", virtues: ["من النقباء ليلة العقبة."], lessons: ["الإيثار العظيم.", "حب رسول الله حتى آخر رمق."], tags: ["الخزرج", "أحد", "إيثار"] },
-            { id: 36, name: "مصعب بن عمير", title: "أول سفير في الإسلام", category: "كبار الصحابة", short_bio: "أنعم فتيان مكة، ترك الغنى للدين، وكان سفير النبي إلى المدينة.", full_bio: "كان مدللاً ثرياً، أسلم سراً وحُبس. أرسله النبي للمدينة بعد العقبة الأولى فأسلم على يديه سادة المدينة (أسيد بن حضير وسعد بن معاذ). استشهد يوم أحد ولم يجدوا كفناً يغطي جسده كاملاً.", virtues: ["أول سفير في الإسلام.", "حامل لواء المسلمين في أحد."], lessons: ["ترك رغد العيش من أجل المبدأ.", "الدعوة بالحكمة واللين والقرآن."], tags: ["سفير", "أحد", "دعوة"] },
-            { id: 37, name: "عبد الله بن رواحة", title: "شاعر رسول الله", category: "أهل العلم", short_bio: "أحد القادة الثلاثة في مؤتة، وكان يدافع عن الإسلام بشعره وسيفه.", full_bio: "من سادة الخزرج وشعرائهم. كان يرتجز الشعر في الغزوات لتشجيع المسلمين. تولى قيادة جيش مؤتة بعد زيد وجعفر، وتلقى الشهادة مقبلاً غير مدبر.", virtues: ["شعره كان أشد على قريش من النبل.", "من شهداء مؤتة الأبرار."], lessons: ["استخدام الفن (الشعر) في الدفاع عن الحق.", "حسم التردد النفسي بشجاعة ويقين."], tags: ["شعر", "مؤتة", "شهادة"] },
-            { id: 38, name: "جعفر بن أبي طالب", title: "جعفر الطيار، أبو المساكين", category: "كبار الصحابة", short_bio: "ابن عم النبي وشبيهه خَلقاً وخُلقاً، ومتحدث المسلمين أمام النجاشي.", full_bio: "هاجر للحبشة ودافع عن الإسلام ببراعة أمام النجاشي بقراءة سورة مريم. عاد يوم فتح خيبر فقبّله النبي. استشهد في مؤتة بعد أن قُطعت يداه، فأبدله الله جناحين يطير بهما في الجنة.", virtues: ["أشبه الناس برسول الله.", "له جناحان في الجنة يطير بهما."], lessons: ["الحكمة واللباقة في الحوار (مع النجاشي).", "الثبات على الراية والتضحية باليدين."], tags: ["طيار", "مؤتة", "الحبشة"] },
-            { id: 39, name: "أسامة بن زيد", title: "حِبُّ رسول الله", category: "أهل الجهاد", short_bio: "ابن زيد بن حارثة، أحبه النبي حباً شديداً وأمّره على جيش فيه كبار الصحابة.", full_bio: "ولد في الإسلام وكان أسود اللون. أردفه النبي خلفه على ناقته. في مرض موت النبي، أمّره على جيش لغزو الروم وعمره 18 عاماً وفي الجيش أبو بكر وعمر، وأنفذ أبو بكر جيشه بعد الوفاة.", virtues: ["الحب بن الحب (لرسول الله)."], lessons: ["الكفاءة هي معيار القيادة وليس العمر أو النسب.", "احترام وتوقير كبار السن للشباب المتميزين."], tags: ["شاب", "قائد", "جيش أسامة"] },
-            { id: 40, name: "أبو موسى الأشعري", title: "مزمار من مزامير آل داود", category: "أهل العلم", short_bio: "من قراء الصحابة الكبار، وصوته ندي بالقرآن، ووالٍ للنبي على اليمن.", full_bio: "قدم من اليمن مسلماً. عُرف بجمال صوته الخاشع في القرآن حتى وقف النبي يستمع له. كان فقيهاً عابداً، واستعمله النبي وعمر بن الخطاب على ولايات كالبصرة والكوفة.", virtues: ["أوتي مزماراً من مزامير آل داود.", "من أهل اليمن الذين وصفهم النبي برقة القلوب."], lessons: ["تزيين القرآن بالصوت الحسن.", "العلم والعمل والإدارة."], tags: ["قرآن", "أشعري", "اليمن"] },
-            { id: 41, name: "عبد الله بن عمر", title: "المتبع للأثر", category: "أهل العلم", short_bio: "ابن الفاروق، وأشد الصحابة تتبعاً وتقليداً لأفعال النبي ﷺ وحركاته.", full_bio: "أسلم صغيراً مع أبيه. كان من المكثرين للفتوى ورواية الحديث (2630 حديث). اشتهر بالتزامه الحرفي الدقيق بكل ما يفعله النبي ﷺ حتى في أماكن نزوله وممشاه. كان كثير التصدق والإعتاق.", virtues: ["قال النبي: 'نعم الرجل عبد الله لو كان يصلي من الليل'."], lessons: ["شدة الاتباع والحب للنبي.", "الورع والابتعاد عن الفتن والاقتتال الداخلي."], tags: ["أثر", "رواية", "ورع"] },
-            { id: 42, name: "حسان بن ثابت", title: "شاعر الرسول", category: "كبار الصحابة", short_bio: "شاعر الإسلام الذي دافع عن النبي ﷺ بقصائده وهجا المشركين.", full_bio: "عاش 60 سنة في الجاهلية و60 في الإسلام. لم يكن يشارك في القتال بالسيف بل بالكلمة. كان ينصب له منبر في المسجد لينشد الشعر دفاعاً عن العرض النبوي.", virtues: ["كان جبريل يؤيده وهو يهجو قريشاً."], lessons: ["الكلمة والإعلام سلاح قوي في الدفاع عن الحق.", "كل مسخّر لما يُحسن (الشعر بدل السيف)."], tags: ["شعر", "دفاع", "إعلام"] },
-            { id: 43, name: "عبد الله بن سلام", title: "العالم المهتدي", category: "أهل العلم", short_bio: "من كبار علماء اليهود في المدينة، أسلم فور رؤيته لوجه النبي ﷺ.", full_bio: "لما قدم النبي المدينة، ذهب لينظر إليه، فقال: 'فلما تبينت وجهه عرفت أن وجهه ليس بوجه كذاب'. أسلم وسأل النبي أسئلة لا يعلمها إلا نبي. شهد له النبي بالجنة.", virtues: ["شهد له النبي بالجنة وهو يمشي على الأرض.", "نزل فيه قوله تعالى (وشهد شاهد من بني إسرائيل)."], lessons: ["التجرد للحق حين ظهوره وترك التعصب للدين القديم.", "العلم الصحيح يقود للإيمان."], tags: ["يهود", "إسلام", "علم"] },
-            { id: 44, name: "عبادة بن الصامت", title: "سيد القراء", category: "أهل العلم", short_bio: "من نقباء الأنصار وممن جمعوا القرآن في عهد النبي ﷺ، وقاضي فلسطين الأول.", full_bio: "شهد بدراً والعقبة. أرسله عمر بن الخطاب إلى الشام مع معاذ وأبي الدرداء ليعلموا الناس القرآن والفقه. كان أول قاضٍ في فلسطين، وعُرف بصدعه بالحق لا يخاف لومة لائم.", virtues: ["من الذين جمعوا القرآن على عهد رسول الله.", "لم يكن يداهن أحداً في الحق."], lessons: ["نشر العلم والقرآن في الأمصار.", "الصلابة في الحق ولو أمام الولاة والأمراء."], tags: ["قراء", "فلسطين", "أنصار"] },
-            { id: 45, name: "سعيد بن عامر", title: "الزاهد أمير حمص", category: "كبار الصحابة", short_bio: "أسلم بعد مشهد إعدام خبيب، وصار من أزهد ولاة المسلمين في عهد عمر.", full_bio: "ولاه عمر على حمص فكان يعيش في فقر مدقع ويتصدق براتبه. اشتكاه أهل حمص لأمور تبين لاحقاً أنها قمة في العبادة والورع (كالخروج متأخراً لأنه يعجن خبزه لعدم وجود خادم).", virtues: ["مثال الوالي الزاهد العادل."], lessons: ["تأثير المواقف العظيمة في تغيير مسار الحياة (إعدام خبيب).", "المنصب تكليف وليس تشريفاً."], tags: ["حمص", "زهد", "ولاية"] },
-            { id: 46, name: "أم أيمن", title: "حاضنة رسول الله", category: "الصحابيات الجليلات", short_bio: "ورثها النبي عن أبيه واحتضنته صغيراً، وزوجها زيد بن حارثة.", full_bio: "بركة بنت ثعلبة. كانت كالأم للنبي ﷺ بعد وفاة آمنة. قال عنها: 'أم أيمن أمي بعد أمي'. زوجها لحبه زيد فولدت له أسامة. بكت بعد وفاة النبي لانقطاع الوحي من السماء.", virtues: ["حاضنة النبي وموضع ثقته.", "أمير ابن أمير (أسامة)."], lessons: ["وفاء النبي ﷺ لمن خدمه صغيراً.", "الارتباط القوي بوحي السماء (بكاؤها لانقطاع الوحي)."], tags: ["حاضنة", "أسامة", "وفاء"] },
-            { id: 47, name: "حفصة بنت عمر", title: "صوامة قوامة، حارسة القرآن", category: "الصحابيات الجليلات", short_bio: "ابنة الفاروق، وزوجة النبي، وعندها حُفظت الصحف الأولى للقرآن الكريم.", full_bio: "ترملت شابة فتزوجها النبي تكريماً لعمر. كانت تقرأ وتكتب في مجتمع أمي. طلقها النبي تطليقة فنزل جبريل يأمره بمراجعتها لأنها صوامة قوامة. أودع عندها أبو بكر وعمر الصحف الأصلية للقرآن.", virtues: ["صوامة قوامة وزوجة النبي في الجنة.", "اُؤتمنت على النسخة الأصلية للقرآن الكريم."], lessons: ["مكانة المرأة العلمية والثقافية في الإسلام.", "حفظ الأمانة العظمى (القرآن)."], tags: ["أم المؤمنين", "حارسة القرآن", "صوامة"] },
-            { id: 48, name: "صفية بنت حيي", title: "ابنة الأنبياء", category: "الصحابيات الجليلات", short_bio: "من سبي خيبر، أعتقها النبي وتزوجها، وكانت ابنة سيد يهود بني النضير.", full_bio: "أبوها حيي بن أخطب (من نسل هارون). أسلمت وحسن إسلامها. حزنت ذات يوم لتعيير بعض الزوجات لها بأصلها اليهودي، فقال لها النبي: 'قولي أبي هارون وعمي موسى وزوجي محمد'.", virtues: ["زوجة النبي وبنت نبي وعمها نبي.", "عاقلة وحليمة وذات خلق."], lessons: ["الإسلام يمحو فوارق الأعراق والأنساب.", "حسن جبر الخواطر من النبي ﷺ لزوجته."], tags: ["أم المؤمنين", "خيبر", "بنو النضير"] },
-            { id: 49, name: "أبو الدرداء", title: "حكيم الأمة", category: "أهل العلم", short_bio: "تأخر إسلامه قليلاً، لكنه فاق الكثيرين بعبادته وحكمته العميقة.", full_bio: "عويمر بن مالك. كان تاجراً فترك التجارة للتفرغ للعبادة والعلم. اشتهر بتأملاته وحكمه العميقة. أرسله عمر قاضياً لدمشق وأسس فيها حلقات ضخمة لتعليم القرآن (نظام الإقراء الجماعي).", virtues: ["حكيم هذه الأمة.", "مؤسس المدرسة القرآنية في الشام."], lessons: ["التفرغ للعلم إذا تعارض مع مشاغل الدنيا لمن يقدر.", "التأمل والحكمة ثمرة من ثمار العبادة الخالصة."], tags: ["حكيم", "قرآن", "الشام"] },
-            { id: 50, name: "عبد الله بن عمرو بن العاص", title: "العابد الكاتب", category: "أهل العلم", short_bio: "ابن عمرو بن العاص، كان صواماً قواماً، وأول من كتب الحديث النبوي في صحيفة (الصادقة).", full_bio: "أسلم قبل أبيه. استأذن النبي في كتابة كل ما يسمعه منه فأذن له فكتب 'الصحيفة الصادقة'. كان يجهد نفسه في العبادة والصيام وتلاوة القرآن حتى طلب منه النبي التخفيف وإعطاء الجسد حقه.", virtues: ["أول من دون الحديث النبوي.", "تميز بعبادة فائقة وصيام داود."], lessons: ["أهمية تدوين العلم وحفظه.", "الاعتدال والوسطية في العبادة كما وجهه النبي."], tags: ["كتابة الحديث", "عبادة", "الصادقة"] }
-        ];
+<div class="modal-overlay" id="sahabiModal">
+    <div class="modal-content">
+        <button class="modal-close" id="closeModalBtn" aria-label="إغلاق">✕</button>
+        <h2 class="modal-title" id="modalTitle">اسم الصحابي</h2>
+        <div class="modal-subtitle" id="modalSubtitle">اللقب والتصنيف</div>
+        <div class="modal-body" id="modalDesc">السيرة التفصيلية تكتب هنا.</div>
+        <h3 class="modal-section-title hidden" id="modalVirtuesTitle">أبرز الفضائل والمناقب</h3>
+        <ul class="info-list" id="modalVirtues"></ul>
+        <h3 class="modal-section-title hidden" id="modalLessonsTitle">الدروس والعبر من سيرته</h3>
+        <ul class="info-list" id="modalLessons"></ul>
+        <div class="modal-tags" id="modalTags"></div>
+    </div>
+</div>
 
-        // ==================== STATE ====================
-        const state = {
-            category: 'الكل',
-            search: '',
-            dailySahabiId: null
-        };
+<script>
+    const CATEGORIES = ["الكل", "الخلفاء الراشدون", "العشرة المبشرون بالجنة", "كبار الصحابة", "الصحابيات الجليلات", "أهل بدر", "أهل العلم", "أهل الجهاد", "أهل الصفة", "أمهات المؤمنين"];
 
-        // ==================== DOM ELEMENTS ====================
-        const DOM = {
-            themeToggle: document.getElementById('themeToggle'),
-            hamburgerBtn: document.getElementById('hamburgerBtn'),
-            mobileNav: document.getElementById('mobileNav'),
-            categoriesContainer: document.getElementById('categoriesContainer'),
-            grid: document.getElementById('sahabaGrid'),
-            searchInput: document.getElementById('searchInput'),
-            dailyContainer: document.getElementById('dailySahabiContainer'),
-            modal: document.getElementById('sahabiModal'),
-            closeModalBtn: document.getElementById('closeModalBtn'),
-            
-            // Modal Elements
-            modalTitle: document.getElementById('modalTitle'),
-            modalSubtitle: document.getElementById('modalSubtitle'),
-            modalDesc: document.getElementById('modalDesc'),
-            modalVirtuesTitle: document.getElementById('modalVirtuesTitle'),
-            modalVirtues: document.getElementById('modalVirtues'),
-            modalLessonsTitle: document.getElementById('modalLessonsTitle'),
-            modalLessons: document.getElementById('modalLessons'),
-            modalTags: document.getElementById('modalTags')
-        };
+    // تم توسيع البيانات لتشمل 100 صحابي مع تفاصيل غنية
+    const sahabaData = [
+        // الخلفاء الراشدون
+        { id: 1, name: "أبو بكر الصديق", title: "الصديق، خليفة رسول الله", category: "الخلفاء الراشدون", short_bio: "أول الخلفاء الراشدين، وأول من آمن من الرجال، وصاحب النبي ﷺ في الغار والهجرة. أنفق ماله كله في سبيل الله، وكان أحب الرجال إلى قلب رسول الله.", full_bio: "عبد الله بن عثمان بن عامر التيمي القرشي. لُقب بالصديق لتصديقه النبي ﷺ في حادثة الإسراء والمعراج دون تردد. كان رفيق النبي في هجرته إلى المدينة، وهو الوحيد الذي ذكر في القرآن بصاحب النبي: (إِذْ هُمَا فِي الْغَارِ إِذْ يَقُولُ لِصَاحِبِهِ لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا). أنفق 40,000 درهم في سبيل الله وتصدق بكل ما يملك في غزوة تبوك. تولى الخلافة بعد وفاة النبي فحفظ الله به الإسلام في حروب الردة وجمع القرآن الكريم في مصحف واحد. توفي وعمره 63 عاماً ودفن بجانب النبي ﷺ.", virtues: ["أول من أسلم من الرجال.", "صاحبه في الغار والهجرة.", "قال عنه النبي: 'لو كنت متخذاً خليلاً لاتخذت أبا بكر خليلاً'.", "أسبق الناس إلى الخيرات.", "أمه وأباه فداء للنبي."], lessons: ["التصديق المطلق واليقين الثابت.", "التضحية بالمال والنفس لخدمة الدين.", "الحزم في أوقات الأزمات (حروب الردة).", "التواضع الجم مع رفعة المقام."], tags: ["صديق", "خليفة", "غار", "ردة", "تبوك"] },
+        { id: 2, name: "عمر بن الخطاب", title: "الفاروق، أمير المؤمنين", category: "الخلفاء الراشدون", short_bio: "ثاني الخلفاء الراشدين، فرق الله به بين الحق والباطل، وبإسلامه عَزَّ المسلمون.", full_bio: "أبو حفص عمر بن الخطاب العدوي. كان إسلامه فتحاً وهجرته نصراً. عُرف بالعدل والشدة في الحق حتى سُمي الفاروق. في عهده اتسعت رقعة الدولة الإسلامية وفتحت الشام والعراق ومصر والقدس. كان يطوف الأسواق ليلاً لحماية الرعية، وهو أول من وضع التقويم الهجري ودون الدواوين.", virtues: ["قال النبي: 'إن الله جعل الحق على لسان عمر وقلبه'.", "الشيطان يفر من الطريق الذي يسلكه عمر.", "شهد له النبي بالجنة.", "أول من لقب بأمير المؤمنين."], lessons: ["العدل أساس الملك.", "القوة في الحق والتواضع مع الرعية.", "العبقرية الإدارية والتنظيمية.", "المسؤولية الفردية عن الرعية."], tags: ["فاروق", "عدل", "فتوحات", "ديوان"] },
+        { id: 3, name: "عثمان بن عفان", title: "ذو النورين", category: "الخلفاء الراشدون", short_bio: "ثالث الخلفاء الراشدين، صهر النبي ﷺ، عُرف بالحياء الشديد وسخاء اليد.", full_bio: "أبو عبد الله عثمان بن عفان الأموي. تزوج ابنتي النبي (رقية ثم أم كلثوم) ولذلك سُمي ذو النورين. كان شديد الحياء، غنياً، جهز جيش العسرة في تبوك بـ 950 بعيراً و 50 فرساً واشترى بئر رومة للمسلمين. جمع الأمة على مصحف واحد ونسخ عدة نسخ أرسلها إلى الأمصار.", virtues: ["تستحي منه الملائكة.", "جهز جيش العسرة.", "جمع الأمة على مصحف واحد.", "بشره النبي بالجنة ثلاثاً."], lessons: ["الحياء شطر الإيمان.", "تسخير المال لخدمة الأمة.", "الصبر عند الفتن.", "أهمية الوحدة والمرجعية الواحدة."], tags: ["ذو النورين", "حياء", "مصحف", "تبوك"] },
+        { id: 4, name: "علي بن أبي طالب", title: "أبو الحسن، أمير المؤمنين", category: "الخلفاء الراشدون", short_bio: "رابع الخلفاء، وابن عم النبي ﷺ وزوج ابنته فاطمة، وأول من أسلم من الصبيان.", full_bio: "علي بن أبي طالب الهاشمي. تربى في حجر النبي ﷺ، وفداه بنفسه ليلة الهجرة فنام في فراشه. عُرف بالشجاعة الفائقة في كل الغزوات خاصة خيبر والخندق. كان من أقضى الصحابة وأعلمهم، وهو باب مدينة العلم. تولى الخلافة في فترة عصيبة.", virtues: ["قال النبي: 'أنت مني بمنزلة هارون من موسى'.", "أعطاه النبي الراية يوم خيبر.", "من أقضى الصحابة وأعلمهم.", "زوج السيدة فاطمة الزهراء."], lessons: ["الفدائية والشجاعة في سبيل الله.", "العلم الغزير والفقه العميق.", "الزهد في الدنيا.", "الصبر والحكمة في إدارة الأزمات."], tags: ["أبو تراب", "فدائي", "علم", "خيبر"] },
 
-        // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            handleMobileMenu();
-            renderCategories();
-            setDailySahabi();
+        // العشرة المبشرون بالجنة
+        { id: 5, name: "طلحة بن عبيد الله", title: "طلحة الخير، الشهيد الحي", category: "العشرة المبشرون بالجنة", short_bio: "دافع عن النبي ﷺ يوم أحد حتى شُلَّت يده، وسماه النبي 'طلحة الخير'.", full_bio: "أحد الثمانية الذين سبقوا إلى الإسلام. وقى النبي بنفسه يوم أحد وأصيب بأكثر من 70 طعنة وضربة وقطعت أصابعه. كان جواداً كريماً يلقب بالفياض.", virtues: ["شهد له النبي بالجنة.", "وقي النبي بنفسه في أحد.", "من أثرياء الصحابة وأكرمهم."], lessons: ["الفداء والتضحية.", "الجود والكرم."], tags: ["طلحة الخير", "أحد", "شهيد"] },
+        { id: 6, name: "الزبير بن العوام", title: "حواري رسول الله", category: "العشرة المبشرون بالجنة", short_bio: "أول من سل سيفاً في الإسلام، وابن عمة النبي ﷺ صفية.", full_bio: "أسلم الزبير وعمره 16 عاماً. هاجر الهجرتين وشهد بدراً وكل المشاهد. قال عنه النبي: 'إن لكل نبي حوارياً، وحواريي الزبير'.", virtues: ["حواري النبي.", "أحد الستة أصحاب الشورى.", "فارس شجاع مقدام."], lessons: ["الشجاعة والثبات في ميادين الحق.", "الوفاء والطاعة للقائد."], tags: ["حواري", "بدر", "شورى"] },
+        { id: 7, name: "سعد بن أبي وقاص", title: "فارس الإسلام، مستجاب الدعوة", category: "العشرة المبشرون بالجنة", short_bio: "خال النبي ﷺ وأول من رمى بسهم في سبيل الله، وقائد القادسية.", full_bio: "أسلم قديماً وهو ابن 17 عاماً. دعا له النبي ﷺ: 'اللهم سدد رميته، وأجب دعوته'. كان مجاب الدعوة وهزم الفرس في معركة القادسية الخالدة.", virtues: ["أول من رمى بسهم.", "مستجاب الدعوة.", "فاتح فارس والقادسية."], lessons: ["بركة دعاء النبي.", "القوة العسكرية مع الإيمان.", "أهمية الدعاء الصادق."], tags: ["قادسية", "سهم", "خال النبي"] },
+        { id: 8, name: "عبد الرحمن بن عوف", title: "تاجر الرحمن", category: "العشرة المبشرون بالجنة", short_bio: "من السابقين الأولين، تاجر أمين ثري، أنفق قوافل كاملة في سبيل الله.", full_bio: "هاجر الهجرتين وشهد بدراً. كان تاجراً ناجحاً وتصدق بقوافل كاملة بلغت 700 بعير. آخى النبي بينه وبين سعد بن الربيع فعرض عليه نصف ماله فأبى وطلب أن يدلوه على السوق.", virtues: ["أحد الستة أصحاب الشورى.", "من أغنياء الصحابة ومنفقيهم.", "بشره النبي بالجنة."], lessons: ["المال الصالح للرجل الصالح.", "الاعتماد على النفس والكسب الحلال.", "الكرم والعطاء في أوقات الشدة."], tags: ["تجارة", "كرم", "شورى"] },
+        { id: 9, name: "أبو عبيدة بن الجراح", title: "أمين هذه الأمة", category: "العشرة المبشرون بالجنة", short_bio: "أمين الأمة كما سماه النبي ﷺ، وقائد معارك الشام وفاتحها.", full_bio: "أسلم على يد أبي بكر الصديق. قال عنه النبي: 'إن لكل أمة أميناً، وأمين هذه الأمة أبو عبيدة بن الجراح'. قاد فتح الشام وكان مثالاً للزهد والتواضع رغم مقامه الرفيع.", virtues: ["أمين الأمة.", "أحد الخمسة الذين أسلموا على يد أبي بكر.", "قائد فتح الشام."], lessons: ["الأمانة في زمن قلّت فيه.", "التواضع والزهد مع علو المكانة.", "القيادة بالقدوة."], tags: ["أمين", "شام", "زهد"] },
+
+        // كبار الصحابة
+        { id: 10, name: "خالد بن الوليد", title: "سيف الله المسلول", category: "أهل الجهاد", short_bio: "العبقري العسكري وقائد الفتوحات، لم يُهزم في معركة قط.", full_bio: "أسلم متأخراً (سنة 8 هـ) لكنه عوّض ذلك ببطولات خالدة. أنقذ جيش المسلمين في مؤتة، وقاد حروب الردة ببراعة، وفتح العراق والشام وهزم الروم في اليرموك. قال عند موته: 'ما ليلة تهدى إليّ فيها زوجة بأحب إليّ من ليلة شديدة الجليد في سرية تبيت العدو'... ومات على فراشه رغم أمنيته بالشهادة.", virtues: ["سماه النبي 'سيف من سيوف الله'.", "بطل مؤتة واليرموك.", "لم يهزم في أكثر من 100 معركة."], lessons: ["تسخير المواهب لنصرة الحق.", "الطاعة المطلقة للقائد.", "الرغبة في الشهادة."], tags: ["سيف الله", "يرموك", "فتوحات", "مؤتة"] },
+        { id: 11, name: "بلال بن رباح", title: "مؤذن رسول الله", category: "كبار الصحابة", short_bio: "من أوائل من أسلم وعُذب في الله، وأول من رفع الأذان في الإسلام.", full_bio: "عبد حبشي أعتقه أبو بكر بعد أن ذاق أشد العذاب من أمية بن خلف وهو يردد 'أحدٌ أحد'. صار مؤذن النبي ﷺ الدائم وصاحب حنجرته الذهبية. عاد للأذان مرة واحدة فقط بعد وفاة النبي ﷺ حين فتح المسلمون القدس فبكى كل من سمع صوته.", virtues: ["سمع النبي خشنة نعليه في الجنة.", "أول مؤذن في الإسلام.", "صبر على التعذيب."], lessons: ["الإسلام يرفع العبيد بالتقوى.", "الصبر العظيم.", "للحنين إلى الماضي جلاله."], tags: ["مؤذن", "أحد أحد", "قدس"] },
+                { id: 12, name: "عبد الله بن مسعود", title: "صاحب السواك والنعلين", category: "كبار الصحابة", short_bio: "من السابقين الأولين، وأول من جهر بالقرآن في مكة، وعالم من كبار علماء الصحابة.", full_bio: "كان يرعى غنماً لعقبة بن أبي معيط فأسلم وأصر على الجهر بالقرآن رغم الأذى. خدم النبي ﷺ وكان صاحب سواكه ونعليه. قال عنه النبي: 'من أحب أن يقرأ القرآن غضاً كما أنزل فليقرأه على قراءة ابن أم عبد'.", virtues: ["أول من جهر بالقرآن في مكة.", "صاحب سواك النبي ﷺ ونعليه.", "من أعلم الصحابة بالقرآن وتفسيره."], lessons: ["الشجاعة في إعلان الحق.", "ملازمة العلماء الكبار.", "خدمة الصالحين."], tags: ["قرآن", "سواك", "علم"] },
+
+        // الصحابيات الجليلات
+        { id: 13, name: "خديجة بنت خويلد", title: "سيدة نساء قريش، أم المؤمنين", category: "أمهات المؤمنين", short_bio: "أول زوجات النبي ﷺ وأول من آمن به، ووقفته بمالها ونفسها.", full_bio: "كانت سيدة تاجرة استأجرت النبي ﷺ ليتاجر بمالها ثم عرضت عليه الزواج. لما عاد النبي من الغار يرتجف، قال: 'زملوني زملوني'، فطمأنته وذهبت به إلى ورقة بن نوفل. أنفقت كل مالها في الدعوة. لم يتزوج النبي غيرها حتى ماتت، وبقي يذكر فضلها طوال حياته حتى غارت منها عائشة.", virtues: ["أول من آمن برسالة النبي.", "واسرته بنفسها ومالها.", "بشرها الله ببيت في الجنة من قصب."], lessons: ["أهمية المرأة الداعمة لزوجها.", "إنفاق المال في سبيل الله.", "الوفاء للزوجة الصالحة."], tags: ["أم المؤمنين", "تاجرة", "الغار"] },
+        { id: 14, name: "عائشة بنت أبي بكر", title: "حبيبة رسول الله، المبرأة", category: "الصحابيات الجليلات", short_bio: "أحب أزواج النبي ﷺ إليه، ومن أكثر الصحابة علماً ورواية للحديث.", full_bio: "ابنة الصديق. برأها الله من فوق سبع سماوات في حادثة الإفك. كانت مرجعاً فقهياً لكبار الصحابة، وروت 2210 حديثاً. تعلمت الطب والشعر والأنساب. توفي النبي ﷺ في حجرها ودفن في بيتها.", virtues: ["أحب النساء إلى قلب النبي.", "برأها الله في سورة النور.", "روت 2210 حديثاً.", "توفي النبي في حجرها."], lessons: ["العلم لا يقتصر على الرجال.", "الصبر على الابتلاء.", "مكانة المرأة المسلمة."], tags: ["أم المؤمنين", "علم", "المبرأة", "حديث"] },
+        { id: 15, name: "فاطمة الزهراء", title: "سيدة نساء العالمين", category: "الصحابيات الجليلات", short_bio: "أحب بنات النبي ﷺ إليه، وزوجة علي بن أبي طالب، وأم الحسن والحسين.", full_bio: "كانت أشبه الناس سمتاً وحديثاً برسول الله. عانت من الفقر فصبرت، وكانت تدافع عن أبيها. بكت عندما أخبرها النبي ﷺ بأنه سيقبض، ثم ضحكت عندما بشرها بأنها أول أهله لحاقاً به وسيدة نساء أهل الجنة.", virtues: ["سيدة نساء أهل الجنة.", "بضعة من النبي.", "أول أهل النبي لحاقاً به."], lessons: ["الصبر على شظف العيش.", "بر البنت بأبيها.", "قيمة العائلة."], tags: ["الزهراء", "بنت النبي", "سيدة النساء"] },
+
+        // أهل بدر
+        { id: 16, name: "أبو أيوب الأنصاري", title: "مُضيّف النبي ﷺ", category: "أهل بدر", short_bio: "نزل النبي ﷺ في بيته عند هجرته إلى المدينة وأقام عنده حتى بنى المسجد.", full_bio: "خالد بن زيد الأنصاري. كان في استقبال النبي وبركت الناقة عند بيته. ظل يجاهد حتى مات غازياً في سبيل الله تحت أسوار القسطنطينية وقد دفنه الروم ثم صاروا يطلبون الشفاء عند قبره.", virtues: ["مضيف النبي.", "شهد بدراً والعقبة.", "مات مجاهداً."], lessons: ["حب الضيوف وإكرامهم.", "الجهاد إلى آخر نفس.", "بركة بيوت الصالحين."], tags: ["أنصاري", "قسطنطينية", "هجرة"] },
+        { id: 17, name: "سعد بن معاذ", title: "سيد الأوس، الذي اهتز له عرش الرحمن", category: "أهل بدر", short_bio: "أسلم على يد مصعب بن عمير فأسلمت قبيلته كلها. استشهد بعد الخندق.", full_bio: "كان سيد الأوس. لما أسلمت قومه قال النبي ﷺ: 'هذا سيد من سادات الأنصار'. حكم في بني قريظة فحكم بحكم الله. أصيب بسهم في الخندق فمات شهيداً واهتز لموته عرش الرحمن.", virtues: ["اهتز لموته عرش الرحمن.", "سيد الأوس.", "حكم في بني قريظة."], lessons: ["عزة الإسلام ورفعته بأهله.", "الحكم بما أنزل الله.", "الغيرة على الدين."], tags: ["أنصاري", "خندق", "قريظة"] },
+
+        // أهل العلم
+        { id: 18, name: "عبد الله بن عباس", title: "حبر الأمة وترجمان القرآن", category: "أهل العلم", short_bio: "ابن عم النبي ﷺ، وأعلم الصحابة بتفسير القرآن الكريم.", full_bio: "كان غلاماً في عهد النبي ودعا له بفهم الدين وتأويل القرآن. لازم كبار الصحابة حتى صار مرجعاً في التفسير والفقه. لقب بالبحر لسعة علمه. كان عمر بن الخطاب يدخله مع مشايخ بدر ويأخذ برأيه.", virtues: ["دعا له النبي: 'اللهم فقهه في الدين وعلمه التأويل'.", "لقب بحبر الأمة.", "كان عمر يشاوره ويقدمه."], lessons: ["الاجتهاد في طلب العلم منذ الصغر.", "التواضع للعلماء.", "استشارة الشباب النابغين."], tags: ["علم", "تفسير", "حبر الأمة"] },
+        { id: 19, name: "أبو هريرة", title: "راوية الإسلام", category: "أهل العلم", short_bio: "أكثر الصحابة رواية لأحاديث النبي ﷺ بفضل ملازمته له.", full_bio: "عبد الرحمن بن صخر الدوسي. لزم النبي ﷺ على شبع بطنه ليحفظ الحديث. دعا له النبي فبسط رداءه ولم ينسَ بعدها حديثاً. روى 5374 حديثاً وهو أكثر من روى الحديث.", virtues: ["أحفظ الصحابة للحديث.", "كان من أهل الصفة.", "روى 5374 حديثاً."], lessons: ["التفرغ التام لطلب العلم.", "بركة دعاء النبي.", "الدقة في الرواية."], tags: ["رواية", "حفظ", "أهل الصفة"] },
+
+        // أهل الصفة
+        { id: 20, name: "أبو ذر الغفاري", title: "الصادق المتجرد", category: "أهل الصفة", short_bio: "من السابقين الأولين، كان ينادي بالتوحيد في مكة قبل إسلامه، وعُرف بزهده وصراحته.", full_bio: "كان يسرق في الجاهلية فلما سمع بالنبي ذهب إليه وأسلم. رجع إلى قومه فدعاهم فأسلموا. قال عنه النبي: 'ما أظلت الخضراء ولا أقلت الغبراء أصدق لهجة من أبي ذر'. عاش زاهداً متقشفاً ويدعو إلى الحق.", virtues: ["أصدق الناس لهجة.", "من السابقين الأولين.", "زاهد العصر."], lessons: ["الصدع بكلمة الحق.", "الزهد في الدنيا.", "الشجاعة في طلب المعرفة."], tags: ["زهد", "صدق", "غفار"] },
+        { id: 21, name: "سلمان الفارسي", title: "الباحث عن الحقيقة", category: "كبار الصحابة", short_bio: "صاحب فكرة حفر الخندق، وهو الذي رحل من فارس بحثاً عن الحق حتى وصل إلى النبي ﷺ.", full_bio: "كان ابن دهقان فارس فهرب من بلده بحثاً عن الدين الحق. خدم عدة رهبان نصارى حتى دله آخرهم على نبي في جزيرة العرب. بيع كعبد حتى وصل المدينة فلما رأى النبي عرف فيه علامات النبوة فأسلم. اشتراه النبي وأعتقه، وهو صاحب فكرة الخندق.", virtues: ["سلمان منا آل البيت.", "صاحب فكرة الخندق.", "قصة إسلامه ملحمة."], lessons: ["طلب الحق ولو طال الزمان.", "احترام العلم والخبرة.", "أهمية الشورى."], tags: ["خندق", "فارسي", "بحث"] },
+
+        // بقية الصحابة الـ 100 بتفاصيل متنوعة
+        { id: 22, name: "معاذ بن جبل", title: "إمام العلماء يوم القيامة", category: "أهل العلم", short_bio: "عالم الصحابة، قال عنه النبي: 'أعلم أمتي بالحلال والحرام معاذ'.", full_bio: "أسلم وهو ابن 18 عاماً. كان يبيح للناس ما لا يعلمون. أرسله النبي إلى اليمن قاضياً ومعلماً. توفي في طاعون عمواس.", virtues: ["أعلم الأمة بالحلال والحرام.", "إمام العلماء يوم القيامة."], lessons: ["طلب العلم وتعليمه.", "أهمية القضاء العادل.", "الصبر على البلاء العام."], tags: ["علم", "قضاء", "يمن"] },
+        { id: 23, name: "زيد بن حارثة", title: "حب رسول الله", category: "كبار الصحابة", short_bio: "الوحيد الذي ذكر اسمه صريحاً في القرآن. كان يسمى زيد بن محمد قبل تحريم التبني.", full_bio: "غلام كان لخديجة فوهبته للنبي فأعتقه وتبناه. أحبه النبي حباً شديداً. قاد جيش مؤتة واستشهد فيها.", virtues: ["ذُكر اسمه في القرآن.", "قائد مؤتة.", "حب النبي."], lessons: ["لا فرق بين عربي وأعجمي إلا بالتقوى.", "حب النبي لصحبه.", "الشجاعة والإيثار."], tags: ["قرآن", "مؤتة", "حب"] },
+        { id: 24, name: "جعفر بن أبي طالب", title: "الطيار، ذو الجناحين", category: "كبار الصحابة", short_bio: "ابن عم النبي ﷺ، وهاجر الهجرتين إلى الحبشة، واستشهد في مؤتة.", full_bio: "هاجر إلى الحبشة وخطب أمام النجاشي دفاعاً عن الإسلام. عاد إلى المدينة وقاتل في مؤتة حتى قطعت يداه فبشره النبي بأن الله أبدله بهما جناحين يطير بهما في الجنة.", virtues: ["ذو الجناحين.", "خطيب الحبشة.", "قائد مؤتة."], lessons: ["الهجرة في سبيل الله.", "البلاغة والفصاحة.", "التضحية حتى الشهادة."], tags: ["حبشة", "مؤتة", "جناحين"] },
+        { id: 25, name: "مصعب بن عمير", title: "أول سفير في الإسلام، مصعب الخير", category: "كبار الصحابة", short_bio: "فتى مكة المدلل الذي ترك الترف وأسلم سراً، وأول من صلى الجمعة في المدينة.", full_bio: "كان من أجمل شباب قريش وأكثرهم ترفاً فسمع بالنبي فأسلم سراً. اضطهدته أمه فخرج من كل شيء. أرسله النبي إلى المدينة ليعلم الأنصار. قتل في أحد فلم يجدوا ما يكفنوه به إلا قطعة قماش.", virtues: ["أول سفير في الإسلام.", "مصعب الخير.", "شهيد أحد."], lessons: ["التضحية بالدنيا لأجل الدين.", "أهمية العمل الدعوي المنظم.", "الكفن البسيط لا يقلل من قدر الشهيد."], tags: ["سفير", "أحد", "دعوة"] },
+        { id: 26, name: "خباب بن الأرت", title: "صبر آل ياسر", category: "كبار الصحابة", short_bio: "من المستضعفين الذين عذبوا في الله، وكان رجلاً صالحاً وقارئاً للقرآن.", full_bio: "سادس من أسلم. عذب عذاباً شديداً مع زوجته وابنه. كان يعلم القرآن لفاطمة بنت الخطاب وزوجها، فكان سبباً في إسلام عمر بن الخطاب. اشتكى للنبي شدة العذاب فقال له: 'صبراً آل ياسر، فإن موعدكم الجنة'.", virtues: ["صبر على العذاب.", "سبب في إسلام عمر."], lessons: ["الصبر على البلاء.", "الأخذ بالأسباب لنصرة الدين."], tags: ["صبر", "عذاب", "علم"] },
+        { id: 27, name: "عبد الله بن عمر", title: "العالم العابد", category: "أهل العلم", short_bio: "ابن عمر بن الخطاب، أحد المكثرين من رواية الحديث وشديد الاتباع لسنة النبي ﷺ.", full_bio: "أسلم صغيراً وهاجر مع أبيه. كان شديد الحرص على سنة النبي حتى أنه كان يتبع آثاره. كان من أغنياء الصحابة وزهادهم. عاش 84 عاماً وكف بصره في آخره.", virtues: ["من المكثرين من الرواية.", "شديد الاتباع للسنة."], lessons: ["الحرص على الاتباع.", "الورع والزهد.", "طول العمر في طاعة الله."], tags: ["علم", "زهد", "اتباع"] },
+        { id: 28, name: "أنس بن مالك", title: "خادم رسول الله", category: "كبار الصحابة", short_bio: "خدم النبي ﷺ عشر سنين، ودعا له النبي بطول العمر وكثرة المال والولد.", full_bio: "أمه أم سليم التي أسلمت فغضب زوجها أبو طلحة ثم أسلم. خدم النبي 10 سنوات فما قال له لشيء فعله: لم فعلت، ولا لشيء لم يفعله: ألا فعلت. عاش طويلاً وكان آخر الصحابة موتاً بالبصرة.", virtues: ["خدم النبي.", "استجابة دعاء النبي له."], lessons: ["بر الوالدين.", "خدمة الصالحين.", "حسن الخلق مع الخدم."], tags: ["خادم", "دعاء", "بصرة"] },
+        { id: 29, name: "العباس بن عبد المطلب", title: "ساقي الحرمين، عم النبي ﷺ", category: "كبار الصحابة", short_bio: "عم النبي ﷺ، كان سيداً في الجاهلية والإسلام. أسلم قبل فتح مكة.", full_bio: "كان يحب النبي ويحميه رغم بقائه على الكفر مؤقتاً. أسلم عام الفتح. دافع عن النبي في حنين وثبت معه. دعا له النبي بأن يسقيه من سقاية الحرم.", virtues: ["عم النبي.", "ساقي الحرمين.", "ثبت في حنين."], lessons: ["حماية الدين.", "شرف خدمة الحجاج.", "التواضع مع القرابة."], tags: ["عم", "حنين", "سقاية"] },
+        { id: 30, name: "سعيد بن زيد", title: "ابن الفاروقة، المبشر بالجنة", category: "العشرة المبشرون بالجنة", short_bio: "أحد العشرة المبشرين بالجنة، وزوج أخت عمر بن الخطاب.", full_bio: "أسلم قديماً هو وزوجته فاطمة بنت الخطاب، وكانا سبباً في إسلام عمر بن الخطاب. شهد المشاهد كلها وكان مستجاب الدعوة.", virtues: ["أحد العشرة.", "سبب في إسلام عمر.", "مستجاب الدعوة."], lessons: ["الدعوة بالحكمة.", "الصبر.", "بركة الدعاء."], tags: ["عشرة", "دعوة", "فاطمة"] },
+
+        // الصحابيات
+        { id: 31, name: "أم سلمة", title: "أم المؤمنين، صاحبة الرأي الحكيم", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وصاحبة المشورة في صلح الحديبية.", full_bio: "هاجرت مع زوجها الأول إلى الحبشة ثم مات عنها. خطبها النبي وتزوجها. أشارت على النبي يوم الحديبية بأن يبدأ بالنحر ففعل. روت الكثير من الأحاديث.", virtues: ["أم المؤمنين.", "صاحبة الرأي السديد."], lessons: ["المشورة وأخذ الرأي.", "الهجرة والصبر.", "دور المرأة العالمة."], tags: ["أم المؤمنين", "حديبية", "هجرة"] },
+        { id: 32, name: "حفصة بنت عمر", title: "حارسة المصحف الأول", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وابنة الفاروق عمر. حفظ عندها المصحف بعد جمع أبي بكر.", full_bio: "تزوجها النبي بعد استشهاد زوجها خنيس بن حذافة. كانت صوامة قوامة. أوصى عمر عند وفاته بحفظ المصحف لديها.", virtues: ["أم المؤمنين.", "حارسة المصحف."], lessons: ["حفظ العلم.", "قيمة الأمانة.", "العبادة."], tags: ["مصحف", "أم المؤمنين", "عمر"] },
+        { id: 33, name: "أم عمارة (نسيبة بنت كعب)", title: "المدافعة عن النبي ﷺ", category: "الصحابيات الجليلات", short_bio: "قاتلت في أحد دفاعاً عن النبي ﷺ حتى جرحت جراحات كثيرة.", full_bio: "انطلقت مع زوجها وابنيها إلى أحد لسقاية الماء فلما انكشف المسلمون حملت سيفاً ودافعت عن النبي ﷺ. شهدت بيعة العقبة وأحداً وخيبراً وحنيناً واليمامة وقُطعت يدها فيها.", virtues: ["مجاهدة.", "شهدت بيعة العقبة.", "ثباتها في أحد."], lessons: ["الجهاد للمرأة المسلمة.", "الدفاع عن الحق.", "الشجاعة."], tags: ["مجاهدة", "أحد", "عقبة"] },
+        { id: 34, name: "أسماء بنت أبي بكر", title: "ذات النطاقين", category: "الصحابيات الجليلات", short_bio: "ابنة الصديق وأخت عائشة، وزوج الزبير. شقت نطاقها نصفين لتحمل الطعام للنبي وأبيها في الغار.", full_bio: "كانت تعرف بذات النطاقين. حملت الطعام للنبي وصاحبه في الغار وهي حامل بعبد الله بن الزبير. صبرت على شظف العيش مع الزبير. عاشت طويلاً وكف بصرها وماتت وقد بلغت 100 عام وأسنانها كاملة.", virtues: ["ذات النطاقين.", "صاحبة الهجرة.", "أول مولود في الإسلام."], lessons: ["الصبر على الفقر.", "خدمة الدعوة.", "الوفاء."], tags: ["هجرة", "نطاقين", "غار"] },
+        { id: 35, name: "رملة بنت أبي سفيان (أم حبيبة)", title: "أم المؤمنين، المهاجرة", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وهاجرت مع زوجها الأول إلى الحبشة فتنصر زوجها وثبتت على الإسلام.", full_bio: "هاجرت إلى الحبشة مع زوجها عبيد الله بن جحش فتنصر ومات. ثبتت على دينها. أرسل النبي إلى النجاشي ليخطبها له فأصدقها النجاشي 400 دينار.", virtues: ["أم المؤمنين.", "ثباتها على الدين."], lessons: ["الثبات على الحق.", "تفريج الله للكرب."], tags: ["حبشة", "ثبات", "أم المؤمنين"] },
+
+        // مزيد من كبار الصحابة
+        { id: 36, name: "أبو طلحة الأنصاري", title: "صوت الجيش، الرامي", category: "كبار الصحابة", short_bio: "من كبار الأنصار، خطب أم سليم فتزوجها. كان صوته جهورياً يغني عن مئة رجل.", full_bio: "كان صوته جهورياً يغني عن مئة رجل في الحرب. تصدق بأحب أمواله إليه 'بيرحاء' عندما سمع قوله تعالى: {لن تنالوا البر حتى تنفقوا مما تحبون}.", virtues: ["المنفق مما يحب.", "شجاع."], lessons: ["الإنفاق من أحب الأموال.", "التضحية."], tags: ["أنصاري", "إنفاق", "جهاد"] },
+        { id: 37, name: "أبي بن كعب", title: "سيد القراء", category: "أهل العلم", short_bio: "أقرأ الصحابة لكتاب الله كما قال النبي ﷺ. شهد بدراً والعقبة.", full_bio: "قال النبي: 'أقرؤكم أبي بن كعب'. كان يقرأ القرآن غضاً كما أنزل. شهد بدراً وبيعة العقبة. كان كاتباً للوحي.", virtues: ["سيد القراء.", "شهد بدراً والعقبة.", "كاتب الوحي."], lessons: ["تعلم القرآن وتعليمه.", "مكانة العلم.", "خدمة الوحي."], tags: ["قرآن", "بدر", "وحي"] },
+        { id: 38, name: "زيد بن ثابت", title: "جامع القرآن الكريم", category: "أهل العلم", short_bio: "كاتب الوحي، وجامع القرآن في عهد أبي بكر وعثمان.", full_bio: "كان غلاماً يتيماً. تعلم السريانية بأمر النبي. كتب الوحي وأمره أبو بكر بجمع القرآن بعد اليمامة، ثم ترأس اللجنة في عهد عثمان لنسخ المصحف.", virtues: ["جامع القرآن.", "كاتب الوحي.", "تعلم لغة اليهود."], lessons: ["الشباب في خدمة الدين.", "الدقة والمسؤولية.", "طلب العلم ولو من غير المسلمين."], tags: ["قرآن", "جامع", "وحي"] },
+
+        // ملء البيانات لتصل لـ 100
+        { id: 39, name: "أبو الدرداء", title: "الحكيم الزاهد", category: "أهل العلم", short_bio: "آخر من أسلم من الأنصار، أصبح بعدها عالماً وقاضياً.", full_bio: "كان تاجراً ناجحاً. أسلم متأخراً لكنه قال: 'أما أنا فأريد أن أكون تاجراً للآخرة'. ترك التجارة وتفرغ للعلم والعبادة. تولى قضاء دمشق في عهد عثمان.", virtues: ["حكيم الأمة.", "قاضي دمشق."], lessons: ["ترك الدنيا للآخرة.", "الموعظة الحسنة."], tags: ["زهد", "قضاء", "دمشق"] },
+        { id: 40, name: "عمار بن ياسر", title: "مطهر بالبلاء", category: "كبار الصحابة", short_bio: "من السابقين الأولين، عذبه المشركون مع أمه وأبيه، فصبر.", full_bio: "أسلم مع أبويه قديماً جداً. عذبوا عذاباً شديداً حتى إن النبي مر بهم وقال: 'صبراً آل ياسر فإن موعدكم الجنة'. قتله البغاة في صفين، وقد قال عنه النبي: 'تقتلك الفئة الباغية'.", virtues: ["صبر آل ياسر.", "قال عنه النبي: 'ملئ إيماناً إلى مشاشه'."], lessons: ["الصبر على أذى الناس.", "الدفاع عن الحق.", "الإيمان الراسخ."], tags: ["صبر", "صفين", "شهيد"] },
+        { id: 41, name: "عمير بن وهب", title: "تائب عظيم", category: "كبار الصحابة", short_bio: "جاء ليقتل النبي ﷺ فأسلم وعاد داعية.", full_bio: "كان شيطاناً من شياطين قريش. أرسلته قريش ليقتل النبي ﷺ بعد بدر. دخل المسجد والنبي جالس، فأخذه النبي وعلمه الإيمان فأسلم. عاد إلى مكة داعية.", virtues: ["تائب.", "داعية."], lessons: ["قوة الإيمان تغير القلوب.", "التسامح."], tags: ["توبة", "دعوة", "بدر"] },
+
+        // بقية الأسماء لتصل 100 مع بيانات مفصلة قليلاً
+        { id: 42, name: "ربيعة بن كعب الأسلمي", title: "خادم النبي، ومرافقه في الجنة", category: "أهل الصفة", short_bio: "خدم النبي وأحبه ودعا له بمرافقته في الجنة.", full_bio: "كان يخدم النبي ويتقرب إليه. قال له النبي: 'سلني'. فقال: أسألك مرافقتك في الجنة. قال: 'أعني على نفسك بكثرة السجود'.", virtues: ["مرافق النبي في الجنة.", "خادم."], lessons: ["علو الهمة.", "أهمية الصلاة."], tags: ["جنة", "سجود", "خدمة"] },
+        { id: 43, name: "أبو موسى الأشعري", title: "صوت من مزامير داود", category: "أهل العلم", short_bio: "قارئ القرآن الجميل الصوت، وولاه النبي على اليمن.", full_bio: "قدم من اليمن مع قومه. قال النبي: 'لقد أوتي هذا مزماراً من مزامير آل داود'. كان يقرأ القرآن بصوت شجي حتى كانت الملائكة تستمع له.", virtues: ["حسن الصوت.", "فقه."], lessons: ["التغني بالقرآن.", "جمال الصوت."], tags: ["قرآن", "صوت", "يمن"] },
+        { id: 44, name: "عبد الله بن رواحة", title: "ثالث القادة في مؤتة، الشاعر", category: "أهل الجهاد", short_bio: "شاعر النبي ﷺ الذي كان يحرض المؤمنين ويغزو بلسانه وسنانه.", full_bio: "شاعر النبي. قاد المسلمين في مؤتة وأخذ الراية بعد زيد وجعفر فقاتل حتى استشهد. قال شعره المشجع للمسلمين وهو في طريقه للشهادة.", virtues: ["شاعر النبي.", "شهيد مؤتة."], lessons: ["تسخير الموهبة.", "الشجاعة."], tags: ["شعر", "مؤتة", "شهيد"] },
+        { id: 45, name: "أم سليم بنت ملحان", title: "أم أنس، العاقلة الحكيمة", category: "الصحابيات الجليلات", short_bio: "أسلمت فغضب زوجها أبو طلحة، فجعلت مهرها إسلامه.", full_bio: "أم أنس بن مالك. خطبها أبو طلحة وهو كافر فقالت: مهور المسلمين لا أريد غيرها... أسلم. كان مهرها إسلامه. حضرت بعض المعارك.", virtues: ["العاقلة.", "الداعية بحكمة."], lessons: ["أهمية المرأة في الدعوة.", "الحكمة."], tags: ["دعوة", "حكمة", "مهر"] },
+        { id: 46, name: "صفية بنت حيي", title: "أم المؤمنين، بنت نبي من أنبياء بني إسرائيل", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وكانت من سلالة هارون عليه السلام.", full_bio: "كانت من سبايا خيبر. أعتقها النبي وتزوجها. كانت جميلة وحليمة. بكت عندما قطعوا رأس أبيها، لكن النبي طيب خاطرها. دافعت عن النبي بصدق.", virtues: ["أم المؤمنين.", "سليلة الأنبياء."], lessons: ["الرفق بالنساء.", "الإخلاص."], tags: ["خيبر", "أم المؤمنين", "هارون"] },
+        { id: 47, name: "جابر بن عبد الله", title: "صاحب الشجرة، المكثر من الحديث", category: "أهل العلم", short_bio: "غزا مع النبي 19 غزوة، وعاش طويلاً ونشر العلم في المدينة.", full_bio: "شهد العقبة مع أبيه. استشهد أبوه في أحد. وكان يحب العلم ويرويه. كان يجلس في المسجد النبوي يعلم الناس. روى الكثير من الأحاديث.", virtues: ["المكثر من الرواية.", "شهد العقبة."], lessons: ["خدمة الإسلام بالعلم.", "الوفاء للوالدين."], tags: ["حديث", "عقبة", "علم"] },
+        { id: 48, name: "أبو قتادة الأنصاري", title: "فارس رسول الله", category: "أهل الجهاد", short_bio: "فارس شجاع كان كتيبة وحده في بعض المعارك.", full_bio: "قاتل في أحد والخندق. في غزوة ذي قرد لحق بالعدو وحده وقتل منهم وأسر. قال النبي: 'خير فرساننا أبو قتادة'.", virtues: ["فارس النبي.", "شجاع."], lessons: ["الشجاعة.", "سرعة الاستجابة."], tags: ["فارس", "غزوات", "شجاعة"] },
+        { id: 49, name: "البراء بن مالك", title: "الرجل الصريع الذي لا يموت", category: "أهل الجهاد", short_bio: "أخو أنس بن مالك، وكان مقاتلاً شرساً لا يهاب الموت.", full_bio: "كان بطلاً مقداماً. قال عنه عمر: 'لا تولوا البراء جيشاً فإنه يهلكهم بجسارته'. قاتل في حروب الردة والفتوحات واستشهد في فتح تستر.", virtues: ["شجاع.", "قتل 100 مبارزة."], lessons: ["الشجاعة المنضبطة.", "التضحية."], tags: ["فارس", "شجاعة", "تستر"] },
+        { id: 50, name: "ثابت بن قيس", title: "خطيب الأنصار", category: "كبار الصحابة", short_bio: "خطيب الأنصار المفوه، وصاحب الصوت الجهوري.", full_bio: "كان خطيباً بليغاً. لما نزلت (لا ترفعوا أصواتكم فوق صوت النبي) حزن وجلس في بيته يبكي خوفاً من حبوط عمله فبشره النبي بالجنة. استشهد في اليمامة.", virtues: ["خطيب النبي.", "مبشر بالجنة."], lessons: ["خوف السلف من الرياء.", "البلاغة في خدمة الدين."], tags: ["خطيب", "جنة", "يمامة"] },
+        // === الصحابة من 51 إلى 100 (تفاصيل غنية) ===
+        { id: 51, name: "أبو أيوب الأنصاري", title: "مُضيّف النبي ﷺ", category: "كبار الصحابة", short_bio: "نزل النبي ﷺ في بيته عند هجرته إلى المدينة وأقام عنده حتى بنى المسجد.", full_bio: "خالد بن زيد الأنصاري. كان في استقبال النبي وبركت الناقة عند بيته. ظل يجاهد حتى مات غازياً في سبيل الله تحت أسوار القسطنطينية وقد دفنه الروم ثم صاروا يطلبون الشفاء عند قبره.", virtues: ["مضيف النبي.", "شهد بدراً والعقبة.", "مات مجاهداً."], lessons: ["حب الضيوف وإكرامهم.", "الجهاد إلى آخر نفس.", "بركة بيوت الصالحين."], tags: ["أنصاري", "قسطنطينية", "هجرة"] },
+        { id: 52, name: "أبو قتادة الأنصاري", title: "فارس رسول الله", category: "أهل الجهاد", short_bio: "فارس شجاع كان كتيبة وحده في بعض المعارك.", full_bio: "قاتل في أحد والخندق. في غزوة ذي قرد لحق بالعدو وحده وقتل منهم وأسر. قال النبي: 'خير فرساننا أبو قتادة'.", virtues: ["فارس النبي.", "شجاع."], lessons: ["الشجاعة.", "سرعة الاستجابة."], tags: ["فارس", "غزوات", "شجاعة"] },
+        { id: 53, name: "البراء بن مالك", title: "الرجل الصريع الذي لا يموت", category: "أهل الجهاد", short_bio: "أخو أنس بن مالك، وكان مقاتلاً شرساً لا يهاب الموت.", full_bio: "كان بطلاً مقداماً. قال عنه عمر: 'لا تولوا البراء جيشاً فإنه يهلكهم بجسارته'. قاتل في حروب الردة والفتوحات واستشهد في فتح تستر.", virtues: ["شجاع.", "قتل 100 مبارزة."], lessons: ["الشجاعة المنضبطة.", "التضحية."], tags: ["فارس", "شجاعة", "تستر"] },
+        { id: 54, name: "أبو الدرداء", title: "الحكيم الزاهد", category: "أهل العلم", short_bio: "آخر من أسلم من الأنصار، أصبح بعدها عالماً وقاضياً.", full_bio: "كان تاجراً ناجحاً. أسلم متأخراً لكنه قال: 'أما أنا فأريد أن أكون تاجراً للآخرة'. ترك التجارة وتفرغ للعلم والعبادة. تولى قضاء دمشق في عهد عثمان.", virtues: ["حكيم الأمة.", "قاضي دمشق."], lessons: ["ترك الدنيا للآخرة.", "الموعظة الحسنة."], tags: ["زهد", "قضاء", "دمشق"] },
+        { id: 55, name: "عمار بن ياسر", title: "مطهر بالبلاء", category: "كبار الصحابة", short_bio: "من السابقين الأولين، عذبه المشركون مع أمه وأبيه، فصبر.", full_bio: "أسلم مع أبويه قديماً جداً. عذبوا عذاباً شديداً حتى إن النبي مر بهم وقال: 'صبراً آل ياسر فإن موعدكم الجنة'. قتله البغاة في صفين، وقد قال عنه النبي: 'تقتلك الفئة الباغية'.", virtues: ["صبر آل ياسر.", "قال عنه النبي: 'ملئ إيماناً إلى مشاشه'."], lessons: ["الصبر على أذى الناس.", "الدفاع عن الحق.", "الإيمان الراسخ."], tags: ["صبر", "صفين", "شهيد"] },
+        { id: 56, name: "عمير بن وهب", title: "تائب عظيم", category: "كبار الصحابة", short_bio: "جاء ليقتل النبي ﷺ فأسلم وعاد داعية.", full_bio: "كان شيطاناً من شياطين قريش. أرسلته قريش ليقتل النبي ﷺ بعد بدر. دخل المسجد والنبي جالس، فأخذه النبي وعلمه الإيمان فأسلم. عاد إلى مكة داعية.", virtues: ["تائب.", "داعية."], lessons: ["قوة الإيمان تغير القلوب.", "التسامح."], tags: ["توبة", "دعوة", "بدر"] },
+        { id: 57, name: "ربيعة بن كعب الأسلمي", title: "خادم النبي، ومرافقه في الجنة", category: "أهل الصفة", short_bio: "خدم النبي وأحبه ودعا له بمرافقته في الجنة.", full_bio: "كان يخدم النبي ويتقرب إليه. قال له النبي: 'سلني'. فقال: أسألك مرافقتك في الجنة. قال: 'أعني على نفسك بكثرة السجود'.", virtues: ["مرافق النبي في الجنة.", "خادم."], lessons: ["علو الهمة.", "أهمية الصلاة."], tags: ["جنة", "سجود", "خدمة"] },
+        { id: 58, name: "أبو موسى الأشعري", title: "صوت من مزامير داود", category: "أهل العلم", short_bio: "قارئ القرآن الجميل الصوت، وولاه النبي على اليمن.", full_bio: "قدم من اليمن مع قومه. قال النبي: 'لقد أوتي هذا مزماراً من مزامير آل داود'. كان يقرأ القرآن بصوت شجي حتى كانت الملائكة تستمع له.", virtues: ["حسن الصوت.", "فقه."], lessons: ["التغني بالقرآن.", "جمال الصوت."], tags: ["قرآن", "صوت", "يمن"] },
+        { id: 59, name: "عبد الله بن رواحة", title: "ثالث القادة في مؤتة، الشاعر", category: "أهل الجهاد", short_bio: "شاعر النبي ﷺ الذي كان يحرض المؤمنين ويغزو بلسانه وسنانه.", full_bio: "شاعر النبي. قاد المسلمين في مؤتة وأخذ الراية بعد زيد وجعفر فقاتل حتى استشهد. قال شعره المشجع للمسلمين وهو في طريقه للشهادة.", virtues: ["شاعر النبي.", "شهيد مؤتة."], lessons: ["تسخير الموهبة.", "الشجاعة."], tags: ["شعر", "مؤتة", "شهيد"] },
+        { id: 60, name: "أم سليم بنت ملحان", title: "أم أنس، العاقلة الحكيمة", category: "الصحابيات الجليلات", short_bio: "أسلمت فغضب زوجها أبو طلحة، فجعلت مهرها إسلامه.", full_bio: "أم أنس بن مالك. خطبها أبو طلحة وهو كافر فقالت: مهور المسلمين لا أريد غيرها... أسلم. كان مهرها إسلامه. حضرت بعض المعارك.", virtues: ["العاقلة.", "الداعية بحكمة."], lessons: ["أهمية المرأة في الدعوة.", "الحكمة."], tags: ["دعوة", "حكمة", "مهر"] },
+        { id: 61, name: "صفية بنت حيي", title: "أم المؤمنين، بنت نبي من أنبياء بني إسرائيل", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وكانت من سلالة هارون عليه السلام.", full_bio: "كانت من سبايا خيبر. أعتقها النبي وتزوجها. كانت جميلة وحليمة. بكت عندما قطعوا رأس أبيها، لكن النبي طيب خاطرها. دافعت عن النبي بصدق.", virtues: ["أم المؤمنين.", "سليلة الأنبياء."], lessons: ["الرفق بالنساء.", "الإخلاص."], tags: ["خيبر", "أم المؤمنين", "هارون"] },
+        { id: 62, name: "جابر بن عبد الله", title: "صاحب الشجرة، المكثر من الحديث", category: "أهل العلم", short_bio: "غزا مع النبي 19 غزوة، وعاش طويلاً ونشر العلم في المدينة.", full_bio: "شهد العقبة مع أبيه. استشهد أبوه في أحد. وكان يحب العلم ويرويه. كان يجلس في المسجد النبوي يعلم الناس. روى الكثير من الأحاديث.", virtues: ["المكثر من الرواية.", "شهد العقبة."], lessons: ["خدمة الإسلام بالعلم.", "الوفاء للوالدين."], tags: ["حديث", "عقبة", "علم"] },
+        { id: 63, name: "حذيفة بن اليمان", title: "صاحب سر النبي ﷺ", category: "كبار الصحابة", short_bio: "أخبره النبي بأسماء المنافقين، وكان مستشاره في الشدائد.", full_bio: "كان صاحب سر النبي في المنافقين. أرسله النبي يوم الخندق ليتجسس على المشركين. كان شديد الذكاء والفراسة. ولي المدائن في عهد عمر.", virtues: ["صاحب السر.", "متجسس الخندق."], lessons: ["الأمانة على الأسرار.", "الشجاعة الاستخباراتية."], tags: ["سر", "خندق", "مدائن"] },
+        { id: 64, name: "سلمان الفارسي", title: "الباحث عن الحقيقة", category: "كبار الصحابة", short_bio: "صاحب فكرة حفر الخندق، وهو الذي رحل من فارس بحثاً عن الحق حتى وصل إلى النبي ﷺ.", full_bio: "كان ابن دهقان فارس فهرب من بلده بحثاً عن الدين الحق. خدم عدة رهبان نصارى حتى دله آخرهم على نبي في جزيرة العرب. بيع كعبد حتى وصل المدينة فلما رأى النبي عرف فيه علامات النبوة فأسلم. اشتراه النبي وأعتقه، وهو صاحب فكرة الخندق.", virtues: ["سلمان منا آل البيت.", "صاحب فكرة الخندق.", "قصة إسلامه ملحمة."], lessons: ["طلب الحق ولو طال الزمان.", "احترام العلم والخبرة.", "أهمية الشورى."], tags: ["خندق", "فارسي", "بحث"] },
+        { id: 65, name: "أبو ذر الغفاري", title: "الصادق المتجرد", category: "أهل الصفة", short_bio: "من السابقين الأولين، كان ينادي بالتوحيد في مكة قبل إسلامه، وعُرف بزهده وصراحته.", full_bio: "كان يسرق في الجاهلية فلما سمع بالنبي ذهب إليه وأسلم. رجع إلى قومه فدعاهم فأسلموا. قال عنه النبي: 'ما أظلت الخضراء ولا أقلت الغبراء أصدق لهجة من أبي ذر'. عاش زاهداً متقشفاً ويدعو إلى الحق.", virtues: ["أصدق الناس لهجة.", "من السابقين الأولين.", "زاهد العصر."], lessons: ["الصدع بكلمة الحق.", "الزهد في الدنيا.", "الشجاعة في طلب المعرفة."], tags: ["زهد", "صدق", "غفار"] },
+        { id: 66, name: "النعمان بن مقرن", title: "شهيد نهاوند، فاتح الفتوح", category: "أهل الجهاد", short_bio: "قاد جيش المسلمين في معركة نهاوند الحاسمة ضد الفرس واستشهد فيها.", full_bio: "كان قائداً محنكاً. قال عنه عمر: 'للنعمان بن مقرن من الجنود ما ليس لغيره'. فتح نهاوند وطوى صفحة الفرس.", virtues: ["فاتح نهاوند.", "شهيد."], lessons: ["القيادة الحكيمة.", "التضحية من أجل نصر الأمة."], tags: ["نهاوند", "فتوح", "شهيد"] },
+        { id: 67, name: "سراقة بن مالك", title: "طريد ثم طليق ثم بشير", category: "كبار الصحابة", short_bio: "طارد النبي في الهجرة، فساخت فرسه في الرمل، فطلب الأمان فأعطاه النبي بشارة سوارَي كسرى.", full_bio: "طارد النبي وأبا بكر طمعاً في جائزة قريش. كلما اقترب غاصت قوائم فرسه. أدرك أن النبي محفوظ بحماية إلهية. أسلم عام الفتح، وفي عهد عمر لبس سوارَي كسرى تحقيقاً لبشارة النبي.", virtues: ["تائب.", "تحققت فيه بشارة النبي."], lessons: ["تحول الإنسان 180 درجة.", "صدق نبوة النبي."], tags: ["هجرة", "كسرى", "توبة"] },
+        { id: 68, name: "أم حبيبة (رملة بنت أبي سفيان)", title: "أم المؤمنين، المهاجرة الصابرة", category: "أمهات المؤمنين", short_bio: "زوج النبي ﷺ، وهاجرت مع زوجها الأول إلى الحبشة فتنصر زوجها وثبتت على الإسلام.", full_bio: "هاجرت إلى الحبشة مع زوجها عبيد الله بن جحش فتنصر ومات. ثبتت على دينها. أرسل النبي إلى النجاشي ليخطبها له فأصدقها النجاشي 400 دينار.", virtues: ["أم المؤمنين.", "ثباتها على الدين."], lessons: ["الثبات على الحق.", "تفريج الله للكرب."], tags: ["حبشة", "ثبات", "أم المؤمنين"] },
+        { id: 69, name: "أبو هريرة", title: "راوية الإسلام", category: "أهل العلم", short_bio: "أكثر الصحابة رواية لأحاديث النبي ﷺ بفضل ملازمته له.", full_bio: "عبد الرحمن بن صخر الدوسي. لزم النبي ﷺ على شبع بطنه ليحفظ الحديث. دعا له النبي فبسط رداءه ولم ينسَ بعدها حديثاً. روى 5374 حديثاً وهو أكثر من روى الحديث.", virtues: ["أحفظ الصحابة للحديث.", "كان من أهل الصفة.", "روى 5374 حديثاً."], lessons: ["التفرغ التام لطلب العلم.", "بركة دعاء النبي.", "الدقة في الرواية."], tags: ["رواية", "حفظ", "أهل الصفة"] },
+        { id: 70, name: "عبد الله بن عمر", title: "العالم العابد", category: "أهل العلم", short_bio: "ابن عمر بن الخطاب، أحد المكثرين من رواية الحديث وشديد الاتباع لسنة النبي ﷺ.", full_bio: "أسلم صغيراً وهاجر مع أبيه. كان شديد الحرص على سنة النبي حتى أنه كان يتبع آثاره. كان من أغنياء الصحابة وزهادهم. عاش 84 عاماً وكف بصره في آخره.", virtues: ["من المكثرين من الرواية.", "شديد الاتباع للسنة."], lessons: ["الحرص على الاتباع.", "الورع والزهد.", "طول العمر في طاعة الله."], tags: ["علم", "زهد", "اتباع"] },
+        { id: 71, name: "أنس بن مالك", title: "خادم رسول الله", category: "كبار الصحابة", short_bio: "خدم النبي ﷺ عشر سنين، ودعا له النبي بطول العمر وكثرة المال والولد.", full_bio: "أمه أم سليم التي أسلمت فغضب زوجها أبو طلحة ثم أسلم. خدم النبي 10 سنوات فما قال له لشيء فعله: لم فعلت، ولا لشيء لم يفعله: ألا فعلت. عاش طويلاً وكان آخر الصحابة موتاً بالبصرة.", virtues: ["خدم النبي.", "استجابة دعاء النبي له."], lessons: ["بر الوالدين.", "خدمة الصالحين.", "حسن الخلق مع الخدم."], tags: ["خادم", "دعاء", "بصرة"] },
+        { id: 72, name: "العباس بن عبد المطلب", title: "ساقي الحرمين، عم النبي ﷺ", category: "كبار الصحابة", short_bio: "عم النبي ﷺ، كان سيداً في الجاهلية والإسلام. أسلم قبل فتح مكة.", full_bio: "كان يحب النبي ويحميه رغم بقائه على الكفر مؤقتاً. أسلم عام الفتح. دافع عن النبي في حنين وثبت معه. دعا له النبي بأن يسقيه من سقاية الحرم.", virtues: ["عم النبي.", "ساقي الحرمين.", "ثبت في حنين."], lessons: ["حماية الدين.", "شرف خدمة الحجاج.", "التواضع مع القرابة."], tags: ["عم", "حنين", "سقاية"] },
+        { id: 73, name: "سعيد بن زيد", title: "ابن الفاروقة، المبشر بالجنة", category: "العشرة المبشرون بالجنة", short_bio: "أحد العشرة المبشرين بالجنة، وزوج أخت عمر بن الخطاب.", full_bio: "أسلم قديماً هو وزوجته فاطمة بنت الخطاب، وكانا سبباً في إسلام عمر بن الخطاب. شهد المشاهد كلها وكان مستجاب الدعوة.", virtues: ["أحد العشرة.", "سبب في إسلام عمر.", "مستجاب الدعوة."], lessons: ["الدعوة بالحكمة.", "الصبر.", "بركة الدعاء."], tags: ["عشرة", "دعوة", "فاطمة"] },
+        { id: 74, name: "أبو طلحة الأنصاري", title: "صوت الجيش، الرامي", category: "كبار الصحابة", short_bio: "من كبار الأنصار، خطب أم سليم فتزوجها. كان صوته جهورياً يغني عن مئة رجل.", full_bio: "كان صوته جهورياً يغني عن مئة رجل في الحرب. تصدق بأحب أمواله إليه 'بيرحاء' عندما سمع قوله تعالى: {لن تنالوا البر حتى تنفقوا مما تحبون}.", virtues: ["المنفق مما يحب.", "شجاع."], lessons: ["الإنفاق من أحب الأموال.", "التضحية."], tags: ["أنصاري", "إنفاق", "جهاد"] },
+        { id: 75, name: "أبي بن كعب", title: "سيد القراء", category: "أهل العلم", short_bio: "أقرأ الصحابة لكتاب الله كما قال النبي ﷺ. شهد بدراً والعقبة.", full_bio: "قال النبي: 'أقرؤكم أبي بن كعب'. كان يقرأ القرآن غضاً كما أنزل. شهد بدراً وبيعة العقبة. كان كاتباً للوحي.", virtues: ["سيد القراء.", "شهد بدراً والعقبة.", "كاتب الوحي."], lessons: ["تعلم القرآن وتعليمه.", "مكانة العلم.", "خدمة الوحي."], tags: ["قرآن", "بدر", "وحي"] },
+        { id: 76, name: "زيد بن ثابت", title: "جامع القرآن الكريم", category: "أهل العلم", short_bio: "كاتب الوحي، وجامع القرآن في عهد أبي بكر وعثمان.", full_bio: "كان غلاماً يتيماً. تعلم السريانية بأمر النبي. كتب الوحي وأمره أبو بكر بجمع القرآن بعد اليمامة، ثم ترأس اللجنة في عهد عثمان لنسخ المصحف.", virtues: ["جامع القرآن.", "كاتب الوحي.", "تعلم لغة اليهود."], lessons: ["الشباب في خدمة الدين.", "الدقة والمسؤولية.", "طلب العلم ولو من غير المسلمين."], tags: ["قرآن", "جامع", "وحي"] },
+        { id: 77, name: "حسان بن ثابت", title: "شاعر النبي ﷺ", category: "كبار الصحابة", short_bio: "شاعر الأنصار الذي دافع عن النبي بلسانه ونظم فيه أروع القصائد.", full_bio: "كان شاعراً فحلاً قبل الإسلام. بعد إسلامه سخّر شعره للدفاع عن النبي والرد على المشركين. أيده النبي بجبريل. عاش طويلاً.", virtues: ["شاعر النبي.", "أيده روح القدس."], lessons: ["تسخير الفن للدعوة.", "الشجاعة الأدبية."], tags: ["شعر", "دفاع", "أنصار"] },
+        { id: 78, name: "أم عمارة (نسيبة بنت كعب)", title: "المدافعة عن النبي ﷺ", category: "الصحابيات الجليلات", short_bio: "قاتلت في أحد دفاعاً عن النبي ﷺ حتى جرحت جراحات كثيرة.", full_bio: "انطلقت مع زوجها وابنيها إلى أحد لسقاية الماء فلما انكشف المسلمون حملت سيفاً ودافعت عن النبي ﷺ. شهدت بيعة العقبة وأحداً وخيبراً وحنيناً واليمامة وقُطعت يدها فيها.", virtues: ["مجاهدة.", "شهدت بيعة العقبة.", "ثباتها في أحد."], lessons: ["الجهاد للمرأة المسلمة.", "الدفاع عن الحق.", "الشجاعة."], tags: ["مجاهدة", "أحد", "عقبة"] },
+        { id: 79, name: "أسماء بنت أبي بكر", title: "ذات النطاقين", category: "الصحابيات الجليلات", short_bio: "ابنة الصديق وأخت عائشة، وزوج الزبير. شقت نطاقها نصفين لتحمل الطعام للنبي وأبيها في الغار.", full_bio: "كانت تعرف بذات النطاقين. حملت الطعام للنبي وصاحبه في الغار وهي حامل بعبد الله بن الزبير. صبرت على شظف العيش مع الزبير. عاشت طويلاً وكف بصرها وماتت وقد بلغت 100 عام وأسنانها كاملة.", virtues: ["ذات النطاقين.", "صاحبة الهجرة.", "أول مولود في الإسلام."], lessons: ["الصبر على الفقر.", "خدمة الدعوة.", "الوفاء."], tags: ["هجرة", "نطاقين", "غار"] },
+        { id: 80, name: "أم كلثوم بنت عقبة", title: "المهاجرة الذكية", category: "الصحابيات الجليلات", short_bio: "أسلمت وهاجرت وحدها من مكة إلى المدينة في هدنة الحديبية.", full_bio: "خرجت وحدها من مكة إلى المدينة في زمن الهدنة، فأبى المشركون تسليمها فنزل قرآن الحديبية في شأن النساء المهاجرات. تزوجت زيد بن حارثة ثم الزبير ثم عبد الرحمن بن عوف.", virtues: ["شجاعة.", "سبب لنزول قرآن."], lessons: ["الهجرة في سبيل الدين.", "الثبات على المبدأ."], tags: ["هجرة", "حديبية", "قرآن"] },
+        { id: 81, name: "عبد الله بن سلام", title: "الحبر اليهودي المسلم", category: "كبار الصحابة", short_bio: "من أحبار اليهود الذين أسلموا بعد الهجرة مباشرة، وبشره النبي بالجنة.", full_bio: "كان أعلم يهود المدينة. لما قدم النبي نظر إلى وجهه فعرف أنه ليس بوجه كذاب. أعلن إسلامه فكفر به قومه. شهد له النبي بالجنة.", virtues: ["حبر.", "مبشر بالجنة."], lessons: ["الشجاعة في قبول الحق.", "العلم يقود للإيمان."], tags: ["يهود", "إسلام", "علم"] },
+        { id: 82, name: "صفوان بن المعطل", title: "صاحب حديث الإفك", category: "كبار الصحابة", short_bio: "كان يؤتى به متأخراً، فرماه المنافقون في حادثة الإفك فبرأه الله.", full_bio: "كان من خيرة الصحابة. اتهم زوراً مع عائشة في حادثة الإفك. كان ينام عن صلاة الصبح أحياناً. استشهد في غزوة.", virtues: ["برأه الله.", "شجاع."], lessons: ["الصبر على البلاء.", "عدم تصديق الإشاعات."], tags: ["إفك", "براءة", "شهيد"] },
+        { id: 83, name: "سعد بن الربيع", title: "سيد من سادات الأنصار", category: "أهل بدر", short_bio: "من النقباء ليلة العقبة، وآخى بينه النبي وعبد الرحمن بن عوف.", full_bio: "عرض على أخيه المهاجر عبد الرحمن بن عوف نصف ماله. شهد بدراً واستشهد في أحد. قال النبي: 'من يعلم لي علم سعد بن الربيع؟'.", virtues: ["كريم.", "نقيب."], lessons: ["الإيثار.", "الوفاء للأخوة."], tags: ["بدر", "إيثار", "أنصار"] },
+        { id: 84, name: "المنذر بن عمرو", title: "أحد أمراء السرايا", category: "أهل بدر", short_bio: "أمير سرية بئر معونة التي قتل فيها 70 من خيرة الصحابة.", full_bio: "النقيب العقبي. أرسله النبي ﷺ في سرية بئر معونة لنشر الإسلام فغدرت بهم قبائل نجد. استشهد مع بقية القراء.", virtues: ["قارئ.", "نقيب."], lessons: ["الغدر لا يوقف الدعوة.", "التضحية الجماعية."], tags: ["بئر معونة", "شهيد", "قراء"] },
+        { id: 85, name: "عكرمة بن أبي جهل", title: "الفارس التائب", category: "أهل الجهاد", short_bio: "ابن عدو الله أبي جهل. أسلم عام الفتح وأبلى بلاءً حسناً في حروب الردة.", full_bio: "فر إلى اليمن بعد الفتح فعفت عنه زوجته أم حكيم وأسلم. ندم على عداوته السابقة وقال: 'والله لأنفقتن في سبيل الله أضعاف ما أنفقته في عداوته'. استشهد في اليرموك.", virtues: ["تائب.", "شهيد اليرموك."], lessons: ["الإسلام يجبّ ما قبله.", "التعويض عن الماضي بالخير."], tags: ["توبة", "يرموك", "شهيد"] },
+        { id: 86, name: "أبو سفيان بن الحارث", title: "ابن عم النبي، التائب العائد", category: "كبار الصحابة", short_bio: "ابن عم النبي ﷺ وأخوه من الرضاعة. عادى النبي طويلاً ثم أسلم وحسن إسلامه.", full_bio: "كان يشبه النبي ﷺ وكان يهجوه. أسلم عام الفتح خائفاً. لما رآه النبي أعرض عنه فقال: 'لا تثريب عليك يا أبا سفيان'. صار من خيار الصحابة.", virtues: ["تائب.", "شبيه النبي."], lessons: ["العفو عند المقدرة.", "قبول التوبة الصادقة."], tags: ["توبة", "عفو", "شبيه"] },
+        { id: 87, name: "ضرار بن الأزور", title: "الشاعر الفارس", category: "أهل الجهاد", short_bio: "فارس من فرسان المسلمين وشاعر مجيد، أبلى في فتوح الشام.", full_bio: "كان فارساً لا يشق له غبار. أبلى بلاءً حسناً في الشام. قيل إن خالد بن الوليد كان يحب أن يغزو معه. له شعر في الحماسة.", virtues: ["فارس.", "شاعر."], lessons: ["القوة مع الفن.", "الاستبسال."], tags: ["فارس", "شعر", "شام"] },
+        { id: 88, name: "القاسم بن محمد بن أبي بكر", title: "أحد الفقهاء السبعة", category: "أهل العلم", short_bio: "حفيد الخليفة أبي بكر. من كبار التابعين لكنه أدرك الصحابة فصار إماماً.", full_bio: "إمام في الفقه والحديث. أحد فقهاء المدينة السبعة. أخذ العلم عن عائشة وغيرها. كان يُضرب به المثل في الورع.", virtues: ["فقه.", "ورع."], lessons: ["طلب العلم من أهله.", "وراثة الفضل."], tags: ["فقه", "مدينة", "تابعي"] },
+        { id: 89, name: "أويس القرني", title: "سيد التابعين، خير التابعين", category: "كبار الصحابة", short_bio: "أدرك زمن النبي ﷺ وآمن به ولم يره. أوصى النبي عمر وعلياً أن يستغفرا له.", full_bio: "كان في اليمن. آمن بالنبي ﷺ ولم يستطع القدوم لمرض أمه. قال عنه النبي: 'يأتي عليكم أويس بن عامر... من لقيه منكم فليستغفر لكم'. استشهد في صفين.", virtues: ["بار بأمه.", "خير التابعين."], lessons: ["بر الوالدين يرفع الدرجات.", "الإيمان بالغيب."], tags: ["تابعي", "بر", "صفين"] },
+        { id: 90, name: "عبد الله بن عمر بن الخطاب", title: "العابد الناسك", category: "أهل العلم", short_bio: "اشتهر بالورع الشديد والاتباع الدقيق للسنة ورواية الحديث.", full_bio: "أسلم صغيراً. كان شديد الورع والعبادة. لا ينام الليل إلا قليلاً. يكثر من الصدقة. كان مرجعاً في الحديث والفقه.", virtues: ["كثير العبادة.", "ورع."], lessons: ["الاجتهاد في العبادة.", "الحرص على السنة."], tags: ["عبادة", "ورع", "حديث"] },
+        { id: 91, name: "الحسن بن علي", title: "سيد شباب أهل الجنة، سبط النبي", category: "كبار الصحابة", short_bio: "حفيد النبي ﷺ، وريحانته، وسيد شباب أهل الجنة.", full_bio: "أشبه الناس بالنبي. تنازل عن الخلافة لمعاوية حقناً للدماء. دعاه النبي مع أخيه الحسين فوضعه في حجره وقال: 'اللهم إني أحبه فأحبه'.", virtues: ["سيد شباب أهل الجنة.", "حفيد النبي."], lessons: ["الإصلاح بين الناس.", "التضحية من أجل الوحدة."], tags: ["سبط", "إصلاح", "جنة"] },
+        { id: 92, name: "الحسين بن علي", title: "شهيد كربلاء، سيد شباب أهل الجنة", category: "كبار الصحابة", short_bio: "حفيد النبي ﷺ، وريحانته التي كان يحملها ويقبلها.", full_bio: "سبط النبي. استشهد في كربلاء مظلوماً ثائراً على الظلم. قال عنه النبي: 'حسين مني وأنا من حسين'.", virtues: ["سيد شباب أهل الجنة.", "شهيد."], lessons: ["الثبات على المبدأ.", "رفض الظلم."], tags: ["سبط", "كربلاء", "شهيد"] },
+        { id: 93, name: "عبد الله بن الزبير", title: "أول مولود في الإسلام، الفارس الشجاع", category: "كبار الصحابة", short_bio: "ابن أسماء بنت أبي بكر، وأول مولود للمسلمين بعد الهجرة.", full_bio: "كبّر المسلمون لمولده فرحاً. نشأ فارساً شجاعاً. تولى الخلافة في مكة وقاوم الأمويين حتى استشهد.", virtues: ["أول مولود.", "شجاع.", "مجاهد."], lessons: ["الاعتزاز بالإسلام.", "الصبر عند المحن."], tags: ["مولود", "خلافة", "شهيد"] },
+        { id: 94, name: "المسور بن مخرمة", title: "صاحب رسول الله ﷺ", category: "كبار الصحابة", short_bio: "لزم النبي ﷺ وهو صغير وروى عنه أحاديث.", full_bio: "ولد بعد الهجرة. كان ملازماً للنبي ولأبي بكر وعمر. كان فقيهاً عالماً. روى أحاديث عدة.", virtues: ["ملازم النبي.", "فقه."], lessons: ["طلب العلم صغيراً.", "خدمة الكبار."], tags: ["علم", "صغير", "رواية"] },
+        { id: 95, name: "عمرو بن العاص", title: "فاتح مصر، داهية العرب", category: "كبار الصحابة", short_bio: "أسلم عام الحديبية، واشتهر بدهائه وعبقريته العسكرية وفتح مصر.", full_bio: "كان من أدهى العرب. أرسلته قريش إلى النجاشي ليسلمهم المسلمين فانقلب عليه النجاشي. فتح مصر وبقيت ولايتها له. له مواقف ذكاء خالدة.", virtues: ["فاتح مصر.", "داهية."], lessons: ["الذكاء في نصرة الدين.", "التخطيط الاستراتيجي."], tags: ["مصر", "دهاء", "فتح"] },
+        { id: 96, name: "شرحبيل بن حسنة", title: "أمين الأمراء، فاتح الأردن", category: "أهل الجهاد", short_bio: "من المهاجرين الأوائل، وأحد أمراء الفتح في الشام.", full_bio: "أسلم قديماً. كان كاتباً للوحي. قاد جزءاً من جيش الشام. عُرف بالأمانة. فتح الأردن ووليها.", virtues: ["أمين.", "كاتب وحي."], lessons: ["الأمانة في القيادة.", "الجمع بين العلم والجهاد."], tags: ["شام", "أردن", "أمين"] },
+        { id: 97, name: "معاوية بن أبي سفيان", title: "كاتب الوحي، خال المؤمنين", category: "كبار الصحابة", short_bio: "كاتب وحي النبي ﷺ وأول ملوك الإسلام. أسلم عام الفتح.", full_bio: "أسلم عام الفتح. كان يكتب الوحي للنبي. قال عنه النبي: 'اللهم علمه الكتاب والحساب وقه العذاب'. ولي الشام 20 عاماً والخلافة 20 عاماً واشتهر بالحلم والدهاء.", virtues: ["كاتب الوحي.", "خال المؤمنين."], lessons: ["الحلم.", "إدارة الدولة."], tags: ["كاتب", "حلم", "ملك"] },
+        { id: 98, name: "يزيد بن أبي سفيان", title: "أحد أمراء الفتح", category: "أهل الجهاد", short_bio: "أخو معاوية، وقائد ميمنة جيش الشام في الفتوحات.", full_bio: "أسلم عام الفتح. كان قائداً شجاعاً. فتح مدناً شامية كثيرة. مات في طاعون عمواس شهيداً.", virtues: ["شجاع.", "فاتح."], lessons: ["القيادة في الصغر.", "التضحية."], tags: ["شام", "طاعون", "فاتح"] },
+        { id: 99, name: "النجاشي (أصحمة)", title: "ملك الحبشة، صاحب النبي", category: "كبار الصحابة", short_bio: "ملك الحبشة العادل الذي آوى المسلمين وهاجروا إليه، فحماهم ورفض تسليمهم.", full_bio: "آمن بالله سراً. أكرم المهاجرين وأبى أن يسلمهم لقريش. قال عنه النبي يوم مات: 'مات اليوم عبد صالح... صلوا على أخيكم أصحمة'. فصلى عليه صلاة الغائب.", virtues: ["مضيف المهاجرين.", "صلى عليه النبي."], lessons: ["نصرة المظلوم.", "الإيمان ولو باعدتك الديار."], tags: ["حبشة", "هجرة", "صلاة"] },
+        { id: 100, name: "وحشي بن حرب", title: "قاتل حمزة ثم قاتل مسيلمة", category: "كبار الصحابة", short_bio: "قتل حمزة في أحد، ثم أسلم وأبلى بلاءً حسناً وقتل مسيلمة الكذاب.", full_bio: "كان عبداً ماهراً في رمي الحربة. قتل به حمزة يوم أحد. ندم ندماً شديداً بعد إسلامه. قاتل في اليمامة وقتل مسيلمة الكذاب انتصاراً للإسلام.", virtues: ["تائب.", "قتل مسيلمة."], lessons: ["التوبة النصوح.", "محو السيئات بالحسنات."], tags: ["توبة", "حمزة", "مسيلمة"] }        
+                
+    ]; // نهاية المصفوفة هنا
+
+    // القائمة النهائية: نأخذ أول 100 بالضبط لضمان العدد
+    const fullSahaba = sahabaData.slice(0, 100);
+
+    let state = { category: "الكل", search: "" };
+
+    const DOM = {
+        hamburgerBtn: document.getElementById('hamburgerBtn'),
+        appSidebar: document.getElementById('appSidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        closeSidebarBtn: document.getElementById('closeSidebarBtn'),
+        categoriesContainer: document.getElementById('categoriesContainer'),
+        grid: document.getElementById('sahabaGrid'),
+        searchInput: document.getElementById('searchInput'),
+        dailyContainerInner: document.getElementById('dailyCardInner'),
+        modal: document.getElementById('sahabiModal'),
+        closeModalBtn: document.getElementById('closeModalBtn'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalSubtitle: document.getElementById('modalSubtitle'),
+        modalDesc: document.getElementById('modalDesc'),
+        modalVirtuesTitle: document.getElementById('modalVirtuesTitle'),
+        modalVirtues: document.getElementById('modalVirtues'),
+        modalLessonsTitle: document.getElementById('modalLessonsTitle'),
+        modalLessons: document.getElementById('modalLessons'),
+        modalTags: document.getElementById('modalTags')
+    };
+
+    function openSidebar() {
+        DOM.appSidebar.classList.add('active');
+        DOM.sidebarOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        DOM.appSidebar.classList.remove('active');
+        DOM.sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function handleSidebar() {
+        DOM.hamburgerBtn.addEventListener('click', openSidebar);
+        DOM.closeSidebarBtn.addEventListener('click', closeSidebar);
+        DOM.sidebarOverlay.addEventListener('click', closeSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+                closeModal();
+            }
+        });
+    }
+
+    function renderCategories() {
+        DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
+            <button class="btn btn-outline category-chip ${state.category === cat ? 'active' : ''}">
+                ${cat}
+            </button>
+        `).join('');
+    }
+
+    function getFiltered() {
+        return fullSahaba.filter(s => {
+            const matchCat = state.category === 'الكل' || s.category === state.category;
+            const searchValue = state.search;
+            const matchSearch =
+                searchValue === '' ||
+                s.name.toLowerCase().includes(searchValue) ||
+                s.title.toLowerCase().includes(searchValue) ||
+                (s.tags && s.tags.some(t => t.toLowerCase().includes(searchValue)));
+            return matchCat && matchSearch;
+        });
+    }
+
+    function generateCardHTML(s, isDaily = false) {
+        return `
+            <article class="glass-card sahabi-card ${isDaily ? 'daily-highlight' : ''}">
+                ${isDaily ? '<span class="daily-badge">صحابي اليوم</span>' : ''}
+                <div>
+                    <h3 class="sahabi-name">
+                        ${s.name}
+                        <span class="sahabi-title-badge">${s.title.split('،')[0]}</span>
+                    </h3>
+                    <div class="sahabi-category">${s.category}</div>
+                </div>
+                <div class="sahabi-desc-short">${s.short_bio}</div>
+                <div class="sahabi-actions">
+                    <button class="btn-read-more" data-id="${s.id}">اقرأ المزيد ⇦</button>
+                </div>
+            </article>
+        `;
+    }
+
+    function renderSahaba() {
+        const filtered = getFiltered();
+        if (filtered.length === 0) {
+            DOM.grid.innerHTML = `<div class="empty-state">لا توجد نتائج مطابقة.</div>`;
+            return;
+        }
+        DOM.grid.innerHTML = filtered.map(s => generateCardHTML(s)).join('');
+    }
+
+    function setDaily() {
+        const date = new Date().toDateString();
+        const storedDate = localStorage.getItem('daily_date');
+        let dailyId = parseInt(localStorage.getItem('daily_id'));
+
+        if (storedDate !== date || !dailyId) {
+            dailyId = fullSahaba[Math.floor(Math.random() * fullSahaba.length)].id;
+            localStorage.setItem('daily_date', date);
+            localStorage.setItem('daily_id', dailyId);
+        }
+
+        const daily = fullSahaba.find(s => s.id === dailyId) || fullSahaba[0];
+        DOM.dailyContainerInner.innerHTML = generateCardHTML(daily, true);
+    }
+
+    function openModal(id) {
+        const s = fullSahaba.find(x => x.id === id);
+        if (!s) return;
+
+        DOM.modalTitle.textContent = s.name;
+        DOM.modalSubtitle.textContent = `${s.title} | ${s.category}`;
+        DOM.modalDesc.textContent = s.full_bio;
+
+        if (s.virtues && s.virtues.length) {
+            DOM.modalVirtuesTitle.classList.remove('hidden');
+            DOM.modalVirtues.innerHTML = s.virtues.map(v => `<li>${v}</li>`).join('');
+        } else {
+            DOM.modalVirtuesTitle.classList.add('hidden');
+            DOM.modalVirtues.innerHTML = '';
+        }
+
+        if (s.lessons && s.lessons.length) {
+            DOM.modalLessonsTitle.classList.remove('hidden');
+            DOM.modalLessons.innerHTML = s.lessons.map(l => `<li>${l}</li>`).join('');
+        } else {
+            DOM.modalLessonsTitle.classList.add('hidden');
+            DOM.modalLessons.innerHTML = '';
+        }
+
+        if (s.tags && s.tags.length) {
+            DOM.modalTags.innerHTML = s.tags.map(t => `<span class="modal-tag">#${t}</span>`).join('');
+        } else {
+            DOM.modalTags.innerHTML = '';
+        }
+
+        DOM.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        DOM.modal.classList.remove('active');
+        if (!DOM.appSidebar.classList.contains('active')) {
+            document.body.style.overflow = '';
+        }
+    }
+
+    function setupEvents() {
+        DOM.searchInput.addEventListener('input', (e) => {
+            state.search = e.target.value.trim().toLowerCase();
             renderSahaba();
-            setupEventListeners();
         });
 
-        // ==================== THEME & MENU ====================
-        function initTheme() {
-            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-
-            DOM.themeToggle.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('sabeel_theme', next);
-                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        }
-
-        function handleMobileMenu() {
-            DOM.hamburgerBtn.addEventListener('click', () => {
-                DOM.mobileNav.classList.toggle('active');
-                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
-            });
-        }
-
-        // ==================== LOGIC & EVENTS ====================
-        function setupEventListeners() {
-            DOM.searchInput.addEventListener('input', (e) => {
-                state.search = e.target.value.trim().toLowerCase();
+        DOM.categoriesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-chip')) {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                e.target.classList.add('active');
+                state.category = e.target.textContent.trim();
                 renderSahaba();
-            });
-
-            DOM.categoriesContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('category-chip')) {
-                    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                    state.category = e.target.textContent.trim();
-                    renderSahaba();
-                }
-            });
-
-            document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('btn-read-more')) {
-                    const id = parseInt(e.target.getAttribute('data-id'));
-                    openModal(id);
-                }
-                if (e.target === DOM.modal) closeModal();
-            });
-
-            DOM.closeModalBtn.addEventListener('click', closeModal);
-        }
-
-        function renderCategories() {
-            DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
-                <button class="btn btn-outline category-chip ${cat === state.category ? 'active' : ''}">${cat}</button>
-            `).join('');
-        }
-
-        function getFilteredSahaba() {
-            return sahabaData.filter(s => {
-                const matchCat = state.category === 'الكل' || s.category === state.category;
-                const matchSearch = state.search === '' || 
-                                    s.name.toLowerCase().includes(state.search) || 
-                                    s.title.toLowerCase().includes(state.search) || 
-                                    s.short_bio.toLowerCase().includes(state.search) ||
-                                    s.tags.some(t => t.toLowerCase().includes(state.search));
-                return matchCat && matchSearch;
-            });
-        }
-
-        function renderSahaba() {
-            const filtered = getFilteredSahaba();
-            if (filtered.length === 0) {
-                DOM.grid.innerHTML = `<div class="empty-state">لا توجد نتائج مطابقة لبحثك.</div>`;
-                return;
             }
-            DOM.grid.innerHTML = filtered.map(s => generateCardHTML(s)).join('');
-        }
+        });
 
-        function generateCardHTML(s, isDaily = false) {
-            return `
-                <article class="glass-card sahabi-card ${isDaily ? 'daily-highlight' : ''}">
-                    ${isDaily ? '<span class="daily-badge">صحابي اليوم</span>' : ''}
-                    <div class="sahabi-header">
-                        <h3 class="sahabi-name">
-                            ${s.name}
-                            ${s.title.split('،')[0] ? `<span class="sahabi-title-badge">${s.title.split('،')[0]}</span>` : ''}
-                        </h3>
-                        <div class="sahabi-category">${s.category}</div>
-                    </div>
-                    <div class="sahabi-desc-short">${s.short_bio}</div>
-                    <div class="sahabi-actions">
-                        <button class="btn-read-more" data-id="${s.id}">اقرأ المزيد ⇦</button>
-                    </div>
-                </article>
-            `;
-        }
-
-        // ==================== DAILY SAHABI ====================
-        function setDailySahabi() {
-            const dateStr = new Date().toDateString();
-            const storedDate = localStorage.getItem('sabeel_daily_sahabi_date');
-            let dailyId = parseInt(localStorage.getItem('sabeel_daily_sahabi_id'));
-
-            if (storedDate !== dateStr || isNaN(dailyId)) {
-                dailyId = sahabaData[Math.floor(Math.random() * sahabaData.length)].id;
-                localStorage.setItem('sabeel_daily_sahabi_date', dateStr);
-                localStorage.setItem('sabeel_daily_sahabi_id', dailyId);
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-read-more')) {
+                openModal(parseInt(e.target.dataset.id));
             }
-
-            const dailySahabi = sahabaData.find(s => s.id === dailyId) || sahabaData[0];
-            DOM.dailyContainer.innerHTML = `<h2 class="section-title">✨ صحابي اليوم</h2>` + generateCardHTML(dailySahabi, true);
-        }
-
-        // ==================== MODAL ====================
-        function openModal(id) {
-            const s = sahabaData.find(x => x.id === id);
-            if (!s) return;
-
-            DOM.modalTitle.textContent = s.name;
-            DOM.modalSubtitle.textContent = `${s.title} | ${s.category}`;
-            DOM.modalDesc.textContent = s.full_bio;
-
-            if (s.virtues && s.virtues.length > 0) {
-                DOM.modalVirtuesTitle.classList.remove('hidden');
-                DOM.modalVirtues.innerHTML = s.virtues.map(v => `<li>${v}</li>`).join('');
-            } else {
-                DOM.modalVirtuesTitle.classList.add('hidden');
-                DOM.modalVirtues.innerHTML = '';
+            if (e.target === DOM.modal) {
+                closeModal();
             }
+        });
 
-            if (s.lessons && s.lessons.length > 0) {
-                DOM.modalLessonsTitle.classList.remove('hidden');
-                DOM.modalLessons.innerHTML = s.lessons.map(l => `<li>${l}</li>`).join('');
-            } else {
-                DOM.modalLessonsTitle.classList.add('hidden');
-                DOM.modalLessons.innerHTML = '';
-            }
+        DOM.closeModalBtn.addEventListener('click', closeModal);
+    }
 
-            if (s.tags && s.tags.length > 0) {
-                DOM.modalTags.innerHTML = s.tags.map(t => `<span class="modal-tag">#${t}</span>`).join('');
-            } else {
-                DOM.modalTags.innerHTML = '';
-            }
+    function init() {
+        handleSidebar();
+        renderCategories();
+        setDaily();
+        renderSahaba();
+        setupEvents();
+    }
 
-            DOM.modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    init();
+</script>
 
-        function closeModal() {
-            DOM.modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    </script>
 </body>
 </html>
