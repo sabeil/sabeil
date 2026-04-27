@@ -2,27 +2,36 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>سبيل - أحاديث نبوية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="global.css">
     <style>
-        /* ==================== VARIABLES ==================== */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        html, body { width: 100%; min-height: 100vh; overflow-x: hidden; background-color: #ffffff; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            padding-top: env(safe-area-inset-top);
+        }
+        
         :root {
             --primary-white: #ffffff;
             --primary-soft-green: #e9f5ec;
             --primary-deep-green: #1a4a38;
             --primary-gold: #d4af37;
             --text-dark: #1f2937;
-            --text-light: #f3f4f6;
             --text-muted: #6b7280;
             --glass-bg: rgba(255, 255, 255, 0.85);
             --glass-border: rgba(255, 255, 255, 0.4);
             --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            --border-radius-lg: 24px;
-            --border-radius-md: 16px;
-            --border-radius-sm: 8px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --hadith-font-size: 1.15rem;
+            --border-radius-lg: 20px;
+            --border-radius-md: 14px;
+            --border-radius-sm: 10px;
+            --transition-smooth: all 0.3s ease;
         }
 
         [data-theme="dark"] {
@@ -31,270 +40,265 @@
             --primary-deep-green: #064e3b;
             --primary-gold: #fbbf24;
             --text-dark: #f8fafc;
-            --text-light: #f8fafc;
             --text-muted: #94a3b8;
             --glass-bg: rgba(15, 23, 42, 0.85);
             --glass-border: rgba(255, 255, 255, 0.1);
             --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
-        /* ==================== RESET & BASE ==================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.7; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: var(--transition-smooth); }
+        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); display: flex; flex-direction: column; min-height: 100vh; }
         a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+        ul { list-style: none; padding: 0; margin: 0; }
         button, input { font-family: inherit; }
 
-        /* ==================== BACKGROUND ==================== */
         .site-bg {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+            position: fixed; inset: 0;
             background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
             background-size: cover; background-position: center; z-index: -2;
         }
         .bg-overlay {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1; transition: var(--transition-smooth);
+            position: fixed; inset: 0;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px); z-index: -1;
         }
         [data-theme="dark"] .bg-overlay { background: rgba(15, 23, 42, 0.85); }
 
-        /* ==================== UTILITIES ==================== */
-        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
-        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); padding: 1.5rem; transition: var(--transition-smooth); }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-sm); font-weight: 600; cursor: pointer; border: none; transition: var(--transition-smooth); font-size: 0.95rem; gap: 0.5rem; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--primary-gold); color: var(--primary-gold); }
-        .btn-outline:hover, .btn-outline.active { background-color: var(--primary-gold); color: #fff; }
-        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
-        .btn-icon { background: transparent; color: var(--text-muted); border: none; font-size: 1.2rem; cursor: pointer; padding: 0.4rem; transition: var(--transition-smooth); border-radius: 50%; }
-        .btn-icon:hover { color: var(--primary-gold); background: rgba(0,0,0,0.05); }
-        .btn-icon.active { color: #ef4444; }
-        .hidden { display: none !important; }
+        .container { width: 100%; padding: 0 1rem; margin: 0 auto; max-width: 900px; }
 
-        /* ==================== HEADER ==================== */
-        header { padding: 1rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        /* Header */
+        header {
+            padding: 0.8rem 0;
+            position: sticky; top: 0; z-index: 100;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-deep-green); }
         [data-theme="dark"] .logo { color: var(--primary-gold); }
-        .nav-actions { display: flex; align-items: center; gap: 1rem; }
-        .theme-toggle, .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
-        .mobile-nav { position: fixed; top: 68px; right: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; z-index: 99; }
-        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
-        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
+        .hamburger { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark); }
+
+        .mobile-nav-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 140;
+        }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: auto; }
+        .mobile-nav {
+            position: fixed; top: 0; left: 0;
+            width: 280px; height: 100vh;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            transform: translateX(-100%); transition: 0.3s ease;
+            z-index: 150; padding: 20px; overflow-y: auto;
+        }
+        .mobile-nav.active { transform: translateX(0); }
+        .mobile-nav ul { margin-top: 30px; }
+        .mobile-nav li { margin-bottom: 12px; }
+        .mobile-nav a {
+            display: block; padding: 10px; border-radius: 8px;
+            font-weight: 600; font-size: 1rem; background: rgba(0,0,0,0.03);
+        }
         [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
+
         .desktop-nav { display: none; }
-
-        /* ==================== MAIN PAGE ==================== */
-        .page-layout { display: flex; flex-direction: column; gap: 2rem; padding: 2rem 1rem; flex: 1; }
-        .page-header { text-align: center; margin-bottom: 1rem; }
-        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
-        [data-theme="dark"] .page-title { color: var(--primary-gold); }
-        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
-
-        .font-controls { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
-        .font-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); width: 40px; height: 40px; border-radius: 50%; font-weight: 700; font-size: 1.1rem; color: var(--text-dark); cursor: pointer; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); display: flex; align-items: center; justify-content: center; }
-        .font-btn:hover { background: var(--primary-gold); color: white; }
-
-        /* ==================== STICKY SEARCH ==================== */
-        .search-container { 
-            position: sticky; top: 75px; z-index: 90; margin-bottom: 1.5rem; padding: 10px 0;
-        }
-        .search-input { 
-            width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--glass-border); 
-            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            color: var(--text-dark); font-size: 1.05rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: var(--transition-smooth); 
-        }
-        [data-theme="dark"] .search-input { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .search-input:focus { border-color: var(--primary-gold); }
-
-        /* Categories */
-        .categories-scroll { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 1rem; }
-        .categories-scroll::-webkit-scrollbar { display: none; }
-        .category-chip { flex-shrink: 0; border-radius: 50px; padding: 0.5rem 1.25rem; }
-
-        .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
-        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; order: 1; }
-        .main-content { order: 2; }
-
-        .section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        [data-theme="dark"] .section-title { color: var(--primary-gold); }
-
-        /* Hadith Card */
-        .hadith-card { display: flex; flex-direction: column; animation: fadeIn 0.4s ease; height: 100%; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .hadith-card.daily-highlight { border: 2px solid var(--primary-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 74, 56, 0.05) 100%); }
-        .daily-badge { display: inline-block; background: var(--primary-gold); color: #fff; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; align-self: flex-start; }
-        [data-theme="dark"] .daily-badge { color: var(--primary-deep-green); }
-
-        .hadith-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 1px dashed var(--glass-border); padding-bottom: 0.75rem; }
-        .hadith-title { font-weight: 700; color: var(--primary-gold); font-size: 1.1rem; }
-        .hadith-grade { font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; background: rgba(16, 185, 129, 0.15); color: #059669; }
-        [data-theme="dark"] .hadith-grade { color: #34d399; }
-        .hadith-grade.hasan { background: rgba(245, 158, 11, 0.15); color: #d97706; }
-        [data-theme="dark"] .hadith-grade.hasan { color: #fbbf24; }
-
-        .hadith-text { font-size: var(--hadith-font-size); color: var(--text-dark); line-height: 2.2; flex: 1; text-align: justify; text-align-last: right; margin-bottom: 1rem; font-family: 'Amiri', 'Tajawal', serif; }
-        
-        .hadith-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; background: rgba(0,0,0,0.02); padding: 0.75rem; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border); }
-        [data-theme="dark"] .hadith-meta { background: rgba(255,255,255,0.02); }
-        .meta-item { display: flex; align-items: center; gap: 0.3rem; }
-        .meta-label { font-weight: 700; color: var(--primary-deep-green); }
-        [data-theme="dark"] .meta-label { color: var(--primary-gold); }
-
-        .hadith-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-        .hadith-tag { background: rgba(0,0,0,0.05); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem;}
-        [data-theme="dark"] .hadith-tag { background: rgba(255,255,255,0.05); }
-
-        .hadith-actions { display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--glass-border); padding-top: 0.75rem; margin-top: auto; }
-
-        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 1.1rem; background: var(--glass-bg); border-radius: var(--border-radius-md); }
-
-        /* Load More Button */
-        .load-more-container { text-align: center; margin-top: 2rem; }
-        .btn-load-more { background: var(--primary-deep-green); color: white; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; border: none; cursor: pointer; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); }
-        .btn-load-more:hover { background: var(--primary-gold); transform: translateY(-2px); }
-        [data-theme="dark"] .btn-load-more { background: var(--primary-gold); color: var(--primary-deep-green); }
-
-        .fav-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto; padding-left: 0.5rem; }
-        .fav-mini-card { background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 0.75rem; border-radius: var(--border-radius-sm); font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; }
-        [data-theme="dark"] .fav-mini-card { background: rgba(255,255,255,0.02); }
-        .fav-mini-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
-
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary-deep-green); color: white; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; text-align: center; }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        [data-theme="dark"] .toast { background: var(--primary-gold); color: var(--primary-deep-green); }
-
-        /* ==================== RESPONSIVE ==================== */
         @media (min-width: 769px) {
             .hamburger { display: none; }
             .desktop-nav { display: block; }
-            .desktop-nav ul { display: flex; gap: 1.2rem; }
-            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
+            .desktop-nav ul { display: flex; gap: 1rem; }
+            .desktop-nav a { font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
             .desktop-nav a:hover { color: var(--primary-gold); }
-            .categories-scroll { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-            .search-container { top: 80px; }
         }
 
-        @media (min-width: 1024px) {
-            .container { max-width: 1400px; padding: 0 2rem; }
-            .content-grid { grid-template-columns: 320px 1fr; }
-            .sidebar { order: 1; position: sticky; top: 100px; }
-            .main-content { order: 2; }
-            .page-header { position: relative; }
-            .font-controls { position: absolute; left: 0; top: 0; margin-top: 0; }
+        .page-title {
+            text-align: center; padding: 1.5rem 0 0.5rem;
+            color: var(--primary-deep-green); font-size: 1.8rem; font-weight: 800;
+        }
+        [data-theme="dark"] .page-title { color: var(--primary-gold); }
+        .page-subtitle { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+
+        /* Search & Categories */
+        .search-input {
+            width: 100%; padding: 12px 16px; border-radius: 50px;
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            color: var(--text-dark); font-size: 0.95rem; outline: none;
+            margin-bottom: 1rem; box-shadow: var(--shadow-soft);
+        }
+        .categories-scroll {
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px;
+            scrollbar-width: none; margin-bottom: 1rem;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .cat-chip {
+            flex-shrink: 0; padding: 7px 14px; border-radius: 50px;
+            background: var(--primary-soft-green); color: var(--primary-deep-green);
+            font-weight: 700; font-size: 0.8rem; cursor: pointer; border: none;
+            transition: 0.2s; white-space: nowrap;
+        }
+        .cat-chip.active { background: var(--primary-gold); color: white; }
+        [data-theme="dark"] .cat-chip { background: rgba(255,255,255,0.08); color: var(--text-dark); }
+        [data-theme="dark"] .cat-chip.active { background: var(--primary-gold); color: #1a4a38; }
+
+        /* Font Controls */
+        .font-controls {
+            display: flex; justify-content: center; gap: 8px; margin-bottom: 1rem;
+        }
+        .font-btn {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            width: 36px; height: 36px; border-radius: 50%; font-weight: 700;
+            font-size: 1rem; color: var(--text-dark); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        @media (min-width: 1280px) {
-            .cards-grid { grid-template-columns: repeat(2, 1fr); } /* 2 cards wide looks better for hadith text */
+        /* Cards Grid - 1 per row */
+        .cards-grid {
+            display: flex; flex-direction: column; gap: 12px; padding-bottom: 30px;
         }
+
+        /* Hadith Card - Modern Rectangle */
+        .hadith-card {
+            background: linear-gradient(135deg, #1a4a38 0%, #0d3324 100%);
+            color: #ffffff;
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--border-radius-lg);
+            display: flex; flex-direction: column;
+            box-shadow: 0 6px 20px rgba(26, 74, 56, 0.2);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .hadith-card:active { transform: scale(0.99); }
+        .hadith-card.daily-highlight {
+            border: 2px solid var(--primary-gold);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        [data-theme="dark"] .hadith-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: #1a4a38;
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.2);
+        }
+
+        .daily-badge {
+            display: inline-block; background: var(--primary-gold); color: #1a4a38;
+            padding: 3px 12px; border-radius: 50px; font-size: 0.7rem;
+            font-weight: 700; margin-bottom: 0.8rem; align-self: flex-start;
+        }
+        [data-theme="dark"] .daily-badge { background: #1a4a38; color: #fbbf24; }
+
+        .hadith-title {
+            font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            opacity: 0.95;
+        }
+
+        .hadith-text {
+            font-family: 'Amiri', serif;
+            font-size: 1.05rem; line-height: 2; margin-bottom: 1rem;
+            opacity: 0.95;
+        }
+
+        .hadith-meta {
+            display: flex; flex-direction: column; gap: 4px;
+            font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.8rem;
+        }
+        .hadith-meta span { font-weight: 600; }
+
+        .hadith-actions {
+            display: flex; justify-content: flex-end; gap: 6px;
+            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.8rem;
+        }
+        [data-theme="dark"] .hadith-actions { border-top-color: rgba(26,74,56,0.2); }
+
+        .hadith-actions .action-btn {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+            color: #fff; width: 34px; height: 34px; border-radius: 50%;
+            font-size: 0.9rem; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; padding: 0;
+        }
+        .hadith-actions .action-btn:active { background: rgba(255,255,255,0.3); }
+        .hadith-actions .action-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+        [data-theme="dark"] .hadith-actions .action-btn {
+            background: rgba(26,74,56,0.15); border-color: rgba(26,74,56,0.25);
+            color: #1a4a38;
+        }
+
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #1a4a38; color: white; padding: 10px 20px; border-radius: 50px;
+            font-weight: 700; font-size: 0.85rem; z-index: 999;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards;
+        }
+        [data-theme="dark"] .toast { background: #fbbf24; color: #1a4a38; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="site-bg"></div>
-    <div class="bg-overlay"></div>
+<div class="site-bg"></div>
+<div class="bg-overlay"></div>
 
-   <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">سبيل</a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="masbaha.html">المسبحة</a></li>
-                    <li><a href="odea.html">الأدعية</a></li>
-                    <li><a href="quran.html">القرآن</a></li>
-                    <li><a href="hadith.html">أحاديث نبوية</a></li>
-                    <li><a href="sira.html">السيرة النبوية</a></li>
-                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
-                    <li><a href="prophets.html">قصص الأنبياء</a></li>
-                    <li><a href="azkar.html">الأذكار</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
-                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
-            </div>
-        </div>
-    </header>
+<header>
+    <div class="container header-content">
+        <a href="index.html" class="logo">سبيل</a>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="masbaha.html">المسبحة</a></li>
+                <li><a href="odea.html">الأدعية</a></li>
+                <li><a href="quran.html">القرآن</a></li>
+                <li><a href="hadith.html" style="color: var(--primary-gold);">الأحاديث</a></li>
+                <li><a href="sira.html">السيرة</a></li>
+                <li><a href="sahaba.html">الصحابة</a></li>
+                <li><a href="prophets.html">الأنبياء</a></li>
+                <li><a href="azkar.html">الأذكار</a></li>
+                <li><a href="qibla.html">القبلة</a></li>
+                <li><a href="settings.html">الإعدادات</a></li>
+            </ul>
+        </nav>
+        <button class="hamburger" id="menuBtn">☰</button>
+    </div>
+</header>
 
-    <nav class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="masbaha.html">المسبحة</a></li>
-            <li><a href="odea.html">الأدعية</a></li>
-            <li><a href="quran.html">القرآن</a></li>
-            <li><a href="hadith.html">أحاديث نبوية</a></li>
-            <li><a href="sira.html">السيرة النبوية</a></li>
-            <li><a href="sahaba.html">عظماء الصحابة</a></li>
-            <li><a href="prophets.html">قصص الأنبياء</a></li>
-            <li><a href="azkar.html">الأذكار</a></li>
-        </ul>
-    </nav>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
-                <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
-            </div>
-        </div>
-    </header>
+<div class="mobile-nav-overlay" id="overlay"></div>
+<nav class="mobile-nav" id="sidebar">
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <span style="font-weight: 800; color: var(--primary-deep-green);">القائمة</span>
+        <button class="hamburger" id="closeBtn">✕</button>
+    </div>
+    <ul>
+         <li><a href="index.html">🕌 الرئيسية</a></li>
+            <li><a href="masbaha.html">📿 المسبحة</a></li>
+            <li><a href="odea.html">🤲 الأدعية</a></li>
+            <li><a href="quran.html">📖 القرآن الكريم</a></li>
+            <li><a href="hadith.html">📜 أحاديث نبوية</a></li>
+            <li><a href="sira.html">🕌 السيرة النبوية</a></li>
+            <li><a href="sahaba.html">🌟 عظماء الصحابة</a></li>
+            <li><a href="prophets.html">🌍 قصص الأنبياء</a></li>
+            <li><a href="azkar.html">🌿 الأذكار</a></li>
+            <li><a href="settings.html">⚙️ الإعدادات</a></li>
+    </ul>
+</nav>
 
-    <nav class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="المسبحة.html">المسبحة</a></li>
-            <li><a href="الأدعية.html">الأدعية</a></li>
-            <li><a href="القرآن.html">القرآن</a></li>
-            <li><a href="أحاديث نبوية.html" style="color: var(--primary-gold);">أحاديث نبوية</a></li>
-            <li><a href="السيرة النبوية.html">السيرة النبوية</a></li>
-            <li><a href="عظماء الصحابة.html">عظماء الصحابة</a></li>
-            <li><a href="قصص الأنبياء.html">قصص الأنبياء</a></li>
-            <li><a href="الأذكار.html">الأذكار</a></li>
-        </ul>
-    </nav>
+<main class="container">
+    <h1 class="page-title">أحاديث نبوية</h1>
+    <p class="page-subtitle">نور من مشكاة النبوة ﷺ</p>
 
-    <main class="page-layout container">
-        
-        <div class="page-header">
-            <h1 class="page-title">أحاديث نبوية</h1>
-            <p class="page-subtitle">نور من مشكاة النبوة، وهدي المصطفى ﷺ ينير دروبنا</p>
-            
-            <div class="font-controls">
-                <button class="font-btn" id="btnIncFont" title="تكبير الخط">+</button>
-                <button class="font-btn" id="btnResetFont" title="إعادة الحجم">↺</button>
-                <button class="font-btn" id="btnDecFont" title="تصغير الخط">-</button>
-            </div>
-        </div>
+    <div class="font-controls">
+        <button class="font-btn" id="btnIncFont">+</button>
+        <button class="font-btn" id="btnResetFont">↺</button>
+        <button class="font-btn" id="btnDecFont">-</button>
+    </div>
 
-        <div class="content-grid">
-            
-            <aside class="sidebar">
-                <div class="glass-card" id="dailyHadithContainer">
-                    <h2 class="section-title">✨ حديث اليوم</h2>
-                </div>
-                <div class="glass-card">
-                    <h2 class="section-title">⭐ المفضلة</h2>
-                    <div class="fav-list" id="favSidebarList"></div>
-                </div>
-            </aside>
+    <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن حديث...">
 
-            <section class="main-content">
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن حديث... (مثال: النية، الإيمان، الصلاة)">
-                </div>
+    <div class="categories-scroll" id="categoriesContainer"></div>
 
-                <div class="categories-scroll" id="categoriesContainer"></div>
+    <div class="cards-grid" id="hadithsGrid"></div>
+</main>
 
-                <div class="cards-grid" id="hadithsGrid"></div>
+<div id="toastMsg" class="toast" style="display:none;"></div>
 
-                <div class="load-more-container" id="loadMoreContainer">
-                    <button class="btn-load-more" id="btnLoadMore">تحميل المزيد</button>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <div id="toastMsg" class="toast">رسالة التنبيه</div>
-
-    <script>
-        // ==================== MASSIVE HADITH DATASET (> 200 Hadiths) ====================
+<script>
+    // ==================== MASSIVE HADITH DATASET (> 200 Hadiths) ====================
         // Categories: الإيمان، الصلاة، الذكر، الصبر، التوبة، الأخلاق، العلم، الدعاء، بر الوالدين، الرزق، الفتن، الجنة والنار.
         const hadithsData = [
             // ====== أحاديث الإيمان (Faith) ======
@@ -461,323 +465,175 @@
             // تم دمج مجموعة غنية جداً تمثل 138 حديثاً متنوعاً وصحيحاً لضمان أفضل تجربة، ويمكن إضافة المزيد بسهولة في نفس المصفوفة.
         ];
 
-        const CATEGORIES = [
-            "الكل", "المفضلة", "أحاديث الإيمان", "أحاديث الصلاة", "أحاديث الذكر", 
-            "أحاديث الصبر", "أحاديث التوبة", "أحاديث الأخلاق", "أحاديث العلم", 
-            "أحاديث الدعاء", "أحاديث بر الوالدين", "أحاديث الرزق", "أحاديث الفتن", 
-            "أحاديث الجنة والنار"
-        ];
+    const CATEGORIES = ["الكل", "المفضلة", "الإيمان", "الصلاة", "الذكر", "الصبر", "التوبة", "الأخلاق", "العلم"];
 
-        // ==================== STATE ====================
-        const ITEMS_PER_PAGE = 20;
-        const state = {
-            category: 'الكل',
-            search: '',
-            favorites: [],
-            fontSize: 1.15,
-            currentPage: 1,
-            filteredData: []
-        };
+    let state = { category: 'الكل', search: '', favorites: [], fontSize: 1.05 };
+    const DOM = {
+        categoriesContainer: document.getElementById('categoriesContainer'),
+        grid: document.getElementById('hadithsGrid'),
+        searchInput: document.getElementById('searchInput'),
+        toastMsg: document.getElementById('toastMsg'),
+        sidebar: document.getElementById('sidebar'),
+        overlay: document.getElementById('overlay')
+    };
 
-        // ==================== DOM ELEMENTS ====================
-        const DOM = {
-            themeToggle: document.getElementById('themeToggle'),
-            hamburgerBtn: document.getElementById('hamburgerBtn'),
-            mobileNav: document.getElementById('mobileNav'),
-            categoriesContainer: document.getElementById('categoriesContainer'),
-            grid: document.getElementById('hadithsGrid'),
-            searchInput: document.getElementById('searchInput'),
-            toastMsg: document.getElementById('toastMsg'),
-            btnIncFont: document.getElementById('btnIncFont'),
-            btnDecFont: document.getElementById('btnDecFont'),
-            btnResetFont: document.getElementById('btnResetFont'),
-            dailyContainer: document.getElementById('dailyHadithContainer'),
-            favSidebarList: document.getElementById('favSidebarList'),
-            btnLoadMore: document.getElementById('btnLoadMore'),
-            loadMoreContainer: document.getElementById('loadMoreContainer')
-        };
+    // Mobile menu
+    document.getElementById('menuBtn').onclick = () => { DOM.sidebar.classList.add('active'); DOM.overlay.classList.add('active'); };
+    document.getElementById('closeBtn').onclick = () => { DOM.sidebar.classList.remove('active'); DOM.overlay.classList.remove('active'); };
+    DOM.overlay.onclick = () => { DOM.sidebar.classList.remove('active'); DOM.overlay.classList.remove('active'); };
 
-        // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            handleMobileMenu();
-            renderCategories();
-            loadState();
-            setDailyHadith();
-            updateFilteredData();
-            renderHadiths();
-            renderFavoritesSidebar();
-            setupEventListeners();
+    function init() {
+        const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        const savedFavs = localStorage.getItem('sabeel_fav_hadiths');
+        if (savedFavs) state.favorites = JSON.parse(savedFavs);
+        
+        const savedFont = localStorage.getItem('sabeel_hadith_font');
+        if (savedFont) { state.fontSize = parseFloat(savedFont); applyFontSize(); }
+
+        renderCategories();
+        renderHadiths();
+    }
+
+    function renderCategories() {
+        DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
+            <button class="cat-chip ${cat === state.category ? 'active' : ''}">${cat}</button>
+        `).join('');
+    }
+
+    function applyFontSize() {
+        document.querySelectorAll('.hadith-text').forEach(el => el.style.fontSize = `${state.fontSize}rem`);
+        localStorage.setItem('sabeel_hadith_font', state.fontSize);
+    }
+
+    function changeFontSize(step) {
+        state.fontSize = Math.max(0.8, Math.min(2, state.fontSize + step));
+        applyFontSize();
+    }
+
+    function showToast(msg) {
+        DOM.toastMsg.textContent = msg;
+        DOM.toastMsg.style.display = 'block';
+        DOM.toastMsg.style.animation = 'none';
+        DOM.toastMsg.offsetHeight;
+        DOM.toastMsg.style.animation = 'toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards';
+        setTimeout(() => DOM.toastMsg.style.display = 'none', 2000);
+    }
+
+    // ====== مشاركة البطاقة كصورة ======
+    async function shareCard(cardElement) {
+        if (typeof html2canvas === 'undefined') { alert("المكتبة غير متاحة"); return; }
+        try {
+            const canvas = await html2canvas(cardElement, { scale: 3, backgroundColor: null });
+            const imageData = canvas.toDataURL('image/png');
+            
+            const Share = window.Capacitor?.Plugins?.Share;
+            const Filesystem = window.Capacitor?.Plugins?.Filesystem;
+
+            if (Share && Filesystem) {
+                const base64Data = imageData.split(',')[1];
+                const savedFile = await Filesystem.writeFile({
+                    path: 'hadith_' + Date.now() + '.png', data: base64Data, directory: 'CACHE'
+                });
+                await Share.share({ title: 'حديث', url: savedFile.uri });
+            } else if (navigator.share) {
+                try {
+                    const blob = await (await fetch(imageData)).blob();
+                    const file = new File([blob], 'حديث.png', { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file] });
+                    } else {
+                        const id = parseInt(cardElement.dataset.hadithId);
+                        const h = hadithsData.find(d => d.id === id);
+                        if (h) await navigator.share({ title: h.title, text: h.text });
+                    }
+                } catch(e) {
+                    const a = document.createElement('a'); a.download = 'حديث.png'; a.href = imageData; a.click();
+                }
+            } else {
+                const a = document.createElement('a'); a.download = 'حديث.png'; a.href = imageData; a.click();
+            }
+        } catch(e) { console.error(e); showToast("خطأ"); }
+    }
+
+    function generateCard(hadith, isDaily = false) {
+        const isFav = state.favorites.includes(hadith.id);
+        return `
+            <div class="hadith-card ${isDaily ? 'daily-highlight' : ''}" data-hadith-id="${hadith.id}" style="--font:${state.fontSize}rem">
+                ${isDaily ? '<span class="daily-badge">حديث اليوم</span>' : ''}
+                <div class="hadith-title">${hadith.title}</div>
+                <div class="hadith-text" style="font-size:${state.fontSize}rem">${hadith.text}</div>
+                <div class="hadith-meta">
+                    <span>الراوي: ${hadith.narrator}</span>
+                    <span>المصدر: ${hadith.source}</span>
+                </div>
+                <div class="hadith-actions">
+                    <button class="action-btn share-btn" data-id="${hadith.id}">
+                        <img src="https://cdn-icons-png.flaticon.com/128/929/929539.png" style="width:14px;height:14px;" alt="share">
+                    </button>
+                    <button class="action-btn copy-btn" data-text="${hadith.text.replace(/"/g, '&quot;')}">📋</button>
+                    <button class="action-btn fav-btn" data-id="${hadith.id}">${isFav ? '♥' : '♡'}</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderHadiths() {
+        const search = state.search.toLowerCase();
+        const filtered = hadithsData.filter(h => {
+            const matchCat = state.category === 'الكل' || (state.category === 'المفضلة' && state.favorites.includes(h.id)) || h.category === state.category;
+            const matchSearch = !search || h.title.includes(search) || h.text.includes(search) || h.narrator.includes(search);
+            return matchCat && matchSearch;
         });
 
-        // ==================== THEME & MENU ====================
-        function initTheme() {
-            const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        DOM.grid.innerHTML = filtered.length ? filtered.map(h => generateCard(h)).join('') : '<div class="empty-state">لا توجد نتائج</div>';
 
-            DOM.themeToggle.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('sabeel_theme', next);
-                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        }
-
-        function handleMobileMenu() {
-            DOM.hamburgerBtn.addEventListener('click', () => {
-                DOM.mobileNav.classList.toggle('active');
-                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
-            });
-        }
-
-        // ==================== LOGIC ====================
-        function loadState() {
-            const savedFavs = localStorage.getItem('sabeel_fav_hadiths');
-            if (savedFavs) state.favorites = JSON.parse(savedFavs);
-
-            const savedFont = localStorage.getItem('sabeel_hadith_font');
-            if (savedFont) {
-                state.fontSize = parseFloat(savedFont);
-                applyFontSize();
-            }
-        }
-
-        function setupEventListeners() {
-            DOM.searchInput.addEventListener('input', (e) => {
-                state.search = e.target.value.trim().toLowerCase();
-                state.currentPage = 1; // reset page on search
-                updateFilteredData();
+        // Events
+        DOM.grid.querySelectorAll('.share-btn').forEach(btn => {
+            btn.onclick = async function(e) {
+                e.stopPropagation();
+                const card = this.closest('.hadith-card');
+                const orig = this.innerHTML;
+                this.innerHTML = '⏳'; this.disabled = true;
+                await shareCard(card);
+                this.innerHTML = orig; this.disabled = false;
+            };
+        });
+        DOM.grid.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.onclick = function(e) {
+                e.stopPropagation();
+                navigator.clipboard.writeText(this.dataset.text.replace(/&quot;/g, '"')).then(() => showToast('تم النسخ'));
+            };
+        });
+        DOM.grid.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.onclick = function(e) {
+                e.stopPropagation();
+                const id = parseInt(this.dataset.id);
+                const idx = state.favorites.indexOf(id);
+                idx > -1 ? state.favorites.splice(idx, 1) : state.favorites.push(id);
+                localStorage.setItem('sabeel_fav_hadiths', JSON.stringify(state.favorites));
                 renderHadiths();
-            });
+            };
+        });
+    }
 
-            DOM.categoriesContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('category-chip')) {
-                    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                    state.category = e.target.textContent.trim();
-                    state.currentPage = 1; // reset page on category change
-                    updateFilteredData();
-                    renderHadiths();
-                }
-            });
+    // Events
+    document.getElementById('btnIncFont').addEventListener('click', () => changeFontSize(0.1));
+    document.getElementById('btnDecFont').addEventListener('click', () => changeFontSize(-0.1));
+    document.getElementById('btnResetFont').addEventListener('click', () => { state.fontSize = 1.05; applyFontSize(); });
 
-            DOM.btnIncFont.addEventListener('click', () => changeFontSize(0.1));
-            DOM.btnDecFont.addEventListener('click', () => changeFontSize(-0.1));
-            DOM.btnResetFont.addEventListener('click', () => { state.fontSize = 1.15; applyFontSize(); });
+    DOM.searchInput.addEventListener('input', (e) => { state.search = e.target.value; renderHadiths(); });
 
-            DOM.btnLoadMore.addEventListener('click', () => {
-                state.currentPage++;
-                renderHadiths(true); // append instead of replace
-            });
-
-            document.addEventListener('click', handleHadithActions);
+    DOM.categoriesContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('cat-chip')) {
+            state.category = e.target.textContent;
+            renderCategories();
+            renderHadiths();
         }
+    });
 
-        function renderCategories() {
-            DOM.categoriesContainer.innerHTML = CATEGORIES.map(cat => `
-                <button class="btn btn-outline category-chip ${cat === state.category ? 'active' : ''}">${cat}</button>
-            `).join('');
-        }
-
-        function changeFontSize(step) {
-            state.fontSize += step;
-            if (state.fontSize < 0.9) state.fontSize = 0.9;
-            if (state.fontSize > 2.2) state.fontSize = 2.2;
-            applyFontSize();
-        }
-
-        function applyFontSize() {
-            document.documentElement.style.setProperty('--hadith-font-size', `${state.fontSize}rem`);
-            localStorage.setItem('sabeel_hadith_font', state.fontSize);
-        }
-
-        // ==================== RENDERING & PAGINATION ====================
-        function updateFilteredData() {
-            state.filteredData = hadithsData.filter(hadith => {
-                const matchCategory = state.category === 'الكل' || 
-                                      (state.category === 'المفضلة' && state.favorites.includes(hadith.id)) ||
-                                      hadith.category === state.category;
-                const matchSearch = state.search === '' || 
-                                    hadith.title.toLowerCase().includes(state.search) || 
-                                    hadith.text.toLowerCase().includes(state.search) ||
-                                    hadith.narrator.toLowerCase().includes(state.search);
-                return matchCategory && matchSearch;
-            });
-        }
-
-        function renderHadiths(append = false) {
-            if (state.filteredData.length === 0) {
-                DOM.grid.innerHTML = `<div class="empty-state">لا توجد أحاديث مطابقة في هذا القسم.</div>`;
-                DOM.loadMoreContainer.style.display = 'none';
-                return;
-            }
-
-            const startIndex = append ? (state.currentPage - 1) * ITEMS_PER_PAGE : 0;
-            const endIndex = state.currentPage * ITEMS_PER_PAGE;
-            const paginatedItems = state.filteredData.slice(startIndex, endIndex);
-
-            const html = paginatedItems.map(h => generateCardHTML(h)).join('');
-
-            if (append) {
-                DOM.grid.insertAdjacentHTML('beforeend', html);
-            } else {
-                DOM.grid.innerHTML = html;
-            }
-
-            // Check if we need the Load More button
-            if (endIndex >= state.filteredData.length) {
-                DOM.loadMoreContainer.style.display = 'none';
-            } else {
-                DOM.loadMoreContainer.style.display = 'block';
-            }
-        }
-
-        function renderFavoritesSidebar() {
-            const favHadiths = hadithsData.filter(h => state.favorites.includes(h.id));
-            if (favHadiths.length === 0) {
-                DOM.favSidebarList.innerHTML = `<div style="text-align:center; color: var(--text-muted); font-size: 0.9rem;">قائمتك فارغة. أضف أحاديث!</div>`;
-                return;
-            }
-            DOM.favSidebarList.innerHTML = favHadiths.map(h => `
-                <div class="fav-mini-card">
-                    <span class="fav-mini-text">${h.title}</span>
-                    <button class="btn-icon fav-btn active" data-id="${h.id}" style="padding:0; font-size:1rem;" title="إزالة">❤️</button>
-                </div>
-            `).join('');
-        }
-
-        function generateCardHTML(hadith, isDaily = false) {
-            const isFav = state.favorites.includes(hadith.id);
-            const favIcon = isFav ? '❤️' : '🤍';
-            const favClass = isFav ? 'active' : '';
-            const tagsHTML = hadith.tags ? hadith.tags.map(t => `<span class="hadith-tag">#${t}</span>`).join('') : '';
-            const gradeClass = hadith.grade.includes('حسن') ? 'hasan' : '';
-
-            return `
-                <article class="glass-card hadith-card ${isDaily ? 'daily-highlight' : ''}">
-                    ${isDaily ? '<span class="daily-badge">حديث اليوم</span>' : ''}
-                    <div class="hadith-header">
-                        <h3 class="hadith-title">${hadith.title}</h3>
-                        ${hadith.grade ? `<span class="hadith-grade ${gradeClass}">${hadith.grade}</span>` : ''}
-                    </div>
-                    <div class="hadith-text">${hadith.text}</div>
-                    
-                    <div class="hadith-meta">
-                        <div class="meta-item"><span class="meta-label">الراوي:</span> ${hadith.narrator}</div>
-                        <div class="meta-item"><span class="meta-label">المصدر:</span> ${hadith.source}</div>
-                        ${tagsHTML ? `<div class="hadith-tags">${tagsHTML}</div>` : ''}
-                    </div>
-
-                    <div class="hadith-actions">
-                        <button class="btn-icon fav-btn ${favClass}" data-id="${hadith.id}" aria-label="إضافة للمفضلة" title="المفضلة">${favIcon}</button>
-                        <button class="btn-icon copy-btn" data-text="${hadith.text} (الراوي: ${hadith.narrator} | المصدر: ${hadith.source})" aria-label="نسخ الحديث" title="نسخ">📋</button>
-                        <button class="btn-icon share-btn" data-title="${hadith.title}" data-text="${hadith.text} (الراوي: ${hadith.narrator})" aria-label="مشاركة الحديث" title="مشاركة">📤</button>
-                    </div>
-                </article>
-            `;
-        }
-
-        // ==================== DAILY HADITH ====================
-        function setDailyHadith() {
-            const dateStr = new Date().toDateString();
-            const storedDate = localStorage.getItem('sabeel_daily_hadith_date');
-            let dailyId = parseInt(localStorage.getItem('sabeel_daily_hadith_id'));
-
-            if (storedDate !== dateStr || isNaN(dailyId)) {
-                // Select Random Hadith
-                dailyId = hadithsData[Math.floor(Math.random() * hadithsData.length)].id;
-                localStorage.setItem('sabeel_daily_hadith_date', dateStr);
-                localStorage.setItem('sabeel_daily_hadith_id', dailyId);
-            }
-
-            const dailyHadith = hadithsData.find(h => h.id === dailyId) || hadithsData[0];
-            DOM.dailyContainer.innerHTML = `<h2 class="section-title">✨ حديث اليوم</h2>` + generateCardHTML(dailyHadith, true);
-        }
-
-        // ==================== ACTIONS ====================
-        function handleHadithActions(e) {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-
-            if (btn.classList.contains('fav-btn')) {
-                const id = parseInt(btn.getAttribute('data-id'));
-                toggleFavorite(id);
-            } else if (btn.classList.contains('copy-btn')) {
-                const text = btn.getAttribute('data-text');
-                copyText(text);
-            } else if (btn.classList.contains('share-btn')) {
-                const title = btn.getAttribute('data-title');
-                const text = btn.getAttribute('data-text');
-                shareText(title, text);
-            }
-        }
-
-        function toggleFavorite(id) {
-            const index = state.favorites.indexOf(id);
-            if (index > -1) {
-                state.favorites.splice(index, 1);
-                showToast("تمت الإزالة من المفضلة");
-            } else {
-                state.favorites.push(id);
-                showToast("تمت الإضافة إلى المفضلة");
-            }
-            
-            localStorage.setItem('sabeel_fav_hadiths', JSON.stringify(state.favorites));
-            
-            setDailyHadith(); 
-            renderFavoritesSidebar();
-            
-            if (state.category === 'المفضلة') {
-                state.currentPage = 1;
-                updateFilteredData();
-                renderHadiths();
-            } else {
-                document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
-                    if (index > -1) {
-                        btn.classList.remove('active');
-                        btn.textContent = '🤍';
-                    } else {
-                        btn.classList.add('active');
-                        btn.textContent = '❤️';
-                    }
-                });
-            }
-        }
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("تم النسخ بنجاح");
-            }).catch(() => {
-                showToast("تعذر النسخ");
-            });
-        }
-
-        async function shareText(title, text) {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: title,
-                        text: `${text}\n\n- من موقع سبيل`
-                    });
-                    showToast("تمت المشاركة");
-                } catch (err) {}
-            } else {
-                copyText(text);
-                showToast("تم النسخ بدل المشاركة (المتصفح لا يدعم)");
-            }
-        }
-
-        let toastTimeout;
-        function showToast(msg) {
-            DOM.toastMsg.textContent = msg;
-            DOM.toastMsg.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                DOM.toastMsg.classList.remove('show');
-            }, 3000);
-        }
-    </script>
+    init();
+</script>
 </body>
 </html>
