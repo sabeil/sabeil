@@ -1,728 +1,813 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>سبيل - المسبحة الإلكترونية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ==================== VARIABLES (Matched with Homepage) ==================== */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        html, body { width: 100%; min-height: 100vh; overflow-x: hidden; background-color: #ffffff; }
+        body { font-family: 'Tajawal', sans-serif; color: var(--text-dark); background-color: var(--primary-white); line-height: 1.6; display: flex; flex-direction: column; transition: var(--transition-smooth); padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+
         :root {
-            --primary-white: #ffffff;
-            --primary-soft-green: #e9f5ec;
-            --primary-deep-green: #1a4a38;
-            --primary-gold: #d4af37;
-            --text-dark: #1f2937;
-            --text-light: #f3f4f6;
-            --text-muted: #6b7280;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            --border-radius-lg: 24px;
-            --border-radius-md: 16px;
-            --border-radius-sm: 8px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary-white: #ffffff; --primary-soft-green: #e9f5ec; --primary-deep-green: #1a4a38;
+            --primary-gold: #d4af37; --text-dark: #1f2937; --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1); --border-radius-lg: 24px;
+            --border-radius-md: 16px; --border-radius-sm: 8px; --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="dark"] {
-            --primary-white: #0f172a;
-            --primary-soft-green: #1e293b;
-            --primary-deep-green: #064e3b;
-            --primary-gold: #fbbf24;
-            --text-dark: #f8fafc;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(15, 23, 42, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            --primary-white: #0f172a; --primary-soft-green: #1e293b; --primary-deep-green: #064e3b;
+            --primary-gold: #fbbf24; --text-dark: #f8fafc; --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.82); --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        /* ==================== RESET & BASE ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--primary-white);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition-smooth);
-        }
-
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        button { font-family: inherit; }
-
-        /* ==================== BACKGROUND ==================== */
-        .site-bg {
-            position: fixed;
-            top: 0; right: 0; bottom: 0; left: 0;
-            background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
-        }
-
-        .bg-overlay {
-            position: fixed;
-            top: 0; right: 0; bottom: 0; left: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(243,244,246,0.9) 100%);
-            z-index: -1;
-            transition: var(--transition-smooth);
-        }
-
-        [data-theme="dark"] .bg-overlay {
-            background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(2,6,23,0.95) 100%);
-        }
-
-        /* ==================== UTILITIES ==================== */
-        .container {
-            width: 100%;
-            padding: 0 1rem;
-            margin: 0 auto;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-soft);
-            padding: 1.5rem;
-            transition: var(--transition-smooth);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius-sm);
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition-smooth);
-            font-size: 1rem;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary-gold);
-            color: var(--primary-gold);
-        }
-
-        .btn-outline:hover, .btn-outline.active {
-            background-color: var(--primary-gold);
-            color: #fff;
-        }
+        .site-bg { position: fixed; inset: 0; background-image: url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; z-index: -2; }
+        .bg-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(243,244,246,0.92) 100%); z-index: -1; }
+        [data-theme="dark"] .bg-overlay { background: linear-gradient(135deg, rgba(15,23,42,0.88) 0%, rgba(2,6,23,0.96) 100%); }
         
-        [data-theme="dark"] .btn-outline.active { color: var(--primary-deep-green); }
-
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.9rem; }
-
-        /* ==================== HEADER ==================== */
-        header {
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-deep-green); }
+        .container { width: 100%; padding: 0 1rem; margin: 0 auto; }
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-soft); padding: 1.25rem; margin-bottom: 1rem; }
+        
+        header { padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary-deep-green); text-decoration: none; }
         [data-theme="dark"] .logo { color: var(--primary-gold); }
 
-        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+        .hamburger { background: transparent; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; display: flex; }
 
-        .theme-toggle, .hamburger {
-            background: transparent;
-            border: none;
-            color: var(--text-dark);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.25rem;
-            display: flex;
-        }
-
+        /* القائمة الجانبية الموحدة */
         .mobile-nav {
-            position: fixed;
-            top: 68px; right: 0; width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--glass-border);
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-in-out;
-            z-index: 99;
+            position: fixed; top: 0; left: -100%; width: 85%; max-width: 320px; height: 100vh;
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border); box-shadow: var(--shadow-soft);
+            transition: left 0.35s ease-in-out; z-index: 200; overflow-y: auto; padding: 1.5rem 1rem;
         }
-        .mobile-nav.active { max-height: 400px; overflow-y: auto; }
-        .mobile-nav ul { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .mobile-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--border-radius-sm); font-weight: 500; background: rgba(0,0,0,0.03); }
-        [data-theme="dark"] .mobile-nav a { background: rgba(255,255,255,0.05); }
-
-        .desktop-nav { display: none; }
-
-        /* ==================== TASBIH LAYOUT ==================== */
-        .tasbih-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding: 2rem 1rem;
-            flex: 1;
-            max-width: 800px;
-            margin: 0 auto;
+        .mobile-nav.active { left: 0; }
+        .mobile-nav-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border);
         }
-
-        .page-header { text-align: center; margin-bottom: 1rem; }
-        .page-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem; }
-        [data-theme="dark"] .page-title { color: var(--primary-gold); }
-        .page-subtitle { font-size: 1.1rem; color: var(--text-muted); }
-
-        /* Main Tasbih Card */
-        .tasbih-main-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 2.5rem 1.5rem;
+        .mobile-nav-header h3 { color: var(--primary-deep-green); font-size: 1.3rem; font-weight: 700; margin: 0; }
+        [data-theme="dark"] .mobile-nav-header h3 { color: var(--primary-gold); }
+        .close-menu {
+            background: transparent; border: none; color: var(--text-dark); font-size: 1.8rem;
+            cursor: pointer; padding: 0.25rem; display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; transition: var(--transition-smooth);
         }
-
-        .current-dhikr {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-deep-green);
-            margin-bottom: 1.5rem;
-            min-height: 2.5rem;
+        .close-menu:hover { background: rgba(0, 0, 0, 0.05); }
+        .mobile-nav ul { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+        .mobile-nav ul li a {
+            display: block; padding: 0.9rem 1rem; border-radius: var(--border-radius-sm);
+            font-weight: 500; font-size: 1.05rem; font-family: 'Tajawal', sans-serif;
+            background: rgba(0, 0, 0, 0.03); transition: var(--transition-smooth); text-decoration: none; color: inherit;
         }
+        [data-theme="dark"] .mobile-nav ul li a { background: rgba(255, 255, 255, 0.05); }
+        .mobile-nav ul li a:hover { background: var(--primary-gold); color: var(--primary-deep-green); transform: translateX(-5px); }
+        .menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 199;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+        body.menu-open { overflow: hidden; }
+
+        .tasbih-wrapper { display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem 0; max-width: 800px; margin: 0 auto; flex: 1; }
+        .tasbih-main-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .current-dhikr { font-size: 1.5rem; font-weight: 700; color: var(--primary-deep-green); margin-bottom: 1rem; min-height: 3rem; display: flex; align-items: center; justify-content: center; }
         [data-theme="dark"] .current-dhikr { color: var(--primary-gold); }
 
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 1.5rem;
-        }
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-        .progress-track {
-            height: 10px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        [data-theme="dark"] .progress-track { background: rgba(255,255,255,0.05); }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-gold), var(--primary-deep-green));
-            width: 0%;
-            transition: width 0.4s ease-out;
-            border-radius: 5px;
-        }
-        [data-theme="dark"] .progress-fill { background: linear-gradient(90deg, #d97706, var(--primary-gold)); }
+        .progress-container { width: 100%; max-width: 300px; margin-bottom: 1rem; }
+        .progress-text { display: flex; justify-content: space-between; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .progress-track { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary-gold); width: 0%; transition: 0.3s; }
 
-        /* Big Button */
-        .tasbih-btn {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
+        .tasbih-btn { 
+            width: 160px; height: 160px; border-radius: 50%; 
             background: linear-gradient(135deg, var(--primary-deep-green), #10b981);
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 800;
-            border: none;
-            box-shadow: 0 10px 30px rgba(26, 74, 56, 0.4);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2rem;
-            transition: transform 0.1s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
+            color: white; font-size: 2rem; font-weight: 800; border: none;
+            box-shadow: 0 10px 25px rgba(26, 74, 56, 0.3); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; margin: 1rem 0;
+            transition: transform 0.1s; user-select: none;
         }
+        [data-theme="dark"] .tasbih-btn { background: linear-gradient(135deg, var(--primary-gold), #b45309); color: var(--primary-deep-green); }
+        .tasbih-btn:active { transform: scale(0.92); }
+
+        .btn { padding: 0.6rem 1rem; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s; font-size: 0.9rem; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary-gold); color: var(--primary-gold); }
+        .btn-outline.active { background: var(--primary-gold); color: white; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-deep-green), #10b981); color: white; padding: 0.8rem; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; width: 100%; transition: 0.2s; }
+        [data-theme="dark"] .btn-primary { background: linear-gradient(135deg, var(--primary-gold), #b45309); color: var(--primary-deep-green); }
+        .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
+
+        .chips-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
         
-        [data-theme="dark"] .tasbih-btn {
-            background: linear-gradient(135deg, var(--primary-gold), #b45309);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-            color: var(--primary-deep-green);
+        /* إنجازات محسنة */
+        .achievements-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-top: 1rem; }
+        .achievement-card {
+            background: rgba(0,0,0,0.03); border-radius: 12px; padding: 1rem;
+            text-align: center; border: 2px solid var(--glass-border); transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .achievement-card.unlocked {
+            border-color: var(--primary-gold);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 74, 56, 0.1) 100%);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+        }
+        .achievement-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .achievement-title { font-weight: 700; font-size: 0.85rem; color: var(--text-dark); margin-bottom: 0.3rem; }
+        .achievement-desc { font-size: 0.7rem; color: var(--text-muted); }
+        .achievement-progress {
+            margin-top: 0.5rem; height: 4px; background: rgba(0,0,0,0.1);
+            border-radius: 2px; overflow: hidden;
+        }
+        .achievement-progress-fill {
+            height: 100%; background: var(--primary-gold); transition: 0.5s;
         }
 
-        .tasbih-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 5px 15px rgba(26, 74, 56, 0.4);
-        }
+        .stats-detailed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-top: 1rem; }
+        .stat-detailed-card { background: rgba(0,0,0,0.03); border-radius: 12px; padding: 0.8rem; text-align: center; border: 1px solid var(--glass-border); }
+        .stat-detailed-value { font-size: 1.5rem; font-weight: 800; color: var(--primary-gold); }
+        .stat-detailed-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.3rem; }
 
-        /* Secondary Controls */
-        .tasbih-controls {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            width: 100%;
-        }
-        .control-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-dark);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-soft);
-            transition: var(--transition-smooth);
-        }
-        .control-btn:hover { background: rgba(0,0,0,0.05); color: #ef4444; }
-        [data-theme="dark"] .control-btn:hover { background: rgba(255,255,255,0.1); color: #fca5a5; }
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary-deep-green); color: white; padding: 0.8rem 1.5rem; border-radius: 50px; opacity: 0; transition: 0.4s; z-index: 1000; box-shadow: var(--shadow-soft); font-weight: 700; font-size: 0.9rem; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* Completion Toast */
-        .completion-msg {
-            color: #10b981;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            height: 0;
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 300; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: 0.3s;
         }
-        .completion-msg.show { opacity: 1; height: auto; margin-bottom: 1rem; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal {
+            background: var(--primary-white); border-radius: 24px; padding: 2rem;
+            width: 90%; max-width: 400px; text-align: center;
+        }
+        .modal h3 { color: var(--primary-deep-green); margin-bottom: 1rem; }
+        .modal input { width: 100%; padding: 0.8rem; border-radius: 12px; border: 2px solid var(--primary-gold); margin-bottom: 1rem; font-size: 1rem; text-align: center; }
+        .modal-buttons { display: flex; gap: 0.8rem; }
+        .modal-buttons button { flex: 1; }
 
-        /* Settings Sections */
-        .settings-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .section-heading {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-deep-green);
-            margin-bottom: 1rem;
-        }
-        [data-theme="dark"] .section-heading { color: var(--primary-gold); }
-
-        .chips-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        /* Stats Section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .stat-card {
-            background: rgba(0,0,0,0.03);
-            border-radius: var(--border-radius-sm);
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-        }
-        [data-theme="dark"] .stat-card { background: rgba(255,255,255,0.02); }
-        .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary-gold); margin-top: 0.5rem; direction: ltr;}
-        .stat-label { font-size: 1rem; font-weight: 600; color: var(--text-muted); }
-
-        /* ==================== DESKTOP ENHANCEMENTS ==================== */
-        @media (min-width: 769px) {
-            .hamburger { display: none; }
-            .desktop-nav { display: block; }
-            .desktop-nav ul { display: flex; gap: 1.2rem; }
-            .desktop-nav a { font-weight: 600; transition: var(--transition-smooth); font-size: 0.95rem; }
-            .desktop-nav a:hover { color: var(--primary-gold); }
-            
-            .tasbih-wrapper { max-width: 1000px; padding: 3rem 1rem; }
-            
-            .desktop-grid {
-                display: grid;
-                grid-template-columns: 1fr 1.5fr;
-                gap: 2rem;
-                align-items: start;
-            }
-            .stats-grid { grid-template-columns: 1fr; } /* Stack stats on left side */
-        }
-
-        @media (min-width: 1024px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+        @media (min-width: 768px) {
+            .desktop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
         }
     </style>
 </head>
 <body>
-
     <div class="site-bg"></div>
     <div class="bg-overlay"></div>
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <header>
         <div class="container header-content">
             <a href="index.html" class="logo">سبيل</a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="masbaha.html">المسبحة</a></li>
-                    <li><a href="odea.html">الأدعية</a></li>
-                    <li><a href="quran.html">القرآن</a></li>
-                    <li><a href="hadith.html">أحاديث نبوية</a></li>
-                    <li><a href="sira.html">السيرة النبوية</a></li>
-                    <li><a href="sahaba.html">عظماء الصحابة</a></li>
-                    <li><a href="prophets.html">قصص الأنبياء</a></li>
-                    <li><a href="azkar.html">الأذكار</a></li>
-                </ul>
-            </nav>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">🌙</button>
                 <button class="hamburger" id="hamburgerBtn" aria-label="القائمة">☰</button>
             </div>
         </div>
     </header>
 
+    <!-- القائمة الجانبية الموحدة -->
     <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>القائمة الرئيسية</h3>
+            <button class="close-menu" id="closeMenuBtn" aria-label="إغلاق القائمة">✕</button>
+        </div>
         <ul>
-            <li><a href="masbaha.html">المسبحة</a></li>
-            <li><a href="odea.html">الأدعية</a></li>
-            <li><a href="quran.html">القرآن</a></li>
-            <li><a href="hadith.html">أحاديث نبوية</a></li>
-            <li><a href="sira.html">السيرة النبوية</a></li>
-            <li><a href="sahaba.html">عظماء الصحابة</a></li>
-            <li><a href="prophets.html">قصص الأنبياء</a></li>
-            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="index.html">🕌 الرئيسية</a></li>
+            <li><a href="masbaha.html">📿 المسبحة</a></li>
+            <li><a href="odea.html">🤲 الأدعية</a></li>
+            <li><a href="quran.html">📖 القرآن الكريم</a></li>
+            <li><a href="hadith.html">📜 أحاديث نبوية</a></li>
+            <li><a href="sira.html">🕌 السيرة النبوية</a></li>
+            <li><a href="sahaba.html">🌟 عظماء الصحابة</a></li>
+            <li><a href="prophets.html">🌍 قصص الأنبياء</a></li>
+            <li><a href="azkar.html">🌿 الأذكار</a></li>
+            <li><a href="settings.html">⚙️ الإعدادات</a></li>
         </ul>
     </nav>
 
     <main class="tasbih-wrapper container">
-        
-        <div class="page-header">
-            <h1 class="page-title">المسبحة</h1>
-            <p class="page-subtitle">سبّح واذكر الله، واجعل لسانك رطبًا بذكره</p>
-        </div>
-
         <div class="desktop-grid">
-            
-            <div class="glass-card tasbih-main-card">
-                <div class="current-dhikr" id="currentDhikrDisplay">سبحان الله</div>
-                
-                <div class="progress-container">
-                    <div class="progress-text">
-                        <span id="counterDisplay">0</span>
-                        <span>/ <span id="goalDisplay">33</span></span>
+            <!-- القسم الرئيسي: السبحة -->
+            <div>
+                <div class="glass-card tasbih-main-card">
+                    <div class="current-dhikr" id="currentDhikrDisplay">سبحان الله</div>
+                    <div class="progress-container">
+                        <div class="progress-text">
+                            <span id="counterDisplay">0</span>
+                            <span>/ <span id="goalDisplay">33</span></span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
                     </div>
-                    <div class="progress-track">
-                        <div class="progress-fill" id="progressFill"></div>
+                    <button class="tasbih-btn" id="mainTasbihBtn">سبّح</button>
+                    <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+                        <button class="btn btn-outline" id="resetBtn">إعادة ↺</button>
+                        <button class="btn btn-outline" id="decrementBtn">-1</button>
                     </div>
-                </div>
-
-                <div id="completionMsg" class="completion-msg">بارك الله فيك، أتممت الورد ✨</div>
-
-                <button class="tasbih-btn" id="mainTasbihBtn" aria-label="زر التسبيح">سبّح</button>
-
-                <div class="tasbih-controls">
-                    <button class="control-btn" id="resetBtn">إعادة ↺</button>
-                    <button class="control-btn" id="decrementBtn">-1</button>
                 </div>
             </div>
 
-            <div class="settings-grid">
-                
+            <!-- القسم الجانبي: الإعدادات والإنجازات -->
+            <div>
                 <div class="glass-card">
-                    <h3 class="section-heading">الهدف</h3>
+                    <h3 style="font-size: 1rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem;">🎯 الهدف</h3>
                     <div class="chips-container" id="goalContainer">
-                        <button class="btn btn-outline btn-small active" data-goal="33">33</button>
-                        <button class="btn btn-outline btn-small" data-goal="100">100</button>
-                        <button class="btn btn-outline btn-small" data-goal="500">500</button>
-                        <button class="btn btn-outline btn-small" data-goal="1000">1000</button>
-                        <button class="btn btn-outline btn-small" id="customGoalBtn">تخصيص</button>
+                        <button class="btn btn-outline active" data-goal="33">33</button>
+                        <button class="btn btn-outline" data-goal="100">100</button>
+                        <button class="btn btn-outline" data-goal="1000">1000</button>
+                        <button class="btn btn-outline" id="customGoalBtn">تخصيص ✍️</button>
                     </div>
                 </div>
 
                 <div class="glass-card">
-                    <h3 class="section-heading">اختر الذكر</h3>
+                    <h3 style="font-size: 1rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 0.5rem;">📝 اختر الذكر</h3>
                     <div class="chips-container" id="dhikrContainer">
-                        <button class="btn btn-outline btn-small active">سبحان الله</button>
-                        <button class="btn btn-outline btn-small">الحمد لله</button>
-                        <button class="btn btn-outline btn-small">الله أكبر</button>
-                        <button class="btn btn-outline btn-small">لا إله إلا الله</button>
-                        <button class="btn btn-outline btn-small">اللهم صل وسلم وبارك على سيدنا محمد وعلى آله وصحبه</button>
-                        <button class="btn btn-outline btn-small">لا إله إلا أنت سبحانك إني كنت من الظالمين</button>
+                        <button class="btn btn-outline active">سبحان الله</button>
+                        <button class="btn btn-outline">الحمد لله</button>
+                        <button class="btn btn-outline">الله أكبر</button>
+                        <button class="btn btn-outline">لا إله إلا الله</button>
+                        <button class="btn btn-outline" id="customDhikrBtn">ذكر مخصص ✍️</button>
                     </div>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">تسبيحات اليوم</div>
-                        <div class="stat-value" id="todayStats">0</div>
+                <!-- الإنجازات والاحصائيات -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1rem; font-weight: 800; color: var(--primary-deep-green); margin-bottom: 1rem;">🏆 الإنجازات</h3>
+                    
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- تمتلئ بالجافاسكريبت -->
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">المجموع الكلي</div>
-                        <div class="stat-value" id="totalStats">0</div>
+
+                    <div class="stats-detailed" style="margin-top: 1.5rem;">
+                        <div class="stat-detailed-card">
+                            <div class="stat-detailed-value" id="todayCount">0</div>
+                            <div class="stat-detailed-label">تسبيحات اليوم</div>
+                        </div>
+                        <div class="stat-detailed-card" style="border-color: var(--primary-gold);">
+                            <div class="stat-detailed-value" id="streakDays">0 🔥</div>
+                            <div class="stat-detailed-label">أيام متتالية</div>
+                        </div>
+                        <div class="stat-detailed-card">
+                            <div class="stat-detailed-value" id="totalCount">0</div>
+                            <div class="stat-detailed-label">إجمالي التسبيحات</div>
+                        </div>
+                        <div class="stat-detailed-card">
+                            <div class="stat-detailed-value" id="goalsCompleted">0</div>
+                            <div class="stat-detailed-label">هدف مكتمل</div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </main>
 
+    <!-- نافذة تخصيص الهدف -->
+    <div class="modal-overlay" id="goalModal">
+        <div class="modal">
+            <h3>🎯 حدد هدفك</h3>
+            <input type="number" id="customGoalInput" placeholder="أدخل العدد" min="1" max="9999">
+            <div class="modal-buttons">
+                <button class="btn btn-outline" id="cancelGoalBtn">إلغاء</button>
+                <button class="btn btn-primary" id="saveGoalBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تخصيص الذكر -->
+    <div class="modal-overlay" id="dhikrModal">
+        <div class="modal">
+            <h3>📝 أدخل الذكر</h3>
+            <input type="text" id="customDhikrInput" placeholder="اكتب الذكر هنا...">
+            <div class="modal-buttons">
+                <button class="btn btn-outline" id="cancelDhikrBtn">إلغاء</button>
+                <button class="btn btn-primary" id="saveDhikrBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastMsg" class="toast"></div>
+
     <script>
-        // ==================== STATE VARIABLES ====================
-        let state = {
-            count: 0,
-            goal: 33,
-            dhikr: 'سبحان الله'
+        // ==================== إدارة القائمة الجانبية ====================
+        function initMobileMenu() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNav');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+            if (!hamburgerBtn || !mobileNav || !menuOverlay || !closeMenuBtn) {
+                console.error('عناصر القائمة الجانبية غير موجودة');
+                return;
+            }
+
+            function openMenu() {
+                mobileNav.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.classList.add('menu-open');
+            }
+
+            function closeMenu() {
+                mobileNav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+
+            hamburgerBtn.addEventListener('click', openMenu);
+            closeMenuBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+            
+            // إغلاق القائمة عند النقر على أي رابط
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('active')) closeMenu();
+            });
+        }
+
+        // ==================== نظام التخزين والإنجازات ====================
+        const STORAGE_KEYS = {
+            STATE: 'sabeel_tasbih_state',
+            STATS: 'sabeel_tasbih_stats',
+            STREAK: 'sabeel_tasbih_streak',
+            ACHIEVEMENTS: 'sabeel_tasbih_achievements',
+            LAST_CHECK: 'sabeel_tasbih_last_check'
         };
 
-        let stats = {
-            today: 0,
-            total: 0,
-            lastDate: ''
+        // هيكل الإنجازات
+        const ACHIEVEMENTS = [
+            { id: 'first_33', icon: '🌟', title: 'أول مرة', desc: 'أكمل 33 تسبيحة', target: 33, unlocked: false },
+            { id: 'first_100', icon: '💫', title: 'المئة', desc: 'أكمل 100 تسبيحة', target: 100, unlocked: false },
+            { id: 'total_1000', icon: '🔥', title: 'الألف', desc: 'أكمل 1000 تسبيحة', target: 1000, unlocked: false },
+            { id: 'streak_3', icon: '📅', title: '3 أيام', desc: '3 أيام متتالية', target: 3, unlocked: false },
+            { id: 'streak_7', icon: '👑', title: 'أسبوع', desc: '7 أيام متتالية', target: 7, unlocked: false },
+            { id: 'streak_30', icon: '🏆', title: 'شهر', desc: '30 يوم متتالي', target: 30, unlocked: false },
+            { id: 'goals_5', icon: '⭐', title: '5 أهداف', desc: 'أكمل 5 أهداف', target: 5, unlocked: false },
+            { id: 'goals_20', icon: '💎', title: '20 هدف', desc: 'أكمل 20 هدف', target: 20, unlocked: false }
+        ];
+
+        let state = { count: 0, goal: 33, dhikr: 'سبحان الله' };
+        let stats = { 
+            today: 0, total: 0, lastDate: '', 
+            goalsCompleted: 0, totalGoalsCompleted: 0 
         };
+        let streakData = { count: 0, lastDate: '', bestStreak: 0 };
+        let achievements = ACHIEVEMENTS.map(a => ({...a}));
 
-        // ==================== DOM ELEMENTS ====================
-        const DOM = {
-            mainBtn: document.getElementById('mainTasbihBtn'),
-            resetBtn: document.getElementById('resetBtn'),
-            decrementBtn: document.getElementById('decrementBtn'),
-            counterDisplay: document.getElementById('counterDisplay'),
-            goalDisplay: document.getElementById('goalDisplay'),
-            dhikrDisplay: document.getElementById('currentDhikrDisplay'),
-            progressFill: document.getElementById('progressFill'),
-            completionMsg: document.getElementById('completionMsg'),
-            todayStats: document.getElementById('todayStats'),
-            totalStats: document.getElementById('totalStats'),
-            goalBtns: document.querySelectorAll('#goalContainer .btn:not(#customGoalBtn)'),
-            customGoalBtn: document.getElementById('customGoalBtn'),
-            dhikrBtns: document.querySelectorAll('#dhikrContainer .btn'),
-            themeToggle: document.getElementById('themeToggle'),
-            hamburgerBtn: document.getElementById('hamburgerBtn'),
-            mobileNav: document.getElementById('mobileNav')
-        };
+        // ==================== دوال مساعدة ====================
+        function getFormattedDate(date) {
+            return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        }
 
-        // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            handleMobileMenu();
-            loadState();
-            checkNewDay();
-            updateUI();
-            setupEventListeners();
-        });
+        function showToast(msg, duration = 3000) {
+            const toast = document.getElementById('toastMsg');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                if (toast) toast.classList.remove('show');
+            }, duration);
+        }
 
-        // ==================== THEME & MENU ====================
         function initTheme() {
             const savedTheme = localStorage.getItem('sabeel_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            DOM.themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-
-            DOM.themeToggle.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('sabeel_theme', next);
-                DOM.themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
         }
 
-        function handleMobileMenu() {
-            DOM.hamburgerBtn.addEventListener('click', () => {
-                DOM.mobileNav.classList.toggle('active');
-                DOM.hamburgerBtn.textContent = DOM.mobileNav.classList.contains('active') ? '✕' : '☰';
-            });
+        function vibrate(pattern = 40) {
+            if (navigator && navigator.vibrate) {
+                try {
+                    navigator.vibrate(pattern);
+                } catch(e) {
+                    // الاهتزاز غير مدعوم
+                }
+            }
         }
 
-        // ==================== LOGIC & ACTIONS ====================
-        function setupEventListeners() {
-            DOM.mainBtn.addEventListener('click', incrementCounter);
-            DOM.resetBtn.addEventListener('click', resetCounter);
-            DOM.decrementBtn.addEventListener('click', decrementCounter);
+        // ==================== تحميل وحفظ البيانات ====================
+        function loadAllData() {
+            // تحميل الحالة
+            const savedState = localStorage.getItem(STORAGE_KEYS.STATE);
+            if (savedState) {
+                try {
+                    const parsed = JSON.parse(savedState);
+                    state = {...state, ...parsed};
+                } catch(e) {
+                    console.error('خطأ في تحميل الحالة:', e);
+                }
+            }
 
-            // Goals
-            DOM.goalBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const g = parseInt(e.target.getAttribute('data-goal'));
-                    setGoal(g, e.target);
-                });
-            });
+            // تحميل الإحصائيات
+            const savedStats = localStorage.getItem(STORAGE_KEYS.STATS);
+            if (savedStats) {
+                try {
+                    const parsed = JSON.parse(savedStats);
+                    stats = {...stats, ...parsed};
+                } catch(e) {
+                    console.error('خطأ في تحميل الإحصائيات:', e);
+                }
+            }
 
-            DOM.customGoalBtn.addEventListener('click', () => {
-                const custom = prompt("أدخل الهدف المخصص (أرقام فقط):");
-                if (custom && !isNaN(custom) && parseInt(custom) > 0) {
-                    setGoal(parseInt(custom), DOM.customGoalBtn);
-                    DOM.customGoalBtn.textContent = `تخصيص (${custom})`;
+            // تحميل التتالي
+            const savedStreak = localStorage.getItem(STORAGE_KEYS.STREAK);
+            if (savedStreak) {
+                try {
+                    const parsed = JSON.parse(savedStreak);
+                    streakData = {...streakData, ...parsed};
+                } catch(e) {
+                    console.error('خطأ في تحميل التتالي:', e);
+                }
+            }
+
+            // تحميل الإنجازات
+            const savedAchievements = localStorage.getItem(STORAGE_KEYS.ACHIEVEMENTS);
+            if (savedAchievements) {
+                try {
+                    const parsed = JSON.parse(savedAchievements);
+                    achievements = parsed;
+                } catch(e) {
+                    console.error('خطأ في تحميل الإنجازات:', e);
+                    achievements = ACHIEVEMENTS.map(a => ({...a}));
+                }
+            } else {
+                achievements = ACHIEVEMENTS.map(a => ({...a}));
+            }
+
+            // التحقق من اليوم الجديد
+            checkNewDay();
+        }
+
+        function saveAllData() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(state));
+                localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+                localStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify(streakData));
+                localStorage.setItem(STORAGE_KEYS.ACHIEVEMENTS, JSON.stringify(achievements));
+                localStorage.setItem(STORAGE_KEYS.LAST_CHECK, getFormattedDate(new Date()));
+            } catch(e) {
+                console.error('خطأ في حفظ البيانات:', e);
+            }
+        }
+
+        // ==================== التحقق من اليوم الجديد ====================
+        function checkNewDay() {
+            const today = getFormattedDate(new Date());
+            const lastCheck = localStorage.getItem(STORAGE_KEYS.LAST_CHECK);
+            
+            if (stats.lastDate !== today) {
+                // يوم جديد
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = getFormattedDate(yesterday);
+
+                // تحديث التتالي
+                if (stats.lastDate === yesterdayStr) {
+                    streakData.count += 1;
+                    if (streakData.count > streakData.bestStreak) {
+                        streakData.bestStreak = streakData.count;
+                    }
+                } else if (stats.lastDate !== today && stats.lastDate !== '') {
+                    // انقطع التتالي
+                    streakData.count = 0;
+                } else if (streakData.count === 0 && stats.today === 0) {
+                    // أول يوم
+                    streakData.count = 0;
+                }
+
+                streakData.lastDate = today;
+                stats.today = 0;
+                stats.lastDate = today;
+                state.count = 0;
+                
+                saveAllData();
+                checkAchievements();
+            }
+        }
+
+        // ==================== نظام الإنجازات ====================
+        function checkAchievements() {
+            let newUnlocks = [];
+
+            achievements.forEach(ach => {
+                if (ach.unlocked) return;
+
+                let shouldUnlock = false;
+                switch(ach.id) {
+                    case 'first_33':
+                        shouldUnlock = stats.totalGoalsCompleted >= 1;
+                        break;
+                    case 'first_100':
+                        shouldUnlock = stats.totalGoalsCompleted >= 1 && state.goal >= 100;
+                        break;
+                    case 'total_1000':
+                        shouldUnlock = stats.total >= 1000;
+                        break;
+                    case 'streak_3':
+                        shouldUnlock = streakData.count >= 3;
+                        break;
+                    case 'streak_7':
+                        shouldUnlock = streakData.count >= 7;
+                        break;
+                    case 'streak_30':
+                        shouldUnlock = streakData.count >= 30;
+                        break;
+                    case 'goals_5':
+                        shouldUnlock = stats.totalGoalsCompleted >= 5;
+                        break;
+                    case 'goals_20':
+                        shouldUnlock = stats.totalGoalsCompleted >= 20;
+                        break;
+                }
+
+                if (shouldUnlock) {
+                    ach.unlocked = true;
+                    newUnlocks.push(ach);
                 }
             });
 
-            // Dhikr Selection
-            DOM.dhikrBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    changeDhikr(e.target.textContent, e.target);
+            if (newUnlocks.length > 0) {
+                saveAllData();
+                newUnlocks.forEach(ach => {
+                    showToast(`🏆 إنجاز جديد: ${ach.title} - ${ach.desc}`, 4000);
                 });
-            });
+                vibrate([200, 100, 200]);
+            }
         }
 
+        function renderAchievements() {
+            const grid = document.getElementById('achievementsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = achievements.map(ach => `
+                <div class="achievement-card ${ach.unlocked ? 'unlocked' : ''}">
+                    <div class="achievement-icon">${ach.unlocked ? ach.icon : '🔒'}</div>
+                    <div class="achievement-title">${ach.title}</div>
+                    <div class="achievement-desc">${ach.desc}</div>
+                    ${ach.unlocked ? 
+                        '<div style="color: #10b981; margin-top: 0.5rem; font-size: 1.2rem; font-weight: bold;">✅ مكتمل</div>' : 
+                        `<div class="achievement-progress">
+                            <div class="achievement-progress-fill" style="width: ${getAchievementProgress(ach)}%"></div>
+                        </div>`
+                    }
+                </div>
+            `).join('');
+        }
+
+        function getAchievementProgress(ach) {
+            switch(ach.id) {
+                case 'first_33': return Math.min((stats.totalGoalsCompleted / 1) * 100, 100);
+                case 'first_100': return Math.min((stats.total / 100) * 100, 100);
+                case 'total_1000': return Math.min((stats.total / 1000) * 100, 100);
+                case 'streak_3': return Math.min((streakData.count / 3) * 100, 100);
+                case 'streak_7': return Math.min((streakData.count / 7) * 100, 100);
+                case 'streak_30': return Math.min((streakData.count / 30) * 100, 100);
+                case 'goals_5': return Math.min((stats.totalGoalsCompleted / 5) * 100, 100);
+                case 'goals_20': return Math.min((stats.totalGoalsCompleted / 20) * 100, 100);
+                default: return 0;
+            }
+        }
+
+        // ==================== تحديث واجهة المستخدم ====================
+        function updateUI() {
+            // تحديث العداد
+            const counterDisplay = document.getElementById('counterDisplay');
+            const goalDisplay = document.getElementById('goalDisplay');
+            const currentDhikrDisplay = document.getElementById('currentDhikrDisplay');
+            const progressFill = document.getElementById('progressFill');
+            
+            if (counterDisplay) counterDisplay.textContent = state.count;
+            if (goalDisplay) goalDisplay.textContent = state.goal;
+            if (currentDhikrDisplay) currentDhikrDisplay.textContent = state.dhikr;
+            
+            if (progressFill) {
+                const progress = Math.min((state.count / state.goal) * 100, 100);
+                progressFill.style.width = progress + '%';
+            }
+
+            // تحديث الإحصائيات
+            const todayCount = document.getElementById('todayCount');
+            const totalCount = document.getElementById('totalCount');
+            const streakDays = document.getElementById('streakDays');
+            const goalsCompleted = document.getElementById('goalsCompleted');
+            
+            if (todayCount) todayCount.textContent = stats.today;
+            if (totalCount) totalCount.textContent = stats.total;
+            if (streakDays) streakDays.textContent = streakData.count + ' 🔥';
+            if (goalsCompleted) goalsCompleted.textContent = stats.totalGoalsCompleted;
+
+            renderAchievements();
+        }
+
+        // ==================== أحداث السبحة ====================
         function incrementCounter() {
             state.count++;
             stats.today++;
             stats.total++;
             
-            // Haptic Feedback (if supported by mobile browser)
-            if (navigator.vibrate) navigator.vibrate(40);
-
-            saveState();
+            vibrate(40);
+            
+            // التحقق من اكتمال الهدف
+            if (state.count >= state.goal) {
+                state.count = 0; // إعادة تعيين العداد
+                stats.goalsCompleted++;
+                stats.totalGoalsCompleted++;
+                
+                showToast(`🎉 أحسنت! أكملت ${state.goal} تسبيحة`, 4000);
+                vibrate([200, 100, 200, 100, 200]);
+                
+                // التحقق من اليوم الجديد للتتالي
+                const today = getFormattedDate(new Date());
+                if (streakData.lastDate !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = getFormattedDate(yesterday);
+                    
+                    if (streakData.lastDate === yesterdayStr) {
+                        streakData.count++;
+                    } else {
+                        streakData.count = 1;
+                    }
+                    streakData.lastDate = today;
+                    
+                    if (streakData.count > streakData.bestStreak) {
+                        streakData.bestStreak = streakData.count;
+                    }
+                }
+            }
+            
+            saveAllData();
+            checkAchievements();
             updateUI();
-            checkCompletion();
         }
 
         function decrementCounter() {
             if (state.count > 0) {
                 state.count--;
-                if(stats.today > 0) stats.today--;
-                if(stats.total > 0) stats.total--;
-                saveState();
+                stats.today = Math.max(0, stats.today - 1);
+                saveAllData();
                 updateUI();
-                DOM.completionMsg.classList.remove('show');
             }
         }
 
         function resetCounter() {
             state.count = 0;
-            saveState();
+            saveAllData();
             updateUI();
-            DOM.completionMsg.classList.remove('show');
+            showToast('🔄 تم إعادة التعيين');
         }
 
-        function setGoal(newGoal, activeBtn) {
-            state.goal = newGoal;
+        // ==================== التهيئة ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('تهيئة التطبيق...');
             
-            // Update active styling
-            DOM.goalBtns.forEach(b => b.classList.remove('active'));
-            DOM.customGoalBtn.classList.remove('active');
-            if (activeBtn) activeBtn.classList.add('active');
-
-            if(activeBtn !== DOM.customGoalBtn) {
-                DOM.customGoalBtn.textContent = "تخصيص";
-            }
-
-            saveState();
+            initTheme();
+            initMobileMenu();
+            loadAllData();
             updateUI();
-            DOM.completionMsg.classList.remove('show');
-        }
 
-        function changeDhikr(newDhikr, activeBtn) {
-            state.dhikr = newDhikr;
-            state.count = 0; // Reset count on dhikr change
-            
-            DOM.dhikrBtns.forEach(b => b.classList.remove('active'));
-            if(activeBtn) activeBtn.classList.add('active');
-
-            saveState();
-            updateUI();
-            DOM.completionMsg.classList.remove('show');
-        }
-
-        function updateProgress() {
-            let percentage = (state.count / state.goal) * 100;
-            if (percentage > 100) percentage = 100;
-            DOM.progressFill.style.width = `${percentage}%`;
-        }
-
-        function checkCompletion() {
-            if (state.count === state.goal) {
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Success vibration
-                DOM.completionMsg.classList.add('show');
+            // زر السبحة الرئيسي
+            const mainTasbihBtn = document.getElementById('mainTasbihBtn');
+            if (mainTasbihBtn) {
+                mainTasbihBtn.addEventListener('click', incrementCounter);
+                console.log('تم ربط زر السبحة الرئيسي');
             } else {
-                DOM.completionMsg.classList.remove('show');
+                console.error('زر السبحة الرئيسي غير موجود');
             }
-        }
 
-        // ==================== STORAGE & DATES ====================
-        function getTodayString() {
-            const d = new Date();
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-        }
-
-        function checkNewDay() {
-            const today = getTodayString();
-            if (stats.lastDate !== today) {
-                stats.today = 0; // Reset daily stats
-                stats.lastDate = today;
-                saveState();
+            // زر decrement
+            const decrementBtn = document.getElementById('decrementBtn');
+            if (decrementBtn) {
+                decrementBtn.addEventListener('click', decrementCounter);
             }
-        }
 
-        function saveState() {
-            localStorage.setItem('sabeel_tasbih_state', JSON.stringify(state));
-            localStorage.setItem('sabeel_tasbih_stats', JSON.stringify(stats));
-        }
+            // زر reset
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', resetCounter);
+            }
 
-        function loadState() {
-            const savedState = localStorage.getItem('sabeel_tasbih_state');
-            const savedStats = localStorage.getItem('sabeel_tasbih_stats');
-
-            if (savedState) state = JSON.parse(savedState);
-            if (savedStats) stats = JSON.parse(savedStats);
-
-            // Restore active UI for Dhikr
-            DOM.dhikrBtns.forEach(btn => {
-                if(btn.textContent === state.dhikr) {
-                    DOM.dhikrBtns.forEach(b => b.classList.remove('active'));
+            // أزرار الهدف
+            const goalButtons = document.querySelectorAll('#goalContainer .btn:not(#customGoalBtn)');
+            goalButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.goal = parseInt(btn.dataset.goal);
+                    state.count = 0;
+                    document.querySelectorAll('#goalContainer .btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                }
+                    saveAllData();
+                    updateUI();
+                });
             });
 
-            // Restore active UI for Goal
-            let goalMatched = false;
-            DOM.goalBtns.forEach(btn => {
-                if(parseInt(btn.getAttribute('data-goal')) === state.goal) {
-                    DOM.goalBtns.forEach(b => b.classList.remove('active'));
+            // تخصيص الهدف
+            const goalModal = document.getElementById('goalModal');
+            const customGoalBtn = document.getElementById('customGoalBtn');
+            const cancelGoalBtn = document.getElementById('cancelGoalBtn');
+            const saveGoalBtn = document.getElementById('saveGoalBtn');
+            const customGoalInput = document.getElementById('customGoalInput');
+
+            if (customGoalBtn && goalModal) {
+                customGoalBtn.addEventListener('click', () => {
+                    if (customGoalInput) customGoalInput.value = state.goal;
+                    goalModal.classList.add('active');
+                });
+            }
+
+            if (cancelGoalBtn && goalModal) {
+                cancelGoalBtn.addEventListener('click', () => {
+                    goalModal.classList.remove('active');
+                });
+            }
+
+            if (saveGoalBtn && goalModal && customGoalInput) {
+                saveGoalBtn.addEventListener('click', () => {
+                    const value = parseInt(customGoalInput.value);
+                    if (value > 0 && value <= 9999) {
+                        state.goal = value;
+                        state.count = 0;
+                        document.querySelectorAll('#goalContainer .btn').forEach(b => b.classList.remove('active'));
+                        if (customGoalBtn) customGoalBtn.classList.add('active');
+                        saveAllData();
+                        updateUI();
+                    }
+                    goalModal.classList.remove('active');
+                });
+            }
+
+            if (goalModal) {
+                goalModal.addEventListener('click', (e) => {
+                    if (e.target === goalModal) goalModal.classList.remove('active');
+                });
+            }
+
+            // أزرار الذكر
+            const dhikrButtons = document.querySelectorAll('#dhikrContainer .btn:not(#customDhikrBtn)');
+            dhikrButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.dhikr = btn.textContent;
+                    document.querySelectorAll('#dhikrContainer .btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    goalMatched = true;
-                }
+                    saveAllData();
+                    updateUI();
+                });
             });
-            if(!goalMatched) {
-                DOM.goalBtns.forEach(b => b.classList.remove('active'));
-                DOM.customGoalBtn.classList.add('active');
-                DOM.customGoalBtn.textContent = `تخصيص (${state.goal})`;
-            }
-        }
 
-        function updateUI() {
-            DOM.counterDisplay.textContent = state.count;
-            DOM.goalDisplay.textContent = state.goal;
-            DOM.dhikrDisplay.textContent = state.dhikr;
-            DOM.todayStats.textContent = stats.today.toLocaleString('en-US'); // Using en-US to keep numbers formatting standard but RTL direction handles layout
-            DOM.totalStats.textContent = stats.total.toLocaleString('en-US');
-            
-            updateProgress();
-            if(state.count >= state.goal && state.count !== 0) {
-                 DOM.completionMsg.classList.add('show');
-            }
-        }
+            // تخصيص الذكر
+            const dhikrModal = document.getElementById('dhikrModal');
+            const customDhikrBtn = document.getElementById('customDhikrBtn');
+            const cancelDhikrBtn = document.getElementById('cancelDhikrBtn');
+            const saveDhikrBtn = document.getElementById('saveDhikrBtn');
+            const customDhikrInput = document.getElementById('customDhikrInput');
 
+            if (customDhikrBtn && dhikrModal) {
+                customDhikrBtn.addEventListener('click', () => {
+                    if (customDhikrInput) customDhikrInput.value = state.dhikr;
+                    dhikrModal.classList.add('active');
+                });
+            }
+
+            if (cancelDhikrBtn && dhikrModal) {
+                cancelDhikrBtn.addEventListener('click', () => {
+                    dhikrModal.classList.remove('active');
+                });
+            }
+
+            if (saveDhikrBtn && dhikrModal && customDhikrInput) {
+                saveDhikrBtn.addEventListener('click', () => {
+                    const value = customDhikrInput.value.trim();
+                    if (value) {
+                        state.dhikr = value;
+                        document.querySelectorAll('#dhikrContainer .btn').forEach(b => b.classList.remove('active'));
+                        if (customDhikrBtn) customDhikrBtn.classList.add('active');
+                        saveAllData();
+                        updateUI();
+                    }
+                    dhikrModal.classList.remove('active');
+                });
+            }
+
+            if (dhikrModal) {
+                dhikrModal.addEventListener('click', (e) => {
+                    if (e.target === dhikrModal) dhikrModal.classList.remove('active');
+                });
+            }
+
+            console.log('تم تهيئة التطبيق بنجاح');
+        });
+
+        // معالجة الأخطاء العامة
+        window.addEventListener('error', (e) => {
+            console.error('خطأ عام:', e.message, e.filename, e.lineno);
+        });
     </script>
 </body>
 </html>
